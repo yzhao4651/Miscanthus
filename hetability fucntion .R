@@ -2,8 +2,8 @@
 ### write funcion 
 ####heritability
 heritability <- function(x, y){
-  library(lme4)
-  library(Matrix)
+  require(lme4)
+  require(Matrix)
   Entry = as.factor(y$Entry)
   Rep = as.factor(y$Rep)
   Year = as.factor(y$Year)
