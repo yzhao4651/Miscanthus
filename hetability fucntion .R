@@ -20,5 +20,6 @@ heritability <- function(x, y){
 qualdat <- read.csv("Copy of alltraitsflowerday.csv", na.strings = ".")
 heritability(qualdat$fday,qualdat)
 
-
-
+# for debugging
+x <- qualdat$fday
+y <- qualdat
