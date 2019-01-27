@@ -15,7 +15,7 @@ heritability <- function(x,y){
   return(h2)
 }
 ###import the data 
-qualdat <- read.csv("~/Documents/whole traits/Copy of alltraitsflowerday.csv")
+qualdat <- read.csv("Copy of alltraitsflowerday.csv")
 heritability(qualdat$fday,qualdat)
 
 
