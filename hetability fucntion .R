@@ -1,7 +1,7 @@
 
 ### write funcion 
 ####heritability
-lm=function(x,y){
+heritability <- function(x,y){
   library(lme4)
   library(Matrix)
   Entry= as.factor(y$Entry)
@@ -16,7 +16,7 @@ lm=function(x,y){
 }
 ###import the data 
 qualdat <- read.csv("~/Documents/whole traits/Copy of alltraitsflowerday.csv")
-lm(qualdat$fday,qualdat)
+heritability(qualdat$fday,qualdat)
 
 
 
