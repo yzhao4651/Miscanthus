@@ -5,9 +5,10 @@ heritability <- function(x, y){
   library(lme4)
   library(Matrix)
   Entry = as.factor(y$Entry)
-  REP = as.factor(y$Rep)
+  Rep = as.factor(y$Rep)
+  Year = as.factor(y$Year)
   x = as.numeric(x)
-  Misvarcomp <- lmer(x ~ (1|Entry) + (1|Rep) + (1|Year), data = y)
+  Misvarcomp <- lmer(x ~ (1|Entry) + (1|Rep) + (1|Year))
   A = unlist(VarCorr(Misvarcomp))[[1]]
   B = attr(VarCorr(Misvarcomp), "sc") ^ 2
   h2 = A/(A+B/8)
