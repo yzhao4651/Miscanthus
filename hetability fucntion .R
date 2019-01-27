@@ -4,10 +4,11 @@
 heritability <- function(x, y){
   require(lme4)
   require(Matrix)
+  
   Entry = as.factor(y$Entry)
   Rep = as.factor(y$Rep)
   Year = as.factor(y$Year)
-  x = as.numeric(as.character(x))
+  
   Misvarcomp <- lmer(x ~ (1|Entry) + (1|Rep) + (1|Year))
   A = unlist(VarCorr(Misvarcomp))[[1]]
   B = attr(VarCorr(Misvarcomp), "sc") ^ 2
@@ -16,7 +17,7 @@ heritability <- function(x, y){
   return(h2)
 }
 ###import the data 
-qualdat <- read.csv("Copy of alltraitsflowerday.csv")
+qualdat <- read.csv("Copy of alltraitsflowerday.csv", na.strings = ".")
 heritability(qualdat$fday,qualdat)
 
 
