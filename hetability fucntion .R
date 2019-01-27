@@ -12,8 +12,10 @@ heritability <- function(x, y){
   Misvarcomp <- lmer(x ~ (1|Entry) + (1|Rep) + (1|Year))
   A = unlist(VarCorr(Misvarcomp))[[1]]    # variance attributable to entry
   B = attr(VarCorr(Misvarcomp), "sc") ^ 2 # residual variance
-  h2 = A/(A+B/8)
+  lvls <- length(levels(Rep:Year))        # get the divisor for residual (8)
+  h2 = A/(A+B/lvls)
   ####question: I used 8 as the number of Var_residual devided, but i am not sure, please let me know if it is not right. Thanks.
+  #### yes, 8 is correct. -LVC
   return(h2)
 }
 ###import the data 
