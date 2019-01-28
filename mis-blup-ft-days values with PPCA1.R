@@ -1,6 +1,6 @@
 ####import the data####
 library(readr)
-qualdat <- read.csv("~/Documents/whole traits/Copy of Copy of alltraits1.csv")
+qualdat <- read.csv("Copy of Copy of alltraits1.csv")
 
 ####remove the sur with "1" 
 
