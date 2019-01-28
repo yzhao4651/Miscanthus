@@ -43,6 +43,9 @@ hist(qualdat$fday)
 hist(qualdat$hhday)
 hist(qualdat$hfday)
 
+# set up a working directory, to make it easy to go back and forth between our two computers
+workingdir <- "~/Documents/whole traits"
+# workingdir <- "C:/Users/lvclark/Documents/Yongli" # for Lindsay
 
 ####calculate BLUP for flowering traits
 ###requires lme4 package
@@ -63,7 +66,7 @@ h2
 ####BLUP of flowering time
 
 ### fit the model
-Mismodel <- lmer(hday~ (1|Entry)+ (1|Rep) + (1|Year), data=qualdat)
+Mismodel <- lmer(hday~ (1|Entry)+ (1|Rep) + (1|Year) + (1|Entry:Year), data=qualdat)
 ### estimate BLUPS
 Misblup = ranef(Mismodel)
 ### look at output structure
@@ -73,7 +76,7 @@ Mislineblup = Misblup$Entry
 ### see the structure of the blup for each line
 str(Mislineblup)
 ### save the brixlineblup output to a separate .csv file
-write.csv(Mislineblup, file="~/Documents/whole traits/hdaysBLUPS.csv")
+write.csv(Mislineblup, file= file.path(workingdir, "hdaysBLUPS.csv"))
 ### Creating plots with the BLUPs
 ### Create a numeric vector with the BLUP for each line
 LINEBLUP = Mislineblup[,1]
@@ -98,7 +101,7 @@ h2
 ###BLUP
 ## BLUPS
 # fit the model
-Mismodel <- lmer(fday~ (1|Entry)+ (1|Rep) + (1|Year), data=qualdat)
+Mismodel <- lmer(fday~ (1|Entry)+ (1|Rep) + (1|Year) + (1|Entry:Year), data=qualdat)
 # estimate BLUPS
 Misblup = ranef(Mismodel)
 # look at output structure
@@ -108,7 +111,7 @@ Mislineblup = Misblup$Entry
 # see the structure of the blup for each line
 str(Mislineblup)
 # save the brixlineblup output to a separate .csv file
-write.csv(Mislineblup, file="~/Documents/whole traits/fdaysBLUPS.csv")
+write.csv(Mislineblup, file= file.path(workingdir, "fdaysBLUPS.csv"))
 ## Creating plots with the BLUPs
 # Create a numeric vector with the BLUP for each line
 LINEBLUP = Mislineblup[,1]
@@ -123,7 +126,7 @@ lmean = tapply(qualdat$fday, qualdat$Entry, na.rm=T, mean,data=qualdat)
 plot(LINEBLUP, lmean[row.names(Mislineblup)], col="blue",main="Line mean VS LineBlup",ylab="line mean") ### subsetted lmean to match LINEBLUP
 
 #2 : Normality
-mod1<-lmer(fday~ (1|Entry)+ (1|Rep) + (1|Year), data=qualdat)
+mod1<-lmer(fday~ (1|Entry)+ (1|Rep) + (1|Year) + (1|Entry:Year), data=qualdat)
 par(mfcol=c(1,2))
 hist(residuals(mod1), col="brown",main = "Residues distribution", xlab = "Residues", 
      ylab = "Frequency")
@@ -145,7 +148,7 @@ h2
 ###BLUP
 ## BLUPS
 # fit the model
-Mismodel <- lmer(hhday~ (1|Entry)+ (1|Rep) + (1|Year), data=qualdat)
+Mismodel <- lmer(hhday~ (1|Entry)+ (1|Rep) + (1|Year) + (1|Entry:Year), data=qualdat)
 # estimate BLUPS
 Misblup = ranef(Mismodel)
 # look at output structure
@@ -155,7 +158,7 @@ Mislineblup = Misblup$Entry
 # see the structure of the blup for each line
 str(Mislineblup)
 # save the brixlineblup output to a separate .csv file
-write.csv(Mislineblup, file="~/Documents/whole traits/hhdaysBLUPS.csv")
+write.csv(Mislineblup, file= file.path(workindir, "hhdaysBLUPS.csv"))
 ## Creating plots with the BLUPs
 # Create a numeric vector with the BLUP for each line
 LINEBLUP = Mislineblup[,1]
@@ -191,7 +194,7 @@ h2
 ###BLUP
 ## BLUPS
 # fit the model
-Mismodel <- lmer(hfday~ (1|Entry)+ (1|Rep) + (1|Year), data=qualdat)
+Mismodel <- lmer(hfday~ (1|Entry)+ (1|Rep) + (1|Year) + (1|Entry:Year), data=qualdat)
 # estimate BLUPS
 Misblup = ranef(Mismodel)
 # look at output structure
@@ -201,7 +204,7 @@ Mislineblup = Misblup$Entry
 # see the structure of the blup for each line
 str(Mislineblup)
 # save the brixlineblup output to a separate .csv file
-write.csv(Mislineblup, file="~/Documents/whole traits/hfdaysBLUPS.csv")
+write.csv(Mislineblup, file= file.path(workingdir, "hfdaysBLUPS.csv"))
 ## Creating plots with the BLUPs
 # Create a numeric vector with the BLUP for each line
 LINEBLUP = Mislineblup[,1]
@@ -234,28 +237,28 @@ plot(fitted(mod1),
 #### 1: combining four blup files together######
 ####import the data
 ####hday
-ranhday <- read.csv("~/Documents/whole traits/hdaysBLUPS.csv",header=T,na.strings=c("","NA"))
+ranhday <- read.csv(file.path(workingdir, "hdaysBLUPS.csv"),header=T,na.strings=c("","NA"))
 ranhday$ID <- ranhday$X
 ranhday$hd <- ranhday$X.Intercept.
 str(ranhday)
 ranhday <- ranhday[,c(3:4)]
 str(ranhday)
 ####fday
-ranfday <- read.csv("~/Documents/whole traits/fdaysBLUPS.csv",header=T,na.strings=c("","NA"))
+ranfday <- read.csv(file.path(workingdir, "fdaysBLUPS.csv"),header=T,na.strings=c("","NA"))
 ranfday$ID <- ranfday$X
 ranfday$fd <- ranfday$ X.Intercept.
 str(ranfday)
 ranfday <- ranfday[,c(3:4)]
 str(ranfday)
 ####hhday
-ranhhday <- read.csv("~/Documents/whole traits/hhdaysBLUPS.csv",header=T,na.strings=c("","NA"))
+ranhhday <- read.csv(file.path(workingdir, "hhdaysBLUPS.csv"),header=T,na.strings=c("","NA"))
 ranhhday$ID <- ranhhday$X
 ranhhday$hhd <- ranhhday$X.Intercept.
 str(ranhhday)
 ranhhday <- ranhhday[,c(3:4)]
 str(ranhhday)
 ####hfday
-ranhfday <- read.csv("~/Documents/whole traits/hfdaysBLUPS.csv",header=T,na.strings=c("","NA"))
+ranhfday <- read.csv(file.path(workingdir, "hfdaysBLUPS.csv"),header=T,na.strings=c("","NA"))
 ranhfday$ID <- ranhfday$X
 ranhfday$hf <- ranhfday$X.Intercept.
 str(ranhfday)
@@ -270,7 +273,7 @@ library(dplyr)
 ####
 ftdaysblup <- join_all(list(ranfday,ranhday,ranhfday,ranhhday), by='ID')
 str(ftdaysblup)
-write.csv(ftdaysblup, file = "~/Documents/whole traits/hfhhfdaysblupm.csv",row.names = T)
+write.csv(ftdaysblup, file = file.path(workingdir, "hfhhfdaysblupm.csv"),row.names = T)
 
 ####PCA analysis with ppca
 ####
@@ -280,9 +283,9 @@ library(pcaMethods)
 #citation("pcaMethods")
 pc <- pca(ftdaysblup, nPcs=1, method="ppca",center = TRUE)
 fblupimputed <- data.frame(completeObs(pc))
-write.csv(fblupimputed, file = "~/Documents/whole traits/fmissblupimputed.csv",row.names = T)
+write.csv(fblupimputed, file = file.path(workingdir,"fmissblupimputed.csv"),row.names = T)
 fblupPC1 <- scores(pc)
-write.csv(fblupPC1, file = "~/Documents/whole traits/fblupPC1.csv",row.names = T)
+write.csv(fblupPC1, file = file.path(workingdir, "fblupPC1.csv"),row.names = T)
 
 
 
