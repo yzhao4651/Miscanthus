@@ -20,7 +20,7 @@ write.csv(qualdat, file = "~/Documents/whole traits/Copy of alltraitsflowerday.c
 pairs(~hday+fday+hhday+hfday,data=qualdat, 
       main="Simple Scatterplot Matrix for flowering traits")
 
-####Examine distribution of brix data
+####Examine distribution of flowering data
 par(mfrow=c(2,2))
 boxplot(hday~ Rep, data=qualdat, xlab="Rep", ylab="heading days", main="boxplot of heading time in each rep", col="pink")
 
