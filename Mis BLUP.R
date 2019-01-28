@@ -1,6 +1,6 @@
 ###function
 ###import the dataset
-traits <- read.csv("~/Documents/whole traits/Copy of alltraitsflowerday.csv")
+traits <- read.csv("Copy of alltraitsflowerday.csv")
 str(traits)
 ###change factor into numeric 
 indx <- sapply(traits[,c(15:25)], is.factor)
