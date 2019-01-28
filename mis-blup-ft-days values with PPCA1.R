@@ -174,7 +174,7 @@ lmean = tapply(qualdat$hhday, qualdat$Entry, na.rm=T, mean,data=qualdat)
 plot(LINEBLUP, lmean[row.names(Mislineblup)], col="blue",main="Line mean VS LineBlup",ylab="line mean") ### subsetted lmean to match LINEBLUP
 
 #2 : Normality
-mod1<-lmer(hhday~ (1|Entry)+ (1|Rep) + (1|Year), data=qualdat)
+mod1<-lmer(hhday~ (1|Entry)+ (1|Rep) + (1|Year) + (1|Entry:Year), data=qualdat)
 par(mfcol=c(1,2))
 hist(residuals(mod1), col="brown",main = "Residues distribution", xlab = "Residues", 
      ylab = "Frequency")
@@ -220,7 +220,7 @@ lmean = tapply(qualdat$hfday, qualdat$Entry, na.rm=T, mean,data=qualdat)
 plot(LINEBLUP, lmean[row.names(Mislineblup)], col="blue",main="Line mean VS LineBlup",ylab="line mean") ### subsetted lmean to match LINEBLUP
 
 #2 : Normality
-mod1<-lmer(hfday~ (1|Entry)+ (1|Rep) + (1|Year), data=qualdat)
+mod1<-lmer(hfday~ (1|Entry)+ (1|Rep) + (1|Year) + (1|Entry:Year), data=qualdat)
 par(mfcol=c(1,2))
 hist(residuals(mod1), col="brown",main = "Residues distribution", xlab = "Residues", 
      ylab = "Frequency")
