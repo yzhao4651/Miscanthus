@@ -1,10 +1,8 @@
 ###function
 ###import the dataset
-traits <- read.csv("Copy of alltraitsflowerday.csv")
+traits <- read.csv("Copy of alltraitsflowerday.csv", na.strings = c("", ".", "NA"))
 str(traits)
-###change factor into numeric 
-indx <- sapply(traits[,c(15:25)], is.factor)
-traits[,c(15:25)][indx] <- lapply(traits[,c(15:25)][indx], function(x) as.numeric(as.character(x)))
+
 traits <- traits[ ,c(2, 6:7, 15:25)]
 traits$Entry= as.factor(traits$Entry)
 traits$Rep = as.factor(traits$Rep)
