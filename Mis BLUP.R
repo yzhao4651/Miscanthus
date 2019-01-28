@@ -17,13 +17,13 @@ out_variable=rep(NA, out_nvar)
 number=1
 for (i in out_start:out_end){
   outcome = colnames(traits)[i]
-    model <- lmer(get(outcome)~ (1|Entry)+ (1|Rep) + (1|Year),
-                  na.action = na.exclude,
-                  data=traits)
-    beta <- ranef(model)
-    out_beta[number] = as.numeric(beta[2])
-    out_variable[number] = outcome
-    number = number + 1
+  model <- lmer(get(outcome)~ (1|Entry)+ (1|Rep) + (1|Year),
+                na.action = na.exclude,
+                data=traits)
+  beta <- ranef(model)
+  out_beta[number] = as.numeric(beta[2])
+  out_variable[number] = outcome
+  number = number + 1
 }
 outcome = data.frame(out_variable, out_beta)
 
