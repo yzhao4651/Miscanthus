@@ -21,10 +21,10 @@ heritability <- function(x, y){
   #### yes, 8 is correct. -LVC
   return(h2)
 }
-###import the data 
-qualdat <- read.csv("Copy of alltraitsflowerday.csv", na.strings = ".")
-heritability(qualdat$fday,qualdat)
-
-# for debugging
-x <- qualdat$fday
-y <- qualdat
+# ###import the data 
+# qualdat <- read.csv("Copy of alltraitsflowerday.csv", na.strings = ".")
+# heritability(qualdat$fday,qualdat)
+# 
+# # for debugging
+# x <- qualdat$fday
+# y <- qualdat
