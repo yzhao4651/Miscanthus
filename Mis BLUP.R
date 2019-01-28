@@ -10,8 +10,8 @@ traits$Year = as.factor(traits$Year)
 str(traits)
 library(lme4)
 library(Matrix)
-out_start=15
-out_end=25
+out_start=4
+out_end=14
 out_nvar=out_end-out_start+1
 out_variable=rep(NA, out_nvar)
 number=1
