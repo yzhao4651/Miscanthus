@@ -158,7 +158,7 @@ Mislineblup = Misblup$Entry
 # see the structure of the blup for each line
 str(Mislineblup)
 # save the brixlineblup output to a separate .csv file
-write.csv(Mislineblup, file= file.path(workindir, "hhdaysBLUPS.csv"))
+write.csv(Mislineblup, file= file.path(workingdir, "hhdaysBLUPS.csv"))
 ## Creating plots with the BLUPs
 # Create a numeric vector with the BLUP for each line
 LINEBLUP = Mislineblup[,1]
