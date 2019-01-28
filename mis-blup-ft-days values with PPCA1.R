@@ -271,7 +271,7 @@ library(dplyr)
 
 ####combine with missing values 
 ####
-ftdaysblup <- join_all(list(ranfday,ranhday,ranhfday,ranhhday), by='ID')
+ftdaysblup <- plyr::join_all(list(ranfday,ranhday,ranhfday,ranhhday), by='ID')
 str(ftdaysblup)
 write.csv(ftdaysblup, file = file.path(workingdir, "hfhhfdaysblupm.csv"),row.names = T)
 
