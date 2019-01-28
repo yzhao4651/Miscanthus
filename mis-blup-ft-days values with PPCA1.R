@@ -51,8 +51,9 @@ install.packages("Matrix")
 library(lme4)
 library(Matrix)
 ####changing class of variables
-Entry= as.factor(qualdat$Entry)
-REP = as.factor(qualdat$Rep)
+qualdat$Entry= as.factor(qualdat$Entry)
+qualdat$Rep = as.factor(qualdat$Rep)
+qualdat$Year = as.factor(qualdat$Year)
 
 #### Heading time days#####
 ####Heritibility
