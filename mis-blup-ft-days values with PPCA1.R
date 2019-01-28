@@ -50,6 +50,7 @@ install.packages("lme4")
 install.packages("Matrix")
 library(lme4)
 library(Matrix)
+source("hetability fucntion .R") # load heritability function
 ####changing class of variables
 qualdat$Entry= as.factor(qualdat$Entry)
 qualdat$Rep = as.factor(qualdat$Rep)
@@ -57,16 +58,7 @@ qualdat$Year = as.factor(qualdat$Year)
 
 #### Heading time days#####
 ####Heritibility
-Misvarcomp <- lmer(hday~ (1|Entry)+ (1|Rep) + (1|Year), data=qualdat)
-summary(Misvarcomp)
-####get all of the variance (variance in additive effect of each haploid genome
-Misvarcomp_Entry= unlist(VarCorr(Misvarcomp))[[1]];
-Misvarcomp_Rep= unlist(VarCorr(Misvarcomp))[[2]];
-Misvarcomp_Year= unlist(VarCorr(Misvarcomp))[[3]];
-Var_Residual <- attr(VarCorr(Misvarcomp), "sc")^2
-####heritability. 
-####question: I used 8 as the number of Var_residual devided, but i am not sure, please let me know if it is not right. Thanks.
-h2 =(Misvarcomp_Entry)/((Misvarcomp_Entry)+(Var_Residual)/8) #####  
+h2 <- heritability(qualdat$hday, qualdat)
 h2
 ####BLUP of flowering time
 
@@ -97,17 +89,10 @@ lmean = tapply(qualdat$hday, qualdat$Entry, na.rm=T, mean,data=qualdat)
 plot(LINEBLUP, lmean[row.names(Mislineblup)], col="blue",main="Line mean VS LineBlup",ylab="line mean") ### subsetted lmean to match LINEBLUP
 
 ####Flower time days#####
-Misvarcomp <- lmer(fday~ (1|Entry)+ (1|Rep) + (1|Year), data=qualdat)
 
 ####calulate the heritibility
-###get all of the variance (variance in additive effect of each haploid genome)
 
-Misvarcomp_Entry= unlist(VarCorr(Misvarcomp))[[1]];
-Misvarcomp_Rep= unlist(VarCorr(Misvarcomp))[[2]];
-Misvarcomp_Year= unlist(VarCorr(Misvarcomp))[[3]];
-Var_Residual <- attr(VarCorr(Misvarcomp), "sc")^2
-####heritability. I used 8 as the number of Var_residual devided, but i am not sure, please let me know if it is not right. Thanks.
-h2 =(Misvarcomp_Entry)/((Misvarcomp_Entry)+(Var_Residual)/8) #####  
+h2 <- heritability(qualdat$fday, qualdat)
 h2
 
 ###BLUP
@@ -153,20 +138,7 @@ plot(fitted(mod1),
 
 #### Heritibility
 
-Misvarcomp <- lmer(hhday~ (1|Entry)+ (1|Rep) + (1|Year), data=qualdat)
-
-#####Extract variance components
-summary(Misvarcomp)
-
-###calulate the heritibility
-####get all of the variance (variance in additive effect of each haploid genome)
-
-Misvarcomp_Entry= unlist(VarCorr(Misvarcomp))[[1]];
-Misvarcomp_Rep= unlist(VarCorr(Misvarcomp))[[2]];
-Misvarcomp_Year= unlist(VarCorr(Misvarcomp))[[3]];
-Var_Residual <- attr(VarCorr(Misvarcomp), "sc")^2
-####heritability. I used 8 as the number of Var_residual devided, but i am not sure, please let me know if it is not right. Thanks.
-h2 =(Misvarcomp_Entry)/((Misvarcomp_Entry)+(Var_Residual)/8) #####  
+h2 <- heritability(qualdat$hhday, qualdat)
 h2
 
 
@@ -211,20 +183,9 @@ plot(fitted(mod1),
 
 #### Half flowering time days####
 
-Misvarcomp <- lmer(hfday~ (1|Entry)+ (1|Rep) + (1|Year), data=qualdat)
-
-#####Extract variance components
-summary(Misvarcomp)
-
 ###calulate the heritibility
-####get all of the variance (variance in additive effect of each haploid genome)
 
-Misvarcomp_Entry= unlist(VarCorr(Misvarcomp))[[1]];
-Misvarcomp_Rep= unlist(VarCorr(Misvarcomp))[[2]];
-Misvarcomp_Year= unlist(VarCorr(Misvarcomp))[[3]];
-Var_Residual <- attr(VarCorr(Misvarcomp), "sc")^2
-####heritability. I used 8 as the number of Var_residual devided, but i am not sure, please let me know if it is not right. Thanks.
-h2 =(Misvarcomp_Entry)/((Misvarcomp_Entry)+(Var_Residual)/8) #####  
+h2 <- heritability(qualdat$hfday, qualdat) 
 h2
 
 ###BLUP
