@@ -277,8 +277,8 @@ write.csv(ftdaysblup, file = file.path(workingdir, "hfhhfdaysblupm.csv"),row.nam
 
 ####PCA analysis with ppca
 ####
-source("https://bioconductor.org/biocLite.R") ###intall.packages("pcaMethods")
-biocLite("pcaMethods")
+# install.packages("BiocManager")
+BiocManager::install("pcaMethods") ###intall.packages("pcaMethods")
 library(pcaMethods)
 #citation("pcaMethods")
 pc <- pca(ftdaysblup, nPcs=1, method="ppca",center = TRUE)
