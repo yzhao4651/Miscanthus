@@ -15,7 +15,7 @@ out_end=25
 out_nvar=out_end-out_start+1
 out_variable=rep(NA, out_nvar)
 number=1
-for (i in 15:25){
+for (i in out_start:out_end){
   outcome = colnames(traits)[i]
     model <- lmer(get(outcome)~ (1|Entry)+ (1|Rep) + (1|Year),
                   na.action = na.exclude,
