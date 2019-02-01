@@ -78,6 +78,7 @@ qualdatFN<-subset(qualdat, !is.na(qualdat$FN))
 qualdatfday<-subset(qualdat, !is.na(qualdat$fday))
 qualdathfday<-subset(qualdat, !is.na(qualdat$hfday))
 source("~/Documents/R-corde for miscanthus project/bcplot function.txt")
+# source("bcplot function.txt") # for Lindsay's computer
 par(mfrow=c(2,3))
 bcplot(qualdatFW$FW_kg) ####-0.025
 bcplot(qualdatFN$FN)####0.175
