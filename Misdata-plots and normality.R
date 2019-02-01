@@ -20,7 +20,7 @@ str(qualdat)
 ####Scatterplot Matrices ( can hep to check some outlies)
 pairs(~hday+fday+hhday+hfday,data=qualdat, 
       main="Simple Scatterplot Matrix for flowering traits")
-####Examine distribution of brix data
+####Examine distribution of flowering data
 par(mfrow=c(2,2))
 boxplot(hday~ Rep, data=qualdat, xlab="Rep", ylab="heading days", main="boxplot of heading time in each rep", col="pink")
 boxplot(fday~ Rep, data=qualdat, xlab="Rep", ylab="flowering days", main="boxplot of flowering time in each Rep", col="pink")
