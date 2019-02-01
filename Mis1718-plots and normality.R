@@ -1,6 +1,8 @@
 ####import the data####
 library(readr)
-qualdat <- read.csv("~/Documents/whole traits/trait1718.csv",na.strings = c("",".","NA"))
+mywd <- "~/Documents/whole traits" # on Yongli's computer
+# mywd <- "." # on Lindsay's computer
+qualdat <- read.csv(file.path(mywd, "trait1718.csv"), na.strings = c("",".","NA"))
 #check the data formate
 str(qualdat)
 
