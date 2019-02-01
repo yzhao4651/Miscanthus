@@ -1,7 +1,11 @@
 ####import the data####
 
 library(readr)
-qualdat <- read.csv("~/Documents/whole traits/Copy of Copy of alltraits1.csv",na.strings = c("",".","NA"))
+# set up working directory
+mywd <- "~/Documents/whole traits" # for Yongli
+# mywd <- "." # for Lindsay
+
+qualdat <- read.csv(file.path(mywd,"Copy of Copy of alltraits1.csv"),na.strings = c("",".","NA"))
 #check the data formate
 str(qualdat)
 ####remove the sur with "1" 
@@ -98,4 +102,5 @@ qualdat$fday<- bc(qualdat$fday,lda=-0.1)
 qualdat$hfday <- bc(qualdat$hfday,lda=0.15)
 str(qualdat)
 ####write the data out 
-write.csv(qualdat, file = "~/Documents/whole traits/alltraitsnormalited.csv",row.names = T, na = ".")
+# mywd <- "~/Yongli" # for Lindsay
+write.csv(qualdat, file = file.path(mywd, "alltraitsnormalited.csv"),row.names = T, na = ".")
