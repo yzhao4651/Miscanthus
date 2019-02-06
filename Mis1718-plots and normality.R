@@ -114,8 +114,6 @@ bc1 <- function(x, lda){ # function to transform data after lambda is determined
   return(x)
 }
 
-qualdat_BC <- bc1(qualdat, lda)
-
 ### becasue this function above does not work, I still write one by one to get the transformation data,
 ## do you have any idea for this one, It is really hard for me to do this one 
 ### Lindsay's code to get the transformed data
