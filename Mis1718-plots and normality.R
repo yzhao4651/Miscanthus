@@ -85,6 +85,10 @@ for (i in out_start:out_end){
 } 
 dev.off()
 ###question: how i can get a csv file with column name with lambda?
+### Unfortunately the bcplot function does not return any value, so it can't 
+### be used programatically to send values to a vector that can be written to a
+### file.  You could possible edit the function with a statement like
+### `return(lambda.hat)`
 
 
 ### get the lambdal for the variable need do data transformation 
