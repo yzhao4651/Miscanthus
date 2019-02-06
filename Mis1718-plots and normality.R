@@ -23,6 +23,7 @@ qualdat$FD_50. <- as.numeric(as.Date(qualdat$FD_50.,format = "%m/%d/%Y")-as.Date
 ####check the data formate
 str(qualdat)
 #### change several variables numeric format
+# Note from Lindsay -- converting from integer to float is unnecessary, but should not cause problems
 indx <- sapply(qualdat[,c(16,19:23)], is.integer)
 qualdat[,c(16,19:23)][indx] <- lapply(qualdat[,c(16,19:23)][indx], function(x) as.numeric(as.character(x)))
 
