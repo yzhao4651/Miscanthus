@@ -74,7 +74,7 @@ dev.off()
 ####Normality
 #### Boxcox function R codes from online
 ####
-source("~/Documents/R-corde for miscanthus project/bcplot function.txt")
+source("bcplot function.txt")
 pdf(paste("lambda", 2 ,".pdf",sep=""))####question: only produce one image 
 par(mar=rep(2,4))
 par(mfrow=c(4,4))
