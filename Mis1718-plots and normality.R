@@ -93,7 +93,7 @@ dev.off()
 
 ### get the lambdal for the variable need do data transformation 
 ##quesiton: trying to write a loop but it does not work, do you have any idea?
-lda <- read.csv("~/Documents/whole traits/lambda1.csv", row.name=1)
+lda <- read.csv(file.path(mywd, "lambda1.csv"), row.name=1)
 out_start=7
 out_end=27
 bc1 <- function(x, lda){ # function to transform data after lambda is determined
