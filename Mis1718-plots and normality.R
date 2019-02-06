@@ -75,7 +75,7 @@ dev.off()
 #### Boxcox function R codes from online
 ####
 source("bcplot function.txt")
-pdf(paste("lambda", 2 ,".pdf",sep=""))####question: only produce one image 
+pdf(paste("lambda", 2 ,".pdf",sep=""))####question: only produce one image --> Did we solve this earlier?  seems to product all images now
 par(mar=rep(2,4))
 par(mfrow=c(4,4))
 out_start=7
