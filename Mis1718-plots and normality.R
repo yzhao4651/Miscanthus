@@ -25,7 +25,8 @@ str(qualdat)
 #### change several variables numeric format
 indx <- sapply(qualdat[,c(16,19:23)], is.integer)
 qualdat[,c(16,19:23)][indx] <- lapply(qualdat[,c(16,19:23)][indx], function(x) as.numeric(as.character(x)))
-qualdat$GS <- as.numeric(qualdat$GS)
+
+qualdat$GS <- as.numeric(as.character(qualdat$GS))
 qualdat$Entry=as.factor(qualdat$Entry)
 qualdat$Rep=as.factor(qualdat$Rep)
 qualdat$Year=as.factor(qualdat$Year)
