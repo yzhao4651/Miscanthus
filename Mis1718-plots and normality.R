@@ -93,22 +93,28 @@ dev.off()
 
 ### get the lambdal for the variable need do data transformation 
 ##quesiton: trying to write a loop but it does not work, do you have any idea?
+## The loop was not constructed correctly, since there were not curly brackets
+## after it.  I have fixed it, and also indexed by trait name to make things
+## easier.
 lda <- read.csv(file.path(mywd, "lambda1.csv"), row.name=1)
 out_start=7
 out_end=27
 bc1 <- function(x, lda){ # function to transform data after lambda is determined
-for(i in out_start: out_end)
-for(j in 2: nrow(lda))
-  while(min(x[i], na.rm = TRUE) <= 0){
-    x[i] <- x[i] + 1 # positive numbers required
+  for(trait in rownames(lda)){
+    while(min(x[[trait]], na.rm = TRUE) <= 0){
+      x[[trait]] <- x[[trait]] + 1 # positive numbers required
+    }
+    if(lda[trait,] == 0){
+      x[[trait]] <- log(x[[trait]])
+    } else {
+      x[[trait]] <- (x[[trait]]^lda[trait,] - 1)/lda[trait,]
+    }
   }
-  if(lda[j,] == 0){
-    x[i] <- log(x[i])
-  } else {
-    x[i] <- (x[i]^lda[j,] - 1)/lda[j,]
-  }
-  return(x[i])
+  
+  return(x)
 }
+
+qualdat_BC <- bc1(qualdat, lda)
 
 ### becasue this function i wrote above does not work, I still write one by one to get the transformation data
 ### Lindsay's code to get the transformed data
@@ -145,5 +151,7 @@ qualdat$SRD <- bc(qualdat$SRD,lda=0.4)####### 0.4
 qualdat$ADD <- bc(qualdat$ADD,lda=-1) ####### -1
 qualdat$GS <- bc(qualdat$GS,lda=1) ####### 1
 str(qualdat)
+
+identical(qualdat, qualdat_BC) # this confirms results the same; can delete above code that does one at a time.
 ####write the data out 
 write.csv(qualdat, file = "~/Documents/whole traits/traits1718normalited1.csv",row.names = T, na = ".")
