@@ -33,7 +33,7 @@ qualdat$Rep=as.factor(qualdat$Rep)
 qualdat$Year=as.factor(qualdat$Year)
 ####check the data formate
 str(qualdat)
-write.csv(qualdat1,file="~/Documents/whole traits/data1718updated.csv",row.names = T, na = ".")
+#write.csv(qualdat1,file="~/Documents/whole traits/data1718updated.csv",row.names = T, na = ".")
 ####Scatterplot Matrices for flower traits ( can hep to check some outlies)
 pairs(~HD_1+FD_1+HD_50.+FD_50.,data=qualdat, 
       main="Simple Scatterplot Matrix for flowering traits")
