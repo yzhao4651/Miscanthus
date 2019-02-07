@@ -1,6 +1,8 @@
 ####import the data####
 library(readr)
-qualdat <- read.csv("~/Documents/whole traits/trait1718.csv",na.strings = c("",".","NA"))
+mywd <- "~/Documents/whole traits" # on Yongli's computer
+# mywd <- "." # on Lindsay's computer
+qualdat <- read.csv(file.path(mywd, "trait1718.csv"), na.strings = c("",".","NA"))
 #check the data formate
 str(qualdat)
 ###change character of Growth Stage to number N=1,B=2,F=3,P=4
@@ -21,15 +23,17 @@ qualdat$FD_50. <- as.numeric(as.Date(qualdat$FD_50.,format = "%m/%d/%Y")-as.Date
 ####check the data formate
 str(qualdat)
 #### change several variables numeric format
+# Note from Lindsay -- converting from integer to float is unnecessary, but should not cause problems
 indx <- sapply(qualdat[,c(16,19:23)], is.integer)
 qualdat[,c(16,19:23)][indx] <- lapply(qualdat[,c(16,19:23)][indx], function(x) as.numeric(as.character(x)))
-qualdat$GS <- as.numeric(qualdat$GS)
+
+qualdat$GS <- as.numeric(as.character(qualdat$GS))
 qualdat$Entry=as.factor(qualdat$Entry)
 qualdat$Rep=as.factor(qualdat$Rep)
 qualdat$Year=as.factor(qualdat$Year)
 ####check the data formate
 str(qualdat)
-write.csv(qualdat1,file="~/Documents/whole traits/data1718updated.csv",row.names = T, na = ".")
+#write.csv(qualdat1,file="~/Documents/whole traits/data1718updated.csv",row.names = T, na = ".")
 ####Scatterplot Matrices for flower traits ( can hep to check some outlies)
 pairs(~HD_1+FD_1+HD_50.+FD_50.,data=qualdat, 
       main="Simple Scatterplot Matrix for flowering traits")
@@ -40,15 +44,15 @@ pairs(~Yld_kg+SDW_kg+Cml_cm+CmD_BI_mm+CmD_LI_mm+CmN.+CmDW_g+Bcirc_cm+FNMain+FNsm
 ####out_start: the first variable for boxplot, 
 ####out_end: the last variable for boxplot
 plotboxFunc <- function(out_start,out_end, mydata, na.rm = TRUE) {
-    pdf(paste("Boxplot", 2 ,".pdf",sep="")) 
-    par(mar = c(5,4,1,1))
-    par(mfrow=c(3,3))
-    for (i in out_start:out_end){
-   boxplot(qualdat[,i] ~ qualdat$Rep, col=(c("pink")), 
-          xlab="", ylab="", main=paste("Boxplot of ", names(qualdat[i]), sep = ""), cex.main=1)
-          mtext(text = "Rep",side = 1, line = 1.5, cex=0.7)
-          mtext(text = paste("var_", names(qualdat[i]), sep = ""), side = 2, line = 2,cex=0.7) #side 2 = left
-    }
+  pdf(paste("Boxplot", 2 ,".pdf",sep="")) 
+  par(mar = c(5,4,1,1))
+  par(mfrow=c(3,3))
+  for (i in out_start:out_end){
+    boxplot(qualdat[,i] ~ qualdat$Rep, col=(c("pink")), 
+            xlab="", ylab="", main=paste("Boxplot of ", names(qualdat[i]), sep = ""), cex.main=1)
+    mtext(text = "Rep",side = 1, line = 1.5, cex=0.7)
+    mtext(text = paste("var_", names(qualdat[i]), sep = ""), side = 2, line = 2,cex=0.7) #side 2 = left
+  }
   dev.off()
 }
 plotboxFunc(7,27,qualdat)
@@ -70,8 +74,8 @@ dev.off()
 ####Normality
 #### Boxcox function R codes from online
 ####
-source("~/Documents/R-corde for miscanthus project/bcplot function.txt")
-pdf(paste("lambda", 2 ,".pdf",sep=""))####question: only produce one image 
+source("bcplot function.txt")
+pdf(paste("lambda", 2 ,".pdf",sep=""))####question: only produce one image --> Did we solve this earlier?  seems to product all images now
 par(mar=rep(2,4))
 par(mfrow=c(4,4))
 out_start=7
@@ -81,26 +85,36 @@ for (i in out_start:out_end){
 } 
 dev.off()
 ###question: how i can get a csv file with column name with lambda?
+### Unfortunately the bcplot function does not return any value, so it can't 
+### be used programatically to send values to a vector that can be written to a
+### file.  You could possible edit the function with a statement like
+### `return(lambda.hat)`
 
 
 ### get the lambdal for the variable need do data transformation 
 ##quesiton: trying to write a loop but it does not work, do you have any idea?
-lda <- read.csv("~/Documents/whole traits/lambda1.csv", row.name=1)
+## The loop was not constructed correctly, since there were not curly brackets
+## after it.  I have fixed it, and also indexed by trait name to make things
+## easier.
+lda <- read.csv(file.path(mywd, "lambda1.csv"), row.name=1)
 out_start=7
 out_end=27
 bc1 <- function(x, lda){ # function to transform data after lambda is determined
-for(i in out_start: out_end)
-for(j in 2: nrow(lda))
-  while(min(x[i], na.rm = TRUE) <= 0){
-    x[i] <- x[i] + 1 # positive numbers required
+  for(trait in rownames(lda)){
+    while(min(x[[trait]], na.rm = TRUE) <= 0){
+      x[[trait]] <- x[[trait]] + 1 # positive numbers required
+    }
+    if(lda[trait,] == 0){
+      x[[trait]] <- log(x[[trait]])
+    } else {
+      x[[trait]] <- (x[[trait]]^lda[trait,] - 1)/lda[trait,]
+    }
   }
-  if(lda[j,] == 0){
-    x[i] <- log(x[i])
-  } else {
-    x[i] <- (x[i]^lda[j,] - 1)/lda[j,]
-  }
-  return(x[i])
+  
+  return(x)
 }
+
+qualdat_BC <- bc1(qualdat, lda)
 
 ### becasue this function above does not work, I still write one by one to get the transformation data,
 ## do you have any idea for this one, It is really hard for me to do this one 
@@ -138,5 +152,7 @@ qualdat$SRD <- bc(qualdat$SRD,lda=0.4)####### 0.4
 qualdat$ADD <- bc(qualdat$ADD,lda=-1) ####### -1
 qualdat$GS <- bc(qualdat$GS,lda=1) ####### 1
 str(qualdat)
+
+identical(qualdat, qualdat_BC) # this confirms results the same; can delete above code that does one at a time.
 ####write the data out 
 write.csv(qualdat, file = "~/Documents/whole traits/traits1718normalited1.csv",row.names = T, na = ".")
