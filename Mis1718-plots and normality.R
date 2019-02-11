@@ -81,15 +81,18 @@ plotboxFunc(7,27,qualdat)
 ####qq plot and histogram 
 ####qq plot and histogram 
 qualdat1 <- qualdat[7:27]
-pdf(paste("Q-Q normal plot and Histogram", 1 ,".pdf",sep="")) 
-par(mar=rep(2,4))
-par(mfrow=c(4,4))
-for(colName in names(qualdat1)){ 
-hist(qualdat1[,colName],100,col="lightblue",xlab=colName,main=paste0("Histogram of ",colName),cex.main=1) 
-qqnorm(qualdat1[,colName],main=paste0("Q-Q normal plot of ",colName),cex.main=1) 
-qqline(qualdat1[,colName])
-} 
+histqq <- function(mydata,na.rm=TRUE){
+ pdf(paste("Q-Q normal plot and Histogram", 1 ,".pdf",sep="")) 
+ par(mar=rep(2,4))
+ par(mfrow=c(4,4))
+ for(colName in names(mydata)){ 
+ hist(mydata[,colName],100,col="lightblue",xlab=colName,main=paste0("Histogram of ",colName),cex.main=1) 
+ qqnorm(mydata[,colName],main=paste0("Q-Q normal plot of ",colName),cex.main=1) 
+ qqline(mydata[,colName])
+ } 
 dev.off()
+}
+histqq(qualdat1)
 
 ####Normality
 ####Normality
@@ -136,7 +139,6 @@ bc1 <- function(x, lda){ # function to transform data after lambda is determined
       x[[trait]] <- (x[[trait]]^lda[trait,] - 1)/lda[trait,]
     }
   }
-  
   return(x)
 }
 qualdat_BC <- bc1(qualdat, lda)
