@@ -1,6 +1,7 @@
 ###import the data
 ###import the data
 normadata <- read.csv("~/Documents/whole traits/traits1718normalited1.csv",na.strings = c("",".","NA"))
+normadata <- read.csv("traits1718normalited1.csv",na.strings = c("",".","NA"))
 ###check the data format
 str(normadata)
 ###change the format of the several variables 
