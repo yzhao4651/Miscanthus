@@ -23,7 +23,7 @@ heritability <- function(out_start,out_end,y){
   out_nvar=out_end-out_start+1
   out_variable = colnames(y[out_start:out_end])
   outcome <- matrix(0, nrow=ncol(y[out_start:out_end]),
-                    ncol =1, dimnames = list(out_variable,c(paste(c("Heritability")))))
+                    ncol =1, dimnames = list(out_variable, "Heritability"))
   number=1
   for (i in out_start:out_end){
     Misvarcomp<- lmer(y[,i] ~ (1|Entry) + (1|Rep) + (1|Year) + (1|Entry:Year))
@@ -52,7 +52,7 @@ heritability <- function(out_start,out_end,y){
   out_nvar=out_end-out_start+1
   out_variable = colnames(y[out_start:out_end])
   outcome <- matrix(0, nrow=ncol(y[out_start:out_end]),
-                    ncol =1, dimnames = list(out_variable,c(paste(c("Heritability")))))
+                    ncol =1, dimnames = list(out_variable, "Heritability"))
   number=1
   for (i in out_start:out_end){
     if(sum(is.na(y[y$Year==2017 | y$Year==2018,][i])) >= 900){
