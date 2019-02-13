@@ -1,6 +1,7 @@
 ####import the data
 ####import the data
 ranefvalueall<- read.csv("~/Documents/whole traits/ranefvalueall.csv",na.strings = c("",".","NA"))
+ranefvalueall<- read.csv("ranefvalueall.csv",na.strings = c("",".","NA"))
 ###check data format
 str(ranefvalueall)
 ###rename of the column name 
@@ -30,6 +31,7 @@ histqq(ranefvalueall1)
 ####trying to write function to plot 
 ####Compare BLUP to line averages on a scatterplot
 qualdat <- read.csv("~/Documents/whole traits/data1718updated1.csv",na.strings = c("",".","NA"),row.names=1)
+qualdat <- read.csv("data1718updated1.csv",na.strings = c("",".","NA"),row.names=1)
 ####check the format of dataset
 str(qualdat)
 indx <- sapply(qualdat[,c(7:10,16,19:23,25:27)], is.integer)
