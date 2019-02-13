@@ -79,4 +79,18 @@ heritability <- function(out_start,out_end,y){
 Herit <- heritability(8,28,normadata)
 write.csv(Herit, file = "~/Documents/whole traits/heritabilityall.csv", row.names = T, na = ".")
 
+## Note from Lindsay: Right now you have two identically named functions, with
+## very similar code.  If you have to fix something in one function, you have 
+## to fix it in both, which leaves a lot of room for error in the future. It
+## would be better to consolidate this into one function, perhaps with a 
+## logical argument to control behavior, like
 
+# heritability <- function(out_start,out_end,y, include_year = TRUE){
+# ...
+# if(!include_year || sum(is.na(y[y$Year==2017 | y$Year==2018,][i])) >= 900){
+# ...
+
+## I think previously we loaded this function into another script using `source`.
+## Since you have added actual data analysis to this script, in addition to the
+## function definition(s), you probably do not want to load it with `source` 
+## any more.
