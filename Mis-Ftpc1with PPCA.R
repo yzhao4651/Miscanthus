@@ -36,7 +36,8 @@ fprin1 <- cbind(ranefvaluef[1], fprin_comp$x[,1])
 names(fprin1)
 colnames(fprin1)[colnames(fprin1)=="fprin_comp$x[, 1]"] <- "fprin"
 alltraitsblup <- plyr::join_all(list(ranefvalueall,fprin1), by='Entry')
-write.csv(alltraitsblup, file = "~/Documents/whole traits/alltraitsblup.csv",row.names = T)
+#write.csv(alltraitsblup, file = "~/Documents/whole traits/alltraitsblup.csv",row.names = T)
+write.csv(alltraitsblup, file = "alltraitsblup.csv",row.names = T)
 #str(fprin1)
 #write.csv(fprin1, file = "~/Documents/whole traits/fprin1.csv",row.names = T)
 
