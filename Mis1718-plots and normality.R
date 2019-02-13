@@ -2,7 +2,7 @@
 library(readr)
 qualdat  <- read.csv("~/Documents/whole traits/Copy of trait1718-4.csv" , na.strings = c("",".","NA")) # on Yongli's computer
 # mywd <- "." # on Lindsay's computer
-qualdat <- read.csv(file.path(mywd, "trait1718.csv"), na.strings = c("",".","NA"))
+qualdat <- read.csv(file.path(mywd, "Copy of trait1718-4.csv"), na.strings = c("",".","NA"))
 #check the data formate
 str(qualdat)
 ###change character of Growth Stage to number N=1,B=2,F=3,P=4
