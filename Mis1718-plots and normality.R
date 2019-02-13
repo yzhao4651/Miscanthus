@@ -81,8 +81,8 @@ plotboxFunc(7,27,qualdat)
 ####qq plot and histogram 
 ####qq plot and histogram 
 qualdat1 <- qualdat[7:27]
-histqq <- function(mydata,na.rm=TRUE){
- pdf(paste("Q-Q normal plot and Histogram", 1 ,".pdf",sep="")) 
+histqq <- function(mydata, outfile = paste("Q-Q normal plot and Histogram", 1 ,".pdf",sep="")){
+ pdf(outfile) 
  par(mar=rep(2,4))
  par(mfrow=c(4,4))
  for(colName in names(mydata)){ 
