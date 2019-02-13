@@ -5,8 +5,8 @@ normadata <- read.csv("traits1718normalited1.csv",na.strings = c("",".","NA"))
 ###check the data format
 str(normadata)
 ###change the format of the several variables 
-normadata$GS <- as.numeric(as.character(normadata$GS))
-normadata$SRD <- as.numeric(as.character(normadata$SRD))
+normadata$GS <- as.numeric(as.character(normadata$GS))   # unneccessary since imported as integer
+normadata$SRD <- as.numeric(as.character(normadata$SRD)) # unneccessary since imported as integer
 normadata$Entry=as.factor(normadata$Entry)
 normadata$Rep=as.factor(normadata$Rep)
 normadata$Year=as.factor(normadata$Year)
