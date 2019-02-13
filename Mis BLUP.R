@@ -29,7 +29,7 @@ ranefvalue <- function(out_start,out_end,y){
   Year = as.factor(y$Year)
   out_nvar=out_end-out_start+1
   out_variable = colnames(y[out_start:out_end])
-  out_beta <- matrix(0, nrow = length(levels(y$Entry)),
+  out_beta <- matrix(NA_real_, nrow = length(levels(y$Entry)),
                      ncol = out_nvar,
                      dimnames = list(levels(y$Entry), 
                                      out_variable))
@@ -55,3 +55,4 @@ ranefvalue <- function(out_start,out_end,y){
 }
 
 ranefvalueall <- ranefvalue(8,28,normadata)
+write.csv(ranefvalueall, file = "ranefvalueall.csv", row.names = T, na = ".")
