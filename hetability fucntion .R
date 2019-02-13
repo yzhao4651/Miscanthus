@@ -87,10 +87,16 @@ write.csv(Herit, file = "~/Documents/whole traits/heritabilityall.csv", row.name
 
 # heritability <- function(out_start,out_end,y, include_year = TRUE){
 # ...
-# if(!include_year || sum(is.na(y[y$Year==2017 | y$Year==2018,][i])) >= 900){
+# if(!include_year || sum(is.na(y[y$Year==2017 | y$Year==2018,][i])) >= 900){ # see addtl edit below
 # ...
 
 ## I think previously we loaded this function into another script using `source`.
 ## Since you have added actual data analysis to this script, in addition to the
 ## function definition(s), you probably do not want to load it with `source` 
 ## any more.
+
+## The code `y$Year==2017 | y$Year==2018` seems unnecessary, since it evaluates
+## to TRUE for every line of the data frame.  Are you instead trying to find
+## traits that were only measured in one year?  If so, maybe do:
+
+# all(is.na(y[y$Year == "2017", i])) || all(is.na(y[y$Year == "2018", i])) 
