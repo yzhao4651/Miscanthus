@@ -9,6 +9,7 @@ BiocManager::install("pcaMethods") ###intall.packages("pcaMethods")
 library(pcaMethods)
 ####import the data
 ranefvalueall<- read.csv("~/Documents/whole traits/ranefvalueall.csv",na.strings = c("",".","NA"))
+ranefvalueall<- read.csv("ranefvalueall.csv",na.strings = c("",".","NA"))
 ###check data format
 str(ranefvalueall)
 ###rename of the column name 
