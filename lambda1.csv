@@ -1,22 +1,22 @@
-Variables ,variables 
+Variables ,lambda
 HD_1,0.3
-FD_1,-0.075
-HD_50.,0.65
-FD_50.,0.175
+FD_1,-0.05
+HD_50.,0.68
+FD_50.,0.2
 Yld_kg,0
-SDW_kg,0.175
-Cml_cm,0.975
-CmD_BI_mm,0.175
-CmD_LI_mm,0.575
-CmN.,0.375
+SDW_kg,0.15
+Cml_cm,0.98
+CmD_BI_mm,0.18
+CmD_LI_mm,0.58
+CmN.,0.38
 CmDW_g,0.15
 Bcirc_cm,0.3
-FNMain,0.225
-FNsmall,0.175
+FNMain,0.23
+FNsmall,0.18
 TFN.,0.15
 Lg,-1
 FD,0.55
 CCirc_cm,0
-SRD,0.4
+SRD,1
 ADD,-1
 GS,1

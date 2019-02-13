@@ -87,6 +87,7 @@ bcplot <-
          label=as.expression(substitute(hat(lambda)[a]==b,list(a=i,b=lambda.hat))),
          cex=cex.text, xpd=T)
     cat("Optimal", paste("lambda",i,sep=""), "is", lambda.hat,"\n")
+    return(lambda.hat)
   }
   if(bivariate) {
     screen(4)
@@ -107,6 +108,8 @@ bcplot <-
     text(lam1+0.05*diff(par('usr')[1:2]), lam2+0.05*diff(par('usr')[3:4]), cex=cex.text,
          label=as.expression(substitute(bold(hat(lambda))*plain(" = (")*a*plain(",")*b*plain(")"),list(a=lam1,b=lam2))))
     cat("Optimal (lambda1,lambda2) is (",lam1,",",lam2,")\n")
+    return(lam1)
+    return(lam2)
   }
   #invisible()
 }
