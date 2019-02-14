@@ -109,7 +109,7 @@ bcplot <-
          label=as.expression(substitute(bold(hat(lambda))*plain(" = (")*a*plain(",")*b*plain(")"),list(a=lam1,b=lam2))))
     cat("Optimal (lambda1,lambda2) is (",lam1,",",lam2,")\n")
     return(lam1)
-    return(lam2)
+    return(lam2) # this would not work, since a function will quit after the first return statement
   }
   #invisible()
 }

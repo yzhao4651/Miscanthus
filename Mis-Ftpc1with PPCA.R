@@ -8,13 +8,13 @@
 BiocManager::install("pcaMethods") ###intall.packages("pcaMethods")
 library(pcaMethods)
 ####import the data
-ranefvalueall<- read.csv("~/Documents/whole traits/ranefvalueall.csv",na.strings = c("",".","NA"))
+#ranefvalueall<- read.csv("~/Documents/whole traits/ranefvalueall.csv",na.strings = c("",".","NA"))
+ranefvalueall<- read.csv("ranefvalueall.csv",na.strings = c("",".","NA"))
 ###check data format
 str(ranefvalueall)
 ###rename of the column name 
 colnames(ranefvalueall)[colnames(ranefvalueall)=="X"] <- "Entry"
-###change 0 value to NA
-ranefvalueall[ranefvalueall== 0] <- NA
+
 ###check data format
 str(ranefvalueall)
 #citation("pcaMethods")
@@ -36,7 +36,8 @@ fprin1 <- cbind(ranefvaluef[1], fprin_comp$x[,1])
 names(fprin1)
 colnames(fprin1)[colnames(fprin1)=="fprin_comp$x[, 1]"] <- "fprin"
 alltraitsblup <- plyr::join_all(list(ranefvalueall,fprin1), by='Entry')
-write.csv(alltraitsblup, file = "~/Documents/whole traits/alltraitsblup.csv",row.names = T)
+#write.csv(alltraitsblup, file = "~/Documents/whole traits/alltraitsblup.csv",row.names = T)
+write.csv(alltraitsblup, file = "alltraitsblup.csv",row.names = T)
 #str(fprin1)
 #write.csv(fprin1, file = "~/Documents/whole traits/fprin1.csv",row.names = T)
 

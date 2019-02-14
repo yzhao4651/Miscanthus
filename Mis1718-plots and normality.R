@@ -2,7 +2,7 @@
 library(readr)
 qualdat  <- read.csv("~/Documents/whole traits/Copy of trait1718-4.csv" , na.strings = c("",".","NA")) # on Yongli's computer
 # mywd <- "." # on Lindsay's computer
-qualdat <- read.csv(file.path(mywd, "trait1718.csv"), na.strings = c("",".","NA"))
+qualdat <- read.csv(file.path(mywd, "Copy of trait1718-4.csv"), na.strings = c("",".","NA"))
 #check the data formate
 str(qualdat)
 ###change character of Growth Stage to number N=1,B=2,F=3,P=4
@@ -81,8 +81,8 @@ plotboxFunc(7,27,qualdat)
 ####qq plot and histogram 
 ####qq plot and histogram 
 qualdat1 <- qualdat[7:27]
-histqq <- function(mydata,na.rm=TRUE){
- pdf(paste("Q-Q normal plot and Histogram", 1 ,".pdf",sep="")) 
+histqq <- function(mydata, outfile = paste("Q-Q normal plot and Histogram", 1 ,".pdf",sep="")){
+ pdf(outfile) 
  par(mar=rep(2,4))
  par(mfrow=c(4,4))
  for(colName in names(mydata)){ 
@@ -103,8 +103,12 @@ par(mar=rep(2,4))
 par(mfrow=c(4,4))
 out_start=7
 out_end=27
+# set up empty data frame to contain lambda values
+lda <- data.frame(row.names = colnames(qualdat)[out_start:out_end],
+                  lambda = rep(NA_real_, out_end - out_start + 1))
 for (i in out_start:out_end){ 
-  bcplot(na.omit(qualdat[i]))
+  trtname <- colnames(qualdat)[i]
+  lda[trtname, 1] <- bcplot(na.omit(qualdat[i])) # put result of bcplot into data frame
 } 
 dev.off()
 
@@ -116,6 +120,9 @@ dev.off()
 ###????question below
 ###I tried to add this lines "return(lambda.hat)", but it does not work, I copied the output into CSV 
 ###and then import it. I does not take me a lot of time, but it is better to return it as a csv or excel. 
+### --> Lindsay's answer
+### bcplot was returning lambda.hat, but you didn't update your script to save that value
+### anywhere.  I have edited it.
 
 ### get the lambdal for the variable need do data transformation 
 ##quesiton: trying to write a loop but it does not work, do you have any idea?
