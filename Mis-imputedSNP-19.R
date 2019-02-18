@@ -1,5 +1,6 @@
 ############step 1 emerge all the phenotype data with the index data
 ############step 1 emerge all the phenotype data 
+
 ### data 1 import the index data with number matched Entry of phenotype and name of SNP 
 Altable <- read.csv("data/Altable19.csv", header = TRUE, na="")
 ###check the data format
@@ -7,7 +8,6 @@ str(Altable)
 
 ###data2 import the  all traits 
 alltraitsblup <- read.csv("data/alltraitsblup.csv", stringsAsFactors = FALSE, header = TRUE,row.names = 1)
-
 ###check the data format 
 str(alltraitsblup)
 ####combine the traits data with indexdata  
@@ -49,16 +49,16 @@ datacomb2 <- cbind(Taxa,datacomb2)
 allblup$Taxa %in% datacomb2$Taxa
 ### submet the SNP data set match with the phenotype with total missing value
 SNP <- datacomb2[match(allblup$Taxa, datacomb2$Taxa,nomatch=0),]
-
 #######omit the missing values 
 SNP <- na.omit(SNP)
 ###change colomn to row for datacomb2
 SNP <- data.frame(SNP,row.names=1)
 
+
 ############step4 select the MAF larger than 1%
 ############step4 select the MAF larger than 1% 
-##
-##Question: I still confused this one also about the MAF. Do you know where has formular for calculating MAF
+##I think i asked this question before, but still get confused, I asked here again.
+##Question: I still confused this one also about the MAF. Do you know where has formular for calculating MAF, 
 
 #####select the MAF with SNP from the last 
 SNPmeans <- colMeans(SNP, na.rm = TRUE)
@@ -85,10 +85,8 @@ Taxa <- rownames(mymatg)
 rownames(mymatg) <- NULL
 mymatg <- cbind(Taxa,mymatg)
 myGDorderg <-mymatg[order(mymatg$Taxa),]
-
 #### write out the phenotype with correct TAXA for GAPIT analysis 
 write.csv(myGDorderg, file = "data/myGDimputedSNP19.csv",row.names = FALSE)
-
 
 
 ##############step6 myY: Phenotype data for GAPIT and FarmCPU 
@@ -126,7 +124,6 @@ write.csv(myQorder, file = "data/myQimputedSNP19.csv",row.names = FALSE)
 load("~/Documents/MiacnathusSNPinformation /161025forGAPIT.RData")
 ### select the GM dataset with the same ID with GD
 #myGDorderg <- read.csv("~/Documents/whole traits/myGDordfrrblup19.csv")
-
 n <- data.frame(myGDorderg,row.names = 1)
 a <- data.frame(t(n))
 myGM2 <- myGM[match(dimnames(a)[[1]],myGM$Name, nomatch=0),]
