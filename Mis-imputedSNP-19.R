@@ -36,7 +36,7 @@ names(myA.EM.Msi)
 myA.EM.Msi$imputed[myA.EM.Msi$imputed > 1] <- 1
 myA.EM.Msi$imputed[myA.EM.Msi$imputed < -1] <- -1
 ####change the data to data.frame
-datacomb2 <- data.frame(myA.EM.Msi[["imputed"]])
+datacomb2 <- data.frame(myA.EM.Msi[["imputed"]] + 1) # convert to be 0, 1, 2 instead of -1, 0, 1
 write.csv(dimnames(datacomb2)[[1]], file = "data/datacomb2.csv", row.names = FALSE)
 #############changing the rowname to the first columne##############################
 datacomb2 <- data.frame(datacomb2)
