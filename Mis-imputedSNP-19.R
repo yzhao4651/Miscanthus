@@ -99,6 +99,7 @@ write.csv(myGDorderg, file = "data/myGDimputedSNP19.csv",row.names = FALSE)
 ##############step6 myY: Phenotype data for GAPIT and FarmCPU 
 ##############step6 myY: Phenotype data for GAPIT and FarmCPU 
 myYorderg <- allblup[match(myGDorderg$Taxa,allblup$Taxa, nomatch=0),]
+myYorderg <- droplevels(myYorderg)
 ######### order the Taxa
 #myYorderg <- na.omit(myYorderg[order(myYorderg$Taxa),])
 str(myYorderg)
