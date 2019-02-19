@@ -95,6 +95,8 @@ myGDorderg <-mymatg[order(mymatg$Taxa),]
 #### write out the phenotype with correct TAXA for GAPIT analysis 
 write.csv(myGDorderg, file = "data/myGDimputedSNP19.csv",row.names = FALSE)
 
+# free up RAM by removing large unused objects
+rm(myA.EM.Msi, mymat, mymatg, SNP)
 
 ##############step6 myY: Phenotype data for GAPIT and FarmCPU 
 ##############step6 myY: Phenotype data for GAPIT and FarmCPU 
