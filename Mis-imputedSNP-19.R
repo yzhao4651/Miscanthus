@@ -48,6 +48,7 @@ datacomb2 <- cbind(Taxa,datacomb2)
 ##############step3 select Genotype data that matched phenotype  
 ### checking Taxa if match in SNP and in phenotype data 
 allblup$Taxa %in% datacomb2$Taxa
+allblup$Taxa[!allblup$Taxa %in% datacomb2$Taxa] # Msa, Mxg, a few Msi not genotyped
 ### submet the SNP data set match with the phenotype with total missing value
 SNP <- datacomb2[match(allblup$Taxa, datacomb2$Taxa,nomatch=0),]
 #######omit the missing values 
