@@ -132,6 +132,7 @@ write.csv(myQorder, file = "data/myQimputedSNP19.csv",row.names = FALSE)
 ########## GM (Genetic mapping dataset)###############################
 #load GM dataset get myGM and myQ
 load("~/Documents/MiacnathusSNPinformation /161025forGAPIT.RData")
+#load("~/DOE Msi study/yield manuscript/phenotypic and GWAS analysis/161025forGAPIT.RData") # on Lindsay's computer
 ### select the GM dataset with the same ID with GD
 #myGDorderg <- read.csv("~/Documents/whole traits/myGDordfrrblup19.csv")
 n <- data.frame(myGDorderg,row.names = 1)
