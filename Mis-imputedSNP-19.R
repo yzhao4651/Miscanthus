@@ -29,6 +29,7 @@ write.csv(allblup, file = "data/alltraits.csv",row.names = T)
 ############download the SNP data that Lindsay gave to me ################### 
 #### import the SNP values with already imputed missing value datacomb2
 load("~/Documents/MiacnathusSNPinformation /160324EMimputedSNP_Msi.RData")
+# load("~/DOE Msi study/yield manuscript/phenotypic and GWAS analysis/160324EMimputedSNP_Msi.RData") # Lindsay's version
 ### this data set in value part, change the value into data.frame
 ##check the name of that value:
 names(myA.EM.Msi)
