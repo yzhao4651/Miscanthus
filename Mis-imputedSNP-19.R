@@ -161,5 +161,6 @@ myGDorder <- mymat[order(mymat$Taxa),]
 str(myGDorder)
 #### write out the phenotype with correct TAXA
 write.csv(myGDorder, file = "data/myGDimputedSNPrrblup19.csv",row.names = FALSE)
-
+# note from Lindsay -- I haven't edited this final section because I am not 
+# totally sure what you are trying to accomplish.
 
