@@ -138,6 +138,12 @@ load("~/Documents/MiacnathusSNPinformation /161025forGAPIT.RData")
 n <- data.frame(myGDorderg,row.names = 1)
 a <- data.frame(t(n))
 myGM2 <- myGM[match(dimnames(a)[[1]],myGM$Name, nomatch=0),]
+# put the SNPs back in order by chromosome and position
+identical(as.character(myGM2$Name), colnames(myGDorderg)[-1])
+snporder <- order(myGM2$Chromosome, myGM2$Position)
+myGM2 <- myGM2[snporder,]
+myGDorderg <- myGDorderg[,c(1, snporder + 1)]
+identical(as.character(myGM2$Name), colnames(myGDorderg)[-1])
 ####output GM data with csv format
 write.csv(myGM2, "data/myGMimputedSNP19.csv",row.names = FALSE)
 
