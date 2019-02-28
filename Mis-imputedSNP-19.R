@@ -28,6 +28,7 @@ write.csv(allblup, file = "data/alltraits.csv",row.names = T)
 ############# step2 Download the genotype data
 ############download the SNP data that Lindsay gave to me ################### 
 #### import the SNP values with already imputed missing value datacomb2
+###trying to load in to GitHub, But this one is big, can not load from here. 
 load("~/Documents/MiacnathusSNPinformation /160324EMimputedSNP_Msi.RData")
 # load("~/DOE Msi study/yield manuscript/phenotypic and GWAS analysis/160324EMimputedSNP_Msi.RData") # Lindsay's version
 ### this data set in value part, change the value into data.frame
