@@ -1,23 +1,13 @@
-###import the data
-normadata <- read.csv("data/traits1718normalited1.csv",na.strings = c("",".","NA"),row.names = 1)
-###check the data format
-str(normadata)
-### this one help me to get which variables has more missing values and help to set up the condition in the
-out_start <- 5
-out_end <- 25
-for (i in out_start:out_end){
-  t <-cbind(colnames(normadata[i]),sum(is.na(normadata[normadata$Year==2017 | normadata$Year==2018,][i])))
-  print(t)
-}
+### this one help me to get which variables has more missing values and help to set up 
+###the condition should larger then 900, or other number 
+### in the function BLUP
+#out_start <- 4
+#out_end <- 25
+#for (i in out_start:out_end){
+#t <-cbind(colnames(normadata[i]),sum(is.na(normadata[normadata$Year==2017 | normadata$Year==2018,][i])))
+#print(t)
+#}
     
-###change the format of the several variables 
-normadata$GS <- as.numeric(as.character(normadata$GS))
-normadata$SRD <- as.numeric(as.character(normadata$SRD))
-normadata$Entry=as.factor(normadata$Entry)
-normadata$Rep=as.factor(normadata$Rep)
-normadata$Year=as.factor(normadata$Year)
-###check the data format
-str(normadata)
 ###function for the ranef of all of traits 
 ranefvalue <- function(out_start,out_end,y){
   require(lme4)
@@ -52,5 +42,4 @@ ranefvalue <- function(out_start,out_end,y){
  return(out_beta)
 }
 
-ranefvalueall <- ranefvalue(5,25,normadata)
-write.csv(ranefvalueall, file = "data/ranefvalueall.csv", row.names = T, na = ".")
+
