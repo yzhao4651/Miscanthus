@@ -1,8 +1,9 @@
 ####function for blup line VS lsmean line
 ### x is the data set used for calculating the lsmean
 ### y is the data set with BLUP of all traits 
+### pdf(paste("Linemean VS LineBlup", 1 ,".pdf",sep="")) 
+### write before the function when using this function 
 bluplinevslsmean <- function(x,y,na.rm=T){
-  pdf(paste("Linemean VS LineBlup", 1 ,".pdf",sep="")) 
   par(mar = c(5,4,1,1))
   par(mfrow=c(3,3))
   for(colName in names(x)){
