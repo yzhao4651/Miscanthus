@@ -1,13 +1,19 @@
-###import the data
-normadata <- read.csv("data/traits1718normalited1.csv",na.strings = c("",".","NA"),row.names = 1)
-###check the data format
-str(normadata)
-###change the format of the several variables 
 ####function heritability to get heritability for each variable 
 ####out_start: the first variable, 
 ####out_end: the last variable
-####heritablity for all of the varialbes  
-heritability <- function(out_start,out_end,y){
+####heritablity for all of the varialbes 
+
+### this one help me to get which variables has more missing values and help to set up 
+###the condition should larger then 900, or other number 
+### in the function Heritability 
+#out_start <- 4
+#out_end <- 25
+#for (i in out_start:out_end){
+  #t <-cbind(colnames(normadata[i]),sum(is.na(normadata[normadata$Year==2017 | normadata$Year==2018,][i])))
+  #print(t)
+#}
+
+Heritability <- function(out_start,out_end,y){
   require(lme4)
   require(Matrix)
   Entry = as.factor(y$Entry)
@@ -39,8 +45,6 @@ heritability <- function(out_start,out_end,y){
  }
   return(outcome)
 }
-Herit <- heritability(4,25,normadata)
-write.csv(Herit, file = "data/heritabilityall.csv", row.names = T, na = ".")
 
 ## Note from Lindsay: Right now you have two identically named functions, with
 ## very similar code.  If you have to fix something in one function, you have 
