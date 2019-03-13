@@ -36,9 +36,11 @@ install.packages("rrBLUP")
 library(rrBLUP)
 pdf(paste("Plots from rrBLUP", 1, ".pdf", sep=""))
 par(mfrow=c(25,2))
-GWAS(myY[1:2], genorrblup, fixed=NULL, K=NULL, n.PC=0,
+gwasResults <- GWAS(myY[1:2], genorrblup, fixed=NULL, K=NULL, n.PC=0,
      min.MAF=0.05, n.core=1, P3D=TRUE, plot=TRUE)
 dev.off()
+
+write.csv(gwasResults, file = "rrBLUP_GWAS_results.csv")
 
 ###tryig to calculate the kinship 
 ###change the first column into row name
