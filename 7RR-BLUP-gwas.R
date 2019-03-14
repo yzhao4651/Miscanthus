@@ -35,7 +35,7 @@ install.packages("rrBLUP")
 ### this one is without Kin matrix, 
 library(rrBLUP)
 pdf(paste("Plots from rrBLUP", 1, ".pdf", sep=""))
-par(mfrow=c(25,2))
+#par(mfrow=c(25,2)) # with 25 rows, the plot may have been to small to see anything
 gwasResults <- GWAS(myY[1:2], genorrblup, fixed=NULL, K=NULL, n.PC=0,
      min.MAF=0.05, n.core=1, P3D=TRUE, plot=TRUE)
 dev.off()
