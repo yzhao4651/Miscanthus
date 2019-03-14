@@ -69,7 +69,7 @@ kmatrix <- A.mat(myGDk,min.MAF=NULL,max.missing=NULL,impute.method="mean",tol=0.
       n.core=1,shrink=FALSE,return.imputed=FALSE)
 ####do GWAS analysis again with Kmatrix
 library(rrBLUP)
-GWAS(myY, genorrblup, fixed=NULL, K=kmatrix, n.PC=0,
+gwasResults2 <- GWAS(myY, genorrblup, fixed=NULL, K=kmatrix, n.PC=0,
      min.MAF=0.05, n.core=1, P3D=TRUE, plot=TRUE)
 
 
