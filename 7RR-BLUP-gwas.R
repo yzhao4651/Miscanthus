@@ -18,7 +18,7 @@ genorrblup <- merge(myGM,myGDtdataframe,by="Name")
 ###change the ID of the name of phenotype to same to the ID of the genotype ( like change "_" to "." )
 head(myY)
 as.character(myY$Taxa)
-myY$Taxa <- gsub("-",".", myY$Taxa)
+myY$Taxa <- gsub("-",".", myY$Taxa) # make.names(mY$Taxa) would also work
 head(myY)
 str(myY)
 ###run rrblup
