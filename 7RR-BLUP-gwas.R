@@ -42,6 +42,25 @@ dev.off()
 
 write.csv(gwasResults, file = "rrBLUP_GWAS_results.csv")
 
+## I don't know why only the first image shows in the PDF.
+## (I also don't understand the question about numbering 1 vs. 2)
+## But here we can redraw the plots from the results.
+## I am using a tiff instead of a PDF because so many points are drawn that the PDF is slow to open.
+## See ?tiff to change the size and resolution
+library(qqman)
+
+tiff("Surv QQ plot.tiff", compression = "lzw")
+qq(10 ^ -gwasResults$Surv)
+dev.off()
+
+tiff("Surv Manhattan plot.tiff", compression = "lzw",
+     width = 1000)
+manhattan(data.frame(SNP = gwasResults$Name,
+                     CHR = gwasResults$Chromosome,
+                     BP = gwasResults$Position,
+                     P = 10 ^ -gwasResults$Surv))
+dev.off()
+
 ###tryig to calculate the kinship 
 ###change the first column into row name
 myGDk <- data.frame(myGD)-1
