@@ -63,7 +63,7 @@ dev.off()
 
 ###tryig to calculate the kinship 
 ###change the first column into row name
-myGDk <- data.frame(myGD)-1
+myGDk <- myGD - 1
 dimnames(myGDk)[[1]]<- gsub("-",".",dimnames(myGDk)[[1]])
 kmatrix <- A.mat(myGDk,min.MAF=NULL,max.missing=NULL,impute.method="mean",tol=0.02,
       n.core=1,shrink=FALSE,return.imputed=FALSE)
