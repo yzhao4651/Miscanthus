@@ -36,13 +36,19 @@ qualdat$GS <- as.numeric(as.character(qualdat$GS))
 qualdat$Entry=as.factor(qualdat$Entry)
 qualdat$Rep=as.factor(qualdat$Rep)
 qualdat$Year=as.factor(qualdat$Year)
-####check the data formate
+
+####elow will for checking outlies and get the new data without outlies
+####elow will for checking outlies and get the new data without outlies
+###below will for checking outlies and get the new data without outlies 
+###elow will for checking outlies and get the new data without outlies
+####check the data format
 str(qualdat)
-###checking missing values 
+###seperate one data set to two data set accodring to the year 
 qualdat.17 <- subset(qualdat,qualdat$Year==2017)
 str(qualdat.17)
 qualdat.18 <- subset(qualdat,qualdat$Year==2018)
 str(qualdat.18)
+###download the packages need for checking and removing the outliers 
 install.packages("dplyr")
 install.packages("tidyr")
 install.packages("ruler")
@@ -51,24 +57,28 @@ library(dplyr)
 library(tidyr)
 library(ggplot2)
 library(ruler)
+####function with Z score
 isnt_out_z <- function(x, thres = 3, na.rm = TRUE) {
   abs(x - mean(x, na.rm = na.rm)) <= thres * sd(x, na.rm = na.rm)
 }
+####function with z-score with Median Absolute Deviation 
 isnt_out_mad <- function(x, thres = 3, na.rm = TRUE) {
   abs(x - median(x, na.rm = na.rm)) <= thres * mad(x, na.rm = na.rm)
 }
+### funtion with tukey method
 isnt_out_tukey <- function(x, k = 1.5, na.rm = TRUE) {
   quar <- quantile(x, probs = c(0.25, 0.75), na.rm = na.rm)
   iqr <- diff(quar)
   (quar[1] - k * iqr <= x) & (x <= quar[2] + k * iqr)
 }
+####combining  three function to one 
 isnt_out_funs <- funs(
   z = isnt_out_z,
   mad = isnt_out_mad,
   tukey = isnt_out_tukey
 )
-###
-###check the outlies for traits in 2017
+###check the outliers for traits in 2017 and also output in one file without outliers
+###check the outliers for traits in 2017 and also output in one file without outliers
 qualdat.17.no.outlies <- qualdat.17 %>%
   unite(col = "group", Entry)
 compute_group_non_outliers <- . %>%
@@ -82,8 +92,8 @@ compute_group_non_outliers <- . %>%
   select_if(Negate(is.numeric))
 qualdat.17.no.outlies %>% compute_group_non_outliers()
 
-###
-###check the outlies for traits in 2018
+###check the outliers for traits in 2018 and also output in one file without outliers
+###check the outliers for traits in 2018 and also output in one file without outliers
 qualdat.18.no.outlies <- qualdat.18 %>%
   unite(col = "group", Entry)
 compute_group_non_outliers <- . %>%
@@ -123,7 +133,7 @@ group_breakers <- breaker_report %>%
   # Expand rows by matching group with its rows
   select(-id) %>%
   left_join(
-    y = data_tbl %>% transmute(var = group, id = 1:n()),
+    y = qualdat.18.no.outlies %>% transmute(var = group, id = 1:n()),
     by = "var"
   ) %>%
   select(pack, rule, var, id, value)
