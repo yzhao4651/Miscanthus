@@ -88,11 +88,11 @@ compute_group_non_outliers <- . %>%
   mutate_if(is.numeric, isnt_out_tukey) %>%
   # Remove unnecessary columns
   select_if(Negate(is.numeric))
-qualdat.17 %>% compute_group_non_outliers()
+outliers.17 <- qualdat.17 %>% compute_group_non_outliers()
 
 ###check the outliers for traits in 2018 and also output in one file without outliers
 ###check the outliers for traits in 2018 and also output in one file without outliers
-qualdat.18 %>% compute_group_non_outliers()
+outliers.18 <- qualdat.18 %>% compute_group_non_outliers()
 
 
 ### Checking which one is the outliner number 
