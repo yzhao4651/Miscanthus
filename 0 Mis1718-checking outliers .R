@@ -9,10 +9,10 @@ source("0 Qualdat import.R")
 str(qualdat)
 
 ###download the packages need for checking and removing the outliers 
-install.packages("dplyr")
-install.packages("tidyr")
-install.packages("ruler")
-install.packages("ggplot2")
+#install.packages("dplyr")
+#install.packages("tidyr")
+#install.packages("ruler")
+#install.packages("ggplot2")
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -100,12 +100,9 @@ outliers %>%
 ## Note from Lindsay --  I am not sufficiently familiar with Tidyverse to 
 ## understand all of the code in this section.
 
-###check the dataset is the same to the origianl one or not 
-all.equal(qualdat.18.no.outlies,qualdat.18)
-
 ### combination both data set together from vertial direction 
 # vertical merge
-install.packages("lessR")
+#install.packages("lessR")
 library(lessR)
 qualdat <- Merge(qualdat.17, qualdat.18)
 ####check the data formate
