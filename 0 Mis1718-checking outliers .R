@@ -1,5 +1,6 @@
 ####import the data####
 source("0 Qualdat import.R")
+qualdat <- read_qualdat("data/trait1718.3.16.19.csv")
 
 ####elow will for checking outlies and get the new data without outlies
 ####elow will for checking outlies and get the new data without outlies

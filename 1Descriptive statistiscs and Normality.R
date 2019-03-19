@@ -1,5 +1,6 @@
 ####import the data####
 source("0 Qualdat import.R")
+qualdat <- read_qualdat("data/Copy of trait1718-8.csv")
 
 ###save this data set 
 save(qualdat,file="qualdat.RData")
