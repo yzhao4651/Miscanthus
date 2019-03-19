@@ -174,17 +174,12 @@ plot_outliers2("CCirc_cm") # Should probably be transformed before looking for o
 plot_outliers2("SRD")      # One clear outlier
 plot_outliers2("ADD")      # No outliers
 
-### combination both data set together from vertial direction 
-# vertical merge
-#install.packages("lessR")
-library(lessR)
-qualdat <- Merge(qualdat.17, qualdat.18)
-####check the data formate
-str(qualdat)
+### Note: once you have determined a way to detect outliers for each trait, you will need
+### to modify qualdat before saving it.  Your previous code did not modify anything.
+
+# dummy example code
+qualdat$FD_50.[is_an_outlier(qualdat$FD_50.)] <- NA
+
 ###save this data set 
 save(qualdat,file="qualdat.RData")
-####check the data formate
-str(qualdat)
-
-
 
