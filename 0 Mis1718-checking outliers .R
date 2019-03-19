@@ -136,6 +136,12 @@ outliers %>%
   count(pack, rule) %>%
   filter(pack == "Entry") %>%
   print(n = Inf)
+
+## Note from Lindsay -- the last command seems to indicate that there were no
+## outliers, so the code below is unnecessary.
+## Additionally, I am not sufficiently familiar with Tidyverse to understand
+## all of the code in this section.
+
 ###check the dataset is the same to the origianl one or not 
 all.equal(qualdat.18.no.outlies,qualdat.18)
 
