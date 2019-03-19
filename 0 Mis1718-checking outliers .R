@@ -100,10 +100,10 @@ qualdat.18 %>% compute_group_non_outliers()
 group_packs_isnt_out <- group_packs(
   # Non-outliers based on grouping
   group = compute_group_non_outliers,
-  .group_vars = "group"
+  .group_vars = "Entry"
 )
 # Don't remove obeyers to compute total number of applied rules
-full_report <- qualdat.18.no.outlies %>%
+full_report <- qualdat.18 %>%
   expose(group_packs_isnt_out,
          .remove_obeyers = FALSE) %>%
   get_report()
@@ -116,7 +116,7 @@ breaker_report <- full_report %>%
 
 group_breakers <- breaker_report %>%
   # Filter group packs
-  filter(pack == "group") %>%
+  filter(pack == "Entry") %>%
   # Expand rows by matching group with its rows
   select(-id) %>%
   left_join(
@@ -126,7 +126,7 @@ group_breakers <- breaker_report %>%
   select(pack, rule, var, id, value)
 
 outliers <- bind_rows(
-  breaker_report %>% filter(pack != "group"),
+  breaker_report %>% filter(pack != "Entry"),
   group_breakers
 ) %>%
   select(pack, rule, id)
@@ -134,7 +134,7 @@ outliers <- bind_rows(
 # Not all group based definitions resulted with outliers
 outliers %>%
   count(pack, rule) %>%
-  filter(pack == "group") %>%
+  filter(pack == "Entry") %>%
   print(n = Inf)
 ###check the dataset is the same to the origianl one or not 
 all.equal(qualdat.18.no.outlies,qualdat.18)
@@ -143,8 +143,7 @@ all.equal(qualdat.18.no.outlies,qualdat.18)
 # vertical merge
 install.packages("lessR")
 library(lessR)
-qualdat <- Merge(qualdat.18.no.outlies, qualdat.18.no.outlies)
-colnames(qualdat)[colnames(qualdat)=="group"] <- "Entry"
+qualdat <- Merge(qualdat.18, qualdat.18)
 ####check the data formate
 str(qualdat)
 ###save this data set 
