@@ -24,8 +24,8 @@ read_qualdat <- function(file){
   
   #### change several variables numeric format
   # Note from Lindsay -- converting from integer to float is unnecessary, but should not cause problems
-  indx <- sapply(qualdat[,c(16:17,19:22)], is.integer)
-  qualdat[,c(16:17,19:22)][indx] <- lapply(qualdat[,c(16:17,19:22)][indx], function(x) as.numeric(as.character(x)))
+  indx <- sapply(qualdat[,c(9:11,16:17,19:22)], is.integer)
+  qualdat[,c(9:11,16:17,19:22)][indx] <- lapply(qualdat[,c(9:11,16:17,19:22)][indx], function(x) as.numeric(as.character(x)))
   ###change several variables format
   qualdat$GS <- as.numeric(as.character(qualdat$GS))
   qualdat$Entry=as.factor(qualdat$Entry)
