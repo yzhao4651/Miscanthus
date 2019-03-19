@@ -62,11 +62,11 @@ my_outliers[11:20,]
 ### Checking which one is the outliner number 
 group_packs_isnt_out <- group_packs(
   # Non-outliers based on grouping
-  Entry = compute_group_non_outliers,
-  .group_vars = "Entry"
+  Entry.Year = compute_group_non_outliers,
+  .group_vars = "Entry.Year"
 )
 # Don't remove obeyers to compute total number of applied rules
-full_report <- qualdat.18 %>%
+full_report <- qualdatEY %>%
   expose(group_packs_isnt_out,
          .remove_obeyers = FALSE) %>%
   get_report()
@@ -79,25 +79,25 @@ breaker_report <- full_report %>%
 
 group_breakers <- breaker_report %>%
   # Filter group packs
-  filter(pack == "Entry") %>%
+  filter(pack == "Entry.Year") %>%
   # Expand rows by matching group with its rows
   select(-id) %>%
   left_join(
-    y = qualdat.18 %>% transmute(var = Entry, id = 1:n()),
+    y = qualdatEY %>% transmute(var = Entry.Year, id = 1:n()),
     by = "var"
   ) %>%
   select(pack, rule, var, id, value)
 
 outliers <- bind_rows(
-  breaker_report %>% filter(pack != "Entry"),
+  breaker_report %>% filter(pack != "Entry.Year"),
   group_breakers
 ) %>%
   select(pack, rule, id)
 
 # Not all group based definitions resulted with outliers
-outliers %>%
+my_outliers <- outliers %>%
   count(pack, rule) %>%
-  filter(pack == "Entry") %>%
+  filter(pack == "Entry.Year") %>%
   print(n = Inf)
 
 ## Note from Lindsay --  I am not sufficiently familiar with Tidyverse to 
