@@ -120,7 +120,7 @@ group_breakers <- breaker_report %>%
   # Expand rows by matching group with its rows
   select(-id) %>%
   left_join(
-    y = qualdat.18.no.outlies %>% transmute(var = group, id = 1:n()),
+    y = qualdat.18 %>% transmute(var = Entry, id = 1:n()),
     by = "var"
   ) %>%
   select(pack, rule, var, id, value)
