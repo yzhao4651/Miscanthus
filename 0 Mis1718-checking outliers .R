@@ -99,7 +99,7 @@ outliers.18 <- qualdat.18 %>% compute_group_non_outliers()
 ### Checking which one is the outliner number 
 group_packs_isnt_out <- group_packs(
   # Non-outliers based on grouping
-  group = compute_group_non_outliers,
+  Entry = compute_group_non_outliers,
   .group_vars = "Entry"
 )
 # Don't remove obeyers to compute total number of applied rules
@@ -137,10 +137,8 @@ outliers %>%
   filter(pack == "Entry") %>%
   print(n = Inf)
 
-## Note from Lindsay -- the last command seems to indicate that there were no
-## outliers, so the code below is unnecessary.
-## Additionally, I am not sufficiently familiar with Tidyverse to understand
-## all of the code in this section.
+## Note from Lindsay --  I am not sufficiently familiar with Tidyverse to 
+## understand all of the code in this section.
 
 ###check the dataset is the same to the origianl one or not 
 all.equal(qualdat.18.no.outlies,qualdat.18)
