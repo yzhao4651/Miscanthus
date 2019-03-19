@@ -79,25 +79,20 @@ isnt_out_funs <- funs(
 )
 ###check the outliers for traits in 2017 and also output in one file without outliers
 ###check the outliers for traits in 2017 and also output in one file without outliers
-qualdat.17.no.outlies <- qualdat.17 %>%
-  unite(col = "group", Entry)
 compute_group_non_outliers <- . %>%
   # Compute per group mean values of columns
-  group_by(group) %>%
+  group_by(Entry) %>%
   summarise_if(is.numeric, mean) %>%
   ungroup() %>%
   # Detect outliers among groups
   mutate_if(is.numeric, isnt_out_tukey) %>%
   # Remove unnecessary columns
   select_if(Negate(is.numeric))
-qualdat.17.no.outlies %>% compute_group_non_outliers()
+qualdat.17 %>% compute_group_non_outliers()
 
 ###check the outliers for traits in 2018 and also output in one file without outliers
 ###check the outliers for traits in 2018 and also output in one file without outliers
-qualdat.18.no.outlies <- qualdat.18 %>%
-  unite(col = "group", Entry)
-
-qualdat.18.no.outlies %>% compute_group_non_outliers()
+qualdat.18 %>% compute_group_non_outliers()
 
 
 ### Checking which one is the outliner number 
