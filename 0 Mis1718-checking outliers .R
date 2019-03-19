@@ -143,7 +143,7 @@ all.equal(qualdat.18.no.outlies,qualdat.18)
 # vertical merge
 install.packages("lessR")
 library(lessR)
-qualdat <- Merge(qualdat.18, qualdat.18)
+qualdat <- Merge(qualdat.17, qualdat.18)
 ####check the data formate
 str(qualdat)
 ###save this data set 
