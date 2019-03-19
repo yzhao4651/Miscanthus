@@ -1,41 +1,6 @@
 ####import the data####
-library(readr)
-##qualdat  <- read.csv("~/Documents/whole traits/trait1718.3.16.19.csv" , na.strings = c("",".","NA"))
-qualdat  <- read.csv("data/trait1718.3.16.19.csv" , na.strings = c("",".","NA")) # on Yongli's computer
-# mywd <- "." # on Lindsay's computer
-#qualdat <- read.csv(file.path(mywd, "Copy of trait1718-4.csv"), na.strings = c("",".","NA"))
-#check the data formate
-str(qualdat)
-###change character of Growth Stage to number N=1,B=2,F=3,P=4
-levels(qualdat$GS)[levels(qualdat$GS)=="N"] <- "1"
-levels(qualdat$GS)[levels(qualdat$GS)=="n"] <- "1"
-levels(qualdat$GS)[levels(qualdat$GS)=="B"] <- "2"
-levels(qualdat$GS)[levels(qualdat$GS)=="b"] <- "2"
-levels(qualdat$GS)[levels(qualdat$GS)=="F"] <- "3"
-levels(qualdat$GS)[levels(qualdat$GS)=="p"] <- "4"
-levels(qualdat$GS)[levels(qualdat$GS)=="P"] <- "4"
-####calculate days 
-qualdat$SRD <- as.numeric(as.Date(qualdat$SRD,format = "%m/%d/%Y")-as.Date(qualdat$datest2,format = "%m/%d/%Y"))
-qualdat$ADD <-as.numeric(as.Date(qualdat$ADD,format = "%m/%d/%Y")-as.Date(qualdat$datest2,format = "%m/%d/%Y"))
-qualdat$HD_1 <- as.numeric(as.Date(qualdat$HD_1,format = "%m/%d/%Y")-as.Date(qualdat$datest1,format = "%m/%d/%Y"))
-qualdat$FD_1 <-as.numeric(as.Date(qualdat$FD_1,format = "%m/%d/%Y")-as.Date(qualdat$datest1,format = "%m/%d/%Y"))
-qualdat$HD_50. <- as.numeric(as.Date(qualdat$HD_50.,format = "%m/%d/%Y")-as.Date(qualdat$datest1,format = "%m/%d/%Y"))
-qualdat$FD_50. <- as.numeric(as.Date(qualdat$FD_50.,format = "%m/%d/%Y")-as.Date(qualdat$datest1,format = "%m/%d/%Y"))
-####check the data formate
-str(qualdat)
-###select the data need for analysis 
-qualdat <- qualdat[,c(3,5:6,4,7:27)]
-####check the data formate
-str(qualdat)
-#### change several variables numeric format
-# Note from Lindsay -- converting from integer to float is unnecessary, but should not cause problems
-indx <- sapply(qualdat[,c(16:17,19:22)], is.integer)
-qualdat[,c(16:17,19:22)][indx] <- lapply(qualdat[,c(16:17,19:22)][indx], function(x) as.numeric(as.character(x)))
-###change several variables format
-qualdat$GS <- as.numeric(as.character(qualdat$GS))
-qualdat$Entry=as.factor(qualdat$Entry)
-qualdat$Rep=as.factor(qualdat$Rep)
-qualdat$Year=as.factor(qualdat$Year)
+source("0 Qualdat import.R")
+qualdat <- read_qualdat("data/trait1718.3.16.19.csv")
 
 ####elow will for checking outlies and get the new data without outlies
 ####elow will for checking outlies and get the new data without outlies
@@ -43,16 +8,12 @@ qualdat$Year=as.factor(qualdat$Year)
 ###elow will for checking outlies and get the new data without outlies
 ####check the data format
 str(qualdat)
-###seperate one data set to two data set accodring to the year 
-qualdat.17 <- subset(qualdat,qualdat$Year==2017)
-str(qualdat.17)
-qualdat.18 <- subset(qualdat,qualdat$Year==2018)
-str(qualdat.18)
+
 ###download the packages need for checking and removing the outliers 
-install.packages("dplyr")
-install.packages("tidyr")
-install.packages("ruler")
-install.packages("ggplot2")
+#install.packages("dplyr")
+#install.packages("tidyr")
+#install.packages("ruler")
+#install.packages("ggplot2")
 library(dplyr)
 library(tidyr)
 library(ggplot2)
@@ -77,46 +38,36 @@ isnt_out_funs <- funs(
   mad = isnt_out_mad,
   tukey = isnt_out_tukey
 )
-###check the outliers for traits in 2017 and also output in one file without outliers
-###check the outliers for traits in 2017 and also output in one file without outliers
-qualdat.17.no.outlies <- qualdat.17 %>%
-  unite(col = "group", Entry)
+
+### make a grouping based on Entry and Year, since we want to treat years separately
+qualdatEY <- unite(qualdat, col = "Entry.Year", Entry, Year)
+str(qualdatEY)
+qualdatEY$Entry.Year
+
+###check the outliers for traits both years
 compute_group_non_outliers <- . %>%
   # Compute per group mean values of columns
-  group_by(group) %>%
-  summarise_if(is.numeric, mean) %>%
+  group_by(Entry.Year) %>%
+  summarise_if(is.numeric, mean, na.rm = TRUE) %>%
   ungroup() %>%
   # Detect outliers among groups
   mutate_if(is.numeric, isnt_out_tukey) %>%
   # Remove unnecessary columns
   select_if(Negate(is.numeric))
-qualdat.17.no.outlies %>% compute_group_non_outliers()
 
-###check the outliers for traits in 2018 and also output in one file without outliers
-###check the outliers for traits in 2018 and also output in one file without outliers
-qualdat.18.no.outlies <- qualdat.18 %>%
-  unite(col = "group", Entry)
-compute_group_non_outliers <- . %>%
-  # Compute per group mean values of columns
-  group_by(group) %>%
-  summarise_if(is.numeric, mean) %>%
-  ungroup() %>%
-  # Detect outliers among groups
-  mutate_if(is.numeric, isnt_out_tukey) %>%
-  # Remove unnecessary columns
-  select_if(Negate(is.numeric))
-qualdat.18.no.outlies %>% compute_group_non_outliers()
-
+my_outliers <- qualdatEY %>% compute_group_non_outliers()
+my_outliers
+my_outliers[11:20,]
 
 ### Checking which one is the outliner number 
 ### Checking which one is the outliner number 
 group_packs_isnt_out <- group_packs(
   # Non-outliers based on grouping
-  group = compute_group_non_outliers,
-  .group_vars = "group"
+  Entry.Year = compute_group_non_outliers,
+  .group_vars = "Entry.Year"
 )
 # Don't remove obeyers to compute total number of applied rules
-full_report <- qualdat.18.no.outlies %>%
+full_report <- qualdatEY %>%
   expose(group_packs_isnt_out,
          .remove_obeyers = FALSE) %>%
   get_report()
@@ -129,41 +80,107 @@ breaker_report <- full_report %>%
 
 group_breakers <- breaker_report %>%
   # Filter group packs
-  filter(pack == "group") %>%
+  filter(pack == "Entry.Year") %>%
   # Expand rows by matching group with its rows
   select(-id) %>%
   left_join(
-    y = qualdat.18.no.outlies %>% transmute(var = group, id = 1:n()),
+    y = qualdatEY %>% transmute(var = Entry.Year, id = 1:n()),
     by = "var"
   ) %>%
   select(pack, rule, var, id, value)
 
 outliers <- bind_rows(
-  breaker_report %>% filter(pack != "group"),
+  breaker_report %>% filter(pack != "Entry.Year"),
   group_breakers
 ) %>%
   select(pack, rule, id)
 
 # Not all group based definitions resulted with outliers
-outliers %>%
+outliers_count <- outliers %>%
   count(pack, rule) %>%
-  filter(pack == "group") %>%
+  filter(pack == "Entry.Year") %>%
   print(n = Inf)
-###check the dataset is the same to the origianl one or not 
-all.equal(qualdat.18.no.outlies,qualdat.18)
 
-### combination both data set together from vertial direction 
-# vertical merge
-install.packages("lessR")
-library(lessR)
-qualdat <- Merge(qualdat.18.no.outlies, qualdat.18.no.outlies)
-colnames(qualdat)[colnames(qualdat)=="group"] <- "Entry"
-####check the data formate
-str(qualdat)
+## Note from Lindsay --  I am not sufficiently familiar with Tidyverse to 
+## understand all of the code in this section.
+
+### Visualize outliers using grouping method
+plot_outliers <- function(trait, .qualdat = qualdat, .outliers = outliers){
+  # get rows that are outliers for this trait
+  outrows <- .outliers$id[.outliers$rule == trait]
+  mycol <- rep("black", nrow(.qualdat))
+  mycol[outrows] <- "red"
+  mypch <- ifelse(.qualdat$Year == 2017, 1, 0)
+  plot(.qualdat[[trait]], col = mycol, pch = mypch, ylab = trait,
+       xlab = "Row of qualdat")
+}
+
+plot_outliers("HD_1")
+plot_outliers("FD_1")
+plot_outliers("HD_50.")
+plot_outliers("FD_50.")
+plot_outliers("FNMain")
+plot_outliers("FNsmall")
+plot_outliers("CmDW_g")
+plot_outliers("TFN.")
+plot_outliers("Cml_cm")
+plot_outliers("CmD_BI_mm")
+plot_outliers("CmD_LI_mm")
+plot_outliers("CmN.")
+plot_outliers("Bcirc_cm")
+plot_outliers("Yld_kg")
+plot_outliers("SDW_kg")
+plot_outliers("Lg")
+plot_outliers("GS")
+plot_outliers("FD")
+plot_outliers("CCirc_cm")
+plot_outliers("SRD")
+plot_outliers("ADD")
+
+## Note from Lindsay: There are clearly some outliers for some traits, but I
+## am not sure that this grouping method is the best for every trait, probably
+## due to the small replication within Entry*Year.
+
+### Visualize outliers without grouping
+
+plot_outliers2 <- function(trait, .qualdat = qualdat){
+  outliers <- !isnt_out_tukey(.qualdat[[trait]])
+  outliers[is.na(outliers)] <- FALSE
+  mycol <- rep("black", nrow(.qualdat))
+  mycol[outliers] <- "red"
+  mypch <- mypch <- ifelse(.qualdat$Year == 2017, 1, 0)
+  plot(.qualdat[[trait]], col = mycol, pch = mypch, ylab = trait,
+       xlab = "Row of qualdat")
+}
+
+plot_outliers2("HD_1")     # Some clear outliers identified
+plot_outliers2("FD_1")     # No outliers
+plot_outliers2("HD_50.")   # Some clear outliers
+plot_outliers2("FD_50.")   # No outliers
+plot_outliers2("FNMain")   # Should probably be transformed before looking for outliers
+plot_outliers2("FNsmall")  # Should probably be transformed before looking for outliers
+plot_outliers2("CmDW_g")   # Should probably be transformed before looking for outliers
+plot_outliers2("TFN.")     # Should probably be transformed before looking for outliers
+plot_outliers2("Cml_cm")   # Some outliers identified, but don't seem far outside of distribution
+plot_outliers2("CmD_BI_mm")# Some outliers identified, but don't seem far outside of distribution
+plot_outliers2("CmD_LI_mm")# Some outliers identified, but don't seem far outside of distribution
+plot_outliers2("CmN.")     # Some outliers identified, but don't seem far outside of distribution
+plot_outliers2("Bcirc_cm") # Should probably be transformed before looking for outliers
+plot_outliers2("Yld_kg")   # Should probably be transformed before looking for outliers
+plot_outliers2("SDW_kg")   # No outliers
+plot_outliers2("Lg")       # Too qualitative to detect outliers
+plot_outliers2("GS")       # Too qualitative to detect outliers
+plot_outliers2("FD")       # No outliers
+plot_outliers2("CCirc_cm") # Should probably be transformed before looking for outliers
+plot_outliers2("SRD")      # One clear outlier
+plot_outliers2("ADD")      # No outliers
+
+### Note: once you have determined a way to detect outliers for each trait, you will need
+### to modify qualdat before saving it.  Your previous code did not modify anything.
+
+# dummy example code
+qualdat$FD_50.[is_an_outlier(qualdat$FD_50.)] <- NA
+
 ###save this data set 
 save(qualdat,file="qualdat.RData")
-####check the data formate
-str(qualdat)
-
-
 
