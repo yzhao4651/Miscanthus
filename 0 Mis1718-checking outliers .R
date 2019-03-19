@@ -96,15 +96,7 @@ qualdat.17.no.outlies %>% compute_group_non_outliers()
 ###check the outliers for traits in 2018 and also output in one file without outliers
 qualdat.18.no.outlies <- qualdat.18 %>%
   unite(col = "group", Entry)
-compute_group_non_outliers <- . %>%
-  # Compute per group mean values of columns
-  group_by(group) %>%
-  summarise_if(is.numeric, mean) %>%
-  ungroup() %>%
-  # Detect outliers among groups
-  mutate_if(is.numeric, isnt_out_tukey) %>%
-  # Remove unnecessary columns
-  select_if(Negate(is.numeric))
+
 qualdat.18.no.outlies %>% compute_group_non_outliers()
 
 
