@@ -37,23 +37,26 @@ isnt_out_funs <- funs(
   mad = isnt_out_mad,
   tukey = isnt_out_tukey
 )
-###check the outliers for traits in 2017 and also output in one file without outliers
-###check the outliers for traits in 2017 and also output in one file without outliers
+
+### make a grouping based on Entry and Year, since we want to treat years separately
+qualdatEY <- unite(qualdat, col = "Entry.Year", Entry, Year)
+str(qualdatEY)
+qualdatEY$Entry.Year
+
+###check the outliers for traits both years
 compute_group_non_outliers <- . %>%
   # Compute per group mean values of columns
-  group_by(Entry) %>%
-  summarise_if(is.numeric, mean) %>%
+  group_by(Entry.Year) %>%
+  summarise_if(is.numeric, mean, na.rm = TRUE) %>%
   ungroup() %>%
   # Detect outliers among groups
   mutate_if(is.numeric, isnt_out_tukey) %>%
   # Remove unnecessary columns
   select_if(Negate(is.numeric))
-outliers.17 <- qualdat.17 %>% compute_group_non_outliers()
 
-###check the outliers for traits in 2018 and also output in one file without outliers
-###check the outliers for traits in 2018 and also output in one file without outliers
-outliers.18 <- qualdat.18 %>% compute_group_non_outliers()
-
+my_outliers <- qualdatEY %>% compute_group_non_outliers()
+my_outliers
+my_outliers[11:20,]
 
 ### Checking which one is the outliner number 
 ### Checking which one is the outliner number 
