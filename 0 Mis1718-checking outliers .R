@@ -95,13 +95,84 @@ outliers <- bind_rows(
   select(pack, rule, id)
 
 # Not all group based definitions resulted with outliers
-my_outliers <- outliers %>%
+outliers_count <- outliers %>%
   count(pack, rule) %>%
   filter(pack == "Entry.Year") %>%
   print(n = Inf)
 
 ## Note from Lindsay --  I am not sufficiently familiar with Tidyverse to 
 ## understand all of the code in this section.
+
+### Visualize outliers using grouping method
+plot_outliers <- function(trait, .qualdat = qualdat, .outliers = outliers){
+  # get rows that are outliers for this trait
+  outrows <- .outliers$id[.outliers$rule == trait]
+  mycol <- rep("black", nrow(.qualdat))
+  mycol[outrows] <- "red"
+  mypch <- ifelse(.qualdat$Year == 2017, 1, 0)
+  plot(.qualdat[[trait]], col = mycol, pch = mypch, ylab = trait,
+       xlab = "Row of qualdat")
+}
+
+plot_outliers("HD_1")
+plot_outliers("FD_1")
+plot_outliers("HD_50.")
+plot_outliers("FD_50.")
+plot_outliers("FNMain")
+plot_outliers("FNsmall")
+plot_outliers("CmDW_g")
+plot_outliers("TFN.")
+plot_outliers("Cml_cm")
+plot_outliers("CmD_BI_mm")
+plot_outliers("CmD_LI_mm")
+plot_outliers("CmN.")
+plot_outliers("Bcirc_cm")
+plot_outliers("Yld_kg")
+plot_outliers("SDW_kg")
+plot_outliers("Lg")
+plot_outliers("GS")
+plot_outliers("FD")
+plot_outliers("CCirc_cm")
+plot_outliers("SRD")
+plot_outliers("ADD")
+
+## Note from Lindsay: There are clearly some outliers for some traits, but I
+## am not sure that this grouping method is the best for every trait, probably
+## due to the small replication within Entry*Year.
+
+### Visualize outliers without grouping
+
+plot_outliers2 <- function(trait, .qualdat = qualdat){
+  outliers <- !isnt_out_tukey(.qualdat[[trait]])
+  outliers[is.na(outliers)] <- FALSE
+  mycol <- rep("black", nrow(.qualdat))
+  mycol[outliers] <- "red"
+  mypch <- mypch <- ifelse(.qualdat$Year == 2017, 1, 0)
+  plot(.qualdat[[trait]], col = mycol, pch = mypch, ylab = trait,
+       xlab = "Row of qualdat")
+}
+
+plot_outliers2("HD_1")     # Some clear outliers identified
+plot_outliers2("FD_1")     # No outliers
+plot_outliers2("HD_50.")   # Some clear outliers
+plot_outliers2("FD_50.")   # No outliers
+plot_outliers2("FNMain")   # Should probably be transformed before looking for outliers
+plot_outliers2("FNsmall")  # Should probably be transformed before looking for outliers
+plot_outliers2("CmDW_g")   # Should probably be transformed before looking for outliers
+plot_outliers2("TFN.")     # Should probably be transformed before looking for outliers
+plot_outliers2("Cml_cm")   # Some outliers identified, but don't seem far outside of distribution
+plot_outliers2("CmD_BI_mm")# Some outliers identified, but don't seem far outside of distribution
+plot_outliers2("CmD_LI_mm")# Some outliers identified, but don't seem far outside of distribution
+plot_outliers2("CmN.")     # Some outliers identified, but don't seem far outside of distribution
+plot_outliers2("Bcirc_cm") # Should probably be transformed before looking for outliers
+plot_outliers2("Yld_kg")   # Should probably be transformed before looking for outliers
+plot_outliers2("SDW_kg")   # No outliers
+plot_outliers2("Lg")       # Too qualitative to detect outliers
+plot_outliers2("GS")       # Too qualitative to detect outliers
+plot_outliers2("FD")       # No outliers
+plot_outliers2("CCirc_cm") # Should probably be transformed before looking for outliers
+plot_outliers2("SRD")      # One clear outlier
+plot_outliers2("ADD")      # No outliers
 
 ### combination both data set together from vertial direction 
 # vertical merge
