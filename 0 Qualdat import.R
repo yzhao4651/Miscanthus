@@ -41,18 +41,19 @@ read_qualdat <- function(file){
   ###checking the format of the data
   #str(qualdat)
   ###select the data need for analysis 
-  qualdat <- qualdat[,c(3,5:6,4,7:27,31:42)]
+  qualdat <- qualdat[,c(2:27,31:42)]
   ###checking the format of the data
-  #str(qualdat)
-  #### change several variables numeric format
-  # Note from Lindsay -- converting from integer to float is unnecessary, but should not cause problems
-  indx <- sapply(qualdat[,c(9:11,16:17,19:22)], is.integer)
-  qualdat[,c(9:11,16:17,19:22)][indx] <- lapply(qualdat[,c(9:11,16:17,19:22)][indx], function(x) as.numeric(as.character(x)))
+ #str(qualdat)
   ###change several variables format
   qualdat$GS <- as.numeric(as.character(qualdat$GS))
   qualdat$Entry=as.factor(qualdat$Entry)
   qualdat$Rep=as.factor(qualdat$Rep)
   qualdat$Year=as.factor(qualdat$Year)
+  #str(qualdat)
+  #### change several variables numeric format
+  # Note from Lindsay -- converting from integer to float is unnecessary, but should not cause problems
+  indx <- sapply(qualdat[,c(5,14,19,21:24)], is.integer)
+  qualdat[,c(5,14,19,21:24)][indx] <- lapply(qualdat[,c(5,14,19,21:24)][indx], function(x) as.numeric(as.character(x)))
   ###check the data format 
   #str(qualdat)
   return(qualdat)
