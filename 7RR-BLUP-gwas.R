@@ -52,7 +52,7 @@ for (i in out_start:out_end){
   jpeg(file=mypath) 
   require(qqman)
   par(mar = c(5,4,1,1))
-  qq(gwasResults2[[i]])
+  qq(10 ^ -gwasResults2[[i]])
   dev.off()
 }
 ###this one for Manhattan plots
