@@ -1,0 +1,12 @@
+Model,Value
+Trait,c("118", "2")
+group.by ,10
+Trait name ,GLM.GS
+Kinship,146:147
+Z Matrix,c(119, 119)
+Covariate,c(118, 9)
+SNP.P3D,TRUE
+Clustering algorithms,average
+Group kinship,Mean
+group.from ,1
+group.to ,1
