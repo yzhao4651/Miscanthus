@@ -1,0 +1,12 @@
+Model,Value
+Trait,c("110", "2")
+group.by ,10
+Trait name ,MLM.FNsmall
+Kinship,146:147
+Z Matrix,c(111, 111)
+Covariate,c(110, 9)
+SNP.P3D,TRUE
+Clustering algorithms,average
+Group kinship,Mean
+group.from ,146
+group.to ,146
