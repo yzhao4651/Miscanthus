@@ -5,6 +5,7 @@
 #### import the SNP values with already imputed missing value datacomb2
 ###trying to load in to GitHub, But this one is big, can not load from here. 
 load("~/Documents/MiacnathusSNPinformation /160324EMimputedSNP_Msi.RData")
+#load("C:/Users/Admin/Desktop/New folder/miscanthus study-1/Misthcanthus CCA data analysis/160324EMimputedSNP_Msi.RData")
 # load("~/DOE Msi study/yield manuscript/phenotypic and GWAS analysis/160324EMimputedSNP_Msi.RData") # Lindsay's version
 ### this data set in value part, change the value into data.frame
 ##check the name of that value:
@@ -21,14 +22,14 @@ str(datacomb2tran)
 rn <- rownames(datacomb2tran)
 rownames(datacomb2tran) <- NULL
 datacomb2tran <- cbind(rn,datacomb2tran)
-###check 
+###check the data
 datacomb2tran[,1]
 str(datacomb2tran)
 
 #### step2: import the allSNP including genotype.for.code.1 to merge with the all SNP from above step  
 #### step2: import the allSNP including genotype.for.code.1 to merge with the all SNP from above step 
 ###import the all marker information ( this one already get the alleles)
-install.packages("readxl")
+#install.packages("readxl")
 library(readxl)
 allsnp2 <- data.frame(read_excel("data/allsnp.xlsx"))
 ###change the data all snp to data frame
@@ -51,7 +52,7 @@ datacomb2tranmerge2 <- datacomb2tranmerge[,c(1,5,9:582)]
 ###check the data again
 str(datacomb2tranmerge2)
 ###  writting out the data set datacomb3tranmerge3 
-write.csv(datacomb2tranmerge2, file = "data/datacomb2tranmerge2.csv", row.names = FALSE, na = "")
+write.csv(datacomb2tranmerge2, file = "data/datacomb2tranmerge2.csv", row.names = FALSE, na = "NA")
 
 ###step 3 load GM data sets to select matched Genotype from step 2
 ###step 3 load GM data sets to select matched Genotype from step 2
@@ -62,6 +63,9 @@ load("~/Documents/161025forGAPIT.RData")
 #myGM$Name1 <- str_replace_all(myGM$Name, ".", "-")
 #myGM$Name <- gsub("\\.", "-", myGM$Name)
 #str(myGM)
+###importing the myGM from data set
+myGM <- read.csv("data/myGM.csv",row.names=1)
+str(myGM)
 myGM$Name %in% datacomb2tranmerge2$rn
 ###get all the match with the datacomb2tranmerge
 myGM2 <-myGM[match(datacomb2tranmerge2$rn,myGM$Name, nomatch=0),] 
@@ -75,12 +79,13 @@ datacomb2tranmerge4 <- datacomb2tranmerge4[snporder,]
 ###check 
 #str(datacomb2tranmerge3)
 ###write out the data, so far, we get all of the SNPs with all of the individuals with Chromosome, position and allele
-write.csv(datacomb2tranmerge4, file = "data/datacomb2tranmerge4.csv", row.names = FALSE, na = "")
+write.csv(datacomb2tranmerge4, file = "data/datacomb2tranmerge4.csv", row.names = FALSE, na = "NA")
 
 ###step 4 import the myGM dataset for the GAPIT to select matched Genotype from step 3
 ###step 4 import the myGM dataset for the GAPIT to select matched Genotype from step 3
 ####import the GM data set for GAPIT to select the genotype dataset
 myGMmrMLMM <- read.csv("data/myGMimputedSNP19.csv")
+str(myGMmrMLMM)
 ###check they both if get the same name
 myGMmrMLMM$Name %in% datacomb2tranmerge4$rn
 ### subset the matched Geotype 
@@ -109,24 +114,26 @@ str(subgenotran)
 myYmrMlMM$Taxa %in% dimnames(subgenotran)[[1]]
 ### select the the individuals matched the individual in phenotype dataset 
 subgenotranonly<- subgenotran[match(myYmrMlMM$Taxa,dimnames(subgenotran)[[1]],nomatch=0),]
-###transform the data back again with SNP in the row and individual in the column
-subgenotranonly <- t(subgenotranonly)
-#############changing the rowname to the first columne####################
-subgenotranonly <- data.frame(subgenotranonly)
-rn <- rownames(subgenotranonly)
-rownames(subgenotranonly) <- NULL
-subgenotranonly <- cbind(rn,subgenotranonly)
-###check the data
-str(subgenotranonly)
+subgenotranonly <- data.frame(subgenotranonly)+1
+source("Function/SelectMAF-mrMLMM.R")
+subgenotranonly <- Select.MAF(subgenotranonly)
+
 ###combine all (emger part of subgeno and subgenotranonly)
 ##subgenotranonly$rn <- gsub("\\.", "-",subgenotranonly$rn)
-subgenomrMLMM <- merge(subgeno[,1:4],subgenotranonly,by="rn")
+str(subgeno[,1:4])
+str(subgenotranonly)
+subgenomrMLMM <- plyr::join(data.frame(subgeno[,1:4]),data.frame(subgenotranonly),by="rn")
+str(subgenomrMLMM)
+
 ###change the name in order to fit the software requirment
 colnames(subgenomrMLMM)[which(names(subgenomrMLMM) == "rn")] <- "rs#"
 colnames(subgenomrMLMM)[which(names(subgenomrMLMM) == "Chromosome")] <- "chrom"
 colnames(subgenomrMLMM)[which(names(subgenomrMLMM) == "Position")] <- "pos"
+colnames(subgenomrMLMM)[which(names(subgenomrMLMM) == "genotype.for.code.1")] <- "genotype for code 1"
 ###write out the dataset
-write.csv(subgenomrMLMM, file = "data/subgenomrMLMM.csv", row.names = FALSE, na = "")
+str(subgenomrMLMM)
+write.csv(subgenomrMLMM, file = "data/subgenomrMLMM.csv", row.names = FALSE, na = "NA")
+write.csv(subgenomrMLMM, file = "C:/Users/Admin/Desktop/Miscanthus/Miscanthus/subgenomrMLMM.csv", row.names = FALSE, na = "NA")
 
 
 ###change the name of pheotype in order to fit the software requirment
@@ -178,7 +185,7 @@ names(myYmrMlMM)
 write.csv(myYmrMlMM, file = "mrMLMM/myYmrMlMM.csv", row.names = FALSE, na = "NA")
 
 
-
+install.packages("rlang")
 
 library(mrMLM.GUI) 
 mrMLM.GUI()
