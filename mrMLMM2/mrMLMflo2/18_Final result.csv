@@ -1,0 +1,4 @@
+"Trait ID","Trait name","Method","RS#","Chromosome","Marker Position (bp)","QTN effect","LOD score","-log10(P)","r2 (%)","MAF","Genotype  for code 1","Var_Error","Var_phen (total)"
+"18","Trait33","mrMLM","NsiI.TP205114","2","58611885","-0.0125","7.3335"," 8.207583","11.3761","0.3214","G","4e-04","8e-04"
+"18","Trait33","mrMLM","PstI.TP622176","3","65129470"," 0.0168","9.2746","10.197212","25.4417","0.5000","C","",""
+"18","Trait33","mrMLM","NsiI.TP616446","9","56031936","-0.0136","8.5311"," 9.436389","18.8884","0.4866","C","",""

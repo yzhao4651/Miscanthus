@@ -1,0 +1,6 @@
+"Trait ID","Trait name","Method","RS#","Chromosome","Marker Position (bp)","QTN effect","LOD score","-log10(P)","r2 (%)","MAF","Genotype  for code 1","Var_Error","Var_phen (total)"
+"7","Trait22","ISIS EM-BLASSO","PstI.TP1192081","9","48933732","0.1224","3.8109","4.5529","3.5111","0.1053","G","0.0459","0.1366"
+"7","Trait22","ISIS EM-BLASSO","PstI.TP874146","11","6098","0.2166","4.3158","5.0825","13.8792","0.057","A","",""
+"7","Trait22","ISIS EM-BLASSO","PstI.TP1020545","11","7078","0.1248","5.6378","6.4582","9.547","0.3465","A","",""
+"7","Trait22","ISIS EM-BLASSO","PstI.TP1159423","11","8140","0.1343","5.4845","6.2993","11.897","0.3947","C","",""
+"7","Trait22","ISIS EM-BLASSO","NsiI.TP767179","11","18585","0.1334","3.4938","4.2187","12.8813","0.2325","A","",""
