@@ -22,7 +22,6 @@ datacomb2tran <- cbind(rn,datacomb2tran)
 ###check the data
 str(datacomb2tran)
 
-
 #### step2: import the allSNP including genotype.for.code.1 to merge with the all SNP from above step  
 #### step2: import the allSNP including genotype.for.code.1 to merge with the all SNP from above step 
 ###import the all marker information ( this one already get the alleles)
