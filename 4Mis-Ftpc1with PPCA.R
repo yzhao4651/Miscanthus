@@ -50,7 +50,7 @@ flocompletepc <- cbind(ranefvaluef[1],fblupimputed)
 ###PC 
 fprin_comp <- prcomp(flocompletepc[2:5])
 ###PC screen plot
-pdf(paste("PC screen plot", 1 ,".pdf",sep="")) 
+pdf(paste("PC screen plot", 2 ,".pdf",sep="")) 
 par(mfrow=c(1,2))
 plot(fprin_comp)
 plot(fprin_comp,type="line", main=paste0("PC screen plot"), cex.main=0.9)
@@ -72,7 +72,7 @@ flocompletepc <- cbind(ranefvaluef[1],fblupimputed)
 ###PC 
 fprin_comp <- prcomp(flocompletepc[2:5])
 ###PC screen plot
-pdf(paste("PC screen plot", 1 ,".pdf",sep="")) 
+pdf(paste("PC screen plot", 3 ,".pdf",sep="")) 
 par(mfrow=c(1,2))
 plot(fprin_comp)
 plot(fprin_comp,type="line", main=paste0("PC screen plot"), cex.main=0.9)
@@ -93,7 +93,7 @@ flocompletepc <- cbind(ranefvaluef[1],fblupimputed)
 ###PC 
 fprin_comp <- prcomp(flocompletepc[2:5])
 ###PC screen plot
-pdf(paste("PC screen plot", 1 ,".pdf",sep="")) 
+pdf(paste("PC screen plot", 4 ,".pdf",sep="")) 
 par(mfrow=c(1,2))
 plot(fprin_comp)
 plot(fprin_comp,type="line", main=paste0("PC screen plot"), cex.main=0.9)
