@@ -170,6 +170,8 @@ colRename<-function(x){
 }
 myYmrMlMM <- colRename(myYmrMlMM)
 ###check the column name if changed 
+
+
 names(myYmrMlMM)
 ###write out the dataset
 write.csv(myYmrMlMM, file = "mrMLMM2/myYmrMlMM.csv", row.names = FALSE, na = "NA")
