@@ -175,7 +175,8 @@ myYmrMlMM <- colRename(myYmrMlMM)
 names(myYmrMlMM)
 ###write out the dataset
 write.csv(myYmrMlMM, file = "mrMLMM2/myYmrMlMM.csv", row.names = FALSE, na = "NA")
-
+myYmrMlMMSuv <- myYmrMlMM[1:2]
+write.csv(myYmrMlMMSuv, file = "mrMLMM2/myYmrMlMMSuv.csv", row.names = FALSE, na = "NA")
 ###Flowering traits 
 myYmrMlMMflo <- myYmrMlMM[,c(1,14:16,20:39)]
 ###omit the rews with all missing values 
