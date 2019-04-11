@@ -2,10 +2,10 @@
 ############step 1 import phenotypic data:myY
 allblup <- read.csv("data/alltraits.csv", na.strings = c("",".","NA"),row.names = 1)
 str(allblup)
-allblupfloclu <- allblup[,c(1, 14:16,20:39)]
-str(allblupfloclu)
-allblupfloclu<- allblupfloclu[-which(rowSums(is.na(allblupfloclu)) == 23),]
-str(allblupfloclu)
+allblupflo <- allblup[,c(1, 14:16,20:39)]
+str(allblupflo)
+allblupflo<- allblupflo[-which(rowSums(is.na(allblupflo)) == 23),]
+str(allblupflo)
 ############# step2 
 ############# step2
 ############download the SNP data that Lindsay gave to me ################### 
@@ -18,7 +18,7 @@ load("C:/Users/Admin/Desktop/New folder/miscanthus study-1/Misthcanthus CCA data
 
 #############changing the rowname to the first columne###########################
 source("Function/subsetNONmissingSNP.GAPIT.R")
-SNP <- subsetNONmisingSNP.GAPIT(datacomb3,allblupfloclu)
+SNP <- subsetNONmisingSNP.GAPIT(datacomb3,allblupflo)
 
 ##############step3 (myGD) select suitable SNP and individual for the next analysis 
 ##############step3 (myGD) select suitable SNP and individual for the next analysis 
@@ -47,20 +47,20 @@ myGD.106.4185 <- getmyGD(myGM,myGD.106.4185)
 myGM.106.4185 <- getmyGM(myGM,myGD.106.4185)
 ###check if they are shared the same name in the same order
 identical(as.character(myGM.106.4185$Name), colnames(myGD.106.4185))
-write.csv(myGM.106.4185, file = "data/myGMfC.106.4185.csv",row.names = FALSE)
+write.csv(myGM.106.4185, file = "data/myGMft.106.4185.csv",row.names = FALSE)
 source("Function/FirstColumn.R")
 myGD.106.4185 <- FirstColumn(myGD.106.4185)
-write.csv(myGD.106.4185, file = "data/myGDfC.106.4185.csv",row.names = FALSE)
+write.csv(myGD.106.4185, file = "data/myGDft.106.4185.csv",row.names = FALSE)
 
 
 ##############step5 myY: Phenotype data for GAPIT and FarmCPU 
 ##############step5 myY: Phenotype data for GAPIT and FarmCPU 
-myY.106.4185 <- allblupfloclu[match(myGD.106.4185$Taxa,allblupfloclu$Taxa, nomatch=0),]
+myY.106.4185 <- allblupflo[match(myGD.106.4185$Taxa,allblupflo$Taxa, nomatch=0),]
 myY.106.4185 <- droplevels(myY.106.4185)
 ######### order the Taxa
 #myYorderg <- na.omit(myYorderg[order(myYorderg$Taxa),])
 #### write out the phenotype with correct TAXA
-write.csv(myY.106.4185, file = "data/myYfC.106.4185.csv", row.names = FALSE, na = "")
+write.csv(myY.106.4185, file = "data/myYft.106.4185.csv", row.names = FALSE, na = "")
 
 ##############step6 myQ: population structure
 ##############step6 myQ: population structure
@@ -76,7 +76,7 @@ myQ.106.4185 <- myQ[match(myY.106.4185$Taxa, myQ$Taxa, nomatch=0),]
 ##check the format
 #str(myQ.clum.107.3707)
 ####write out the dataset
-write.csv(myQ.106.4185, file = "data/myQfC.106.4185.csv",row.names = FALSE)
+write.csv(myQ.106.4185, file = "data/myQft.106.4185.csv",row.names = FALSE)
 
 
 
