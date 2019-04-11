@@ -1,16 +1,13 @@
+
 ####import all of the genotype data
 subgenomrMLMM <- read.csv("data/subgenomrMLMM.csv")
-str(subgenomrMLMM)
 subgenomrMLMM1 <- data.frame(subgenomrMLMM[,c(1,5:157)],row.names = 1)
-str(subgenomrMLMM1)
 ###seperate two parts
 subgenomrMLMMtran <- data.frame(t(subgenomrMLMM1))
-rownames(subgenomrMLMMtran)
-str(subgenomrMLMMtran)
 ####import all of the phenotyp data
 ###Clum trait
-mymrMLMMculm <- read.csv("data/myYmrMLMMculm.csv")
-str(mymrMLMMculm)
+mymrMLMMculm <- read.csv("mrMLMM2/myYmrMLMMculm3.csv")
+
 ###get the same
 genomymrMLMMculm <-subgenomrMLMMtran[match(mymrMLMMculm$X.phenotype.,rownames(subgenomrMLMMtran), nomatch=0),]
 ###select the MAF>0.01
@@ -18,7 +15,6 @@ source("Function/SelectMAF-mrMLMM.R")
 genomymrMLMMculm <- Select.MAF(genomymrMLMMculm)
 ##get the mateched SNP 
 genomymrMLMMculm <-subgenomrMLMM[match(genomymrMLMMculm$rn,subgenomrMLMM$rn., nomatch=0),]
-
 ###change the name in order to fit the software requirment
 colnames(genomymrMLMMculm)[which(names(genomymrMLMMculm) == "rn")] <- "rs#"
 colnames(genomymrMLMMculm)[which(names(genomymrMLMMculm) == "genotype.for.code.1")] <- "genotype for code 1"
