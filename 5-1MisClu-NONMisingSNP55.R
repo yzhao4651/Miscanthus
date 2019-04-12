@@ -21,8 +21,8 @@ SNP <- subsetNONmisingSNP.GAPIT(datacomb3,allblupClu)
 
 ##############step3 (myGD) select suitable SNP and individual for the next analysis 
 ##############step3 (myGD) select suitable SNP and individual for the next analysis 
-########1)remove row with missing value more than 38, 
-### Remove the row with 38% missing value (more than 38% NA)
+########1)remove row with missing value more than 55, 
+### Remove the row with 55% missing value (more than 55% NA)
 SNPnmrow <- SNP[-which(rowMeans(is.na(SNP)) > 0.55),]
 ########2) remove column with missng more than 0
 ### Remove the column with 0 missing value (more than 0 NA)
@@ -43,16 +43,15 @@ identical(as.character(myGM$Name), colnames(myGD.127.2216))
 source("Function/getmyGM.R")
 source("Function/getmyGD.R")
 myGD.127.2216 <- getmyGD(myGM,myGD.127.2216)
-str(myGD.127.2216)
+
 myGM.127.2216 <- getmyGM(myGM,myGD.127.2216)
-myGM.127.2216$Name
-str(myGM.127.2216)
+
 ###check if they are shared the same name in the same order
 identical(as.character(myGM.127.2216$Name), colnames(myGD.127.2216))
 write.csv(myGM.127.2216, file = "data/myGMC.127.2216.csv",row.names = FALSE)
 source("Function/FirstColumn.R")
 myGD.127.2216 <- FirstColumn(myGD.127.2216)
-str(myGD.127.2216)
+
 write.csv(myGD.127.2216, file = "data/myGDC.127.2216.csv",row.names = FALSE)
 
 
