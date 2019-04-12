@@ -57,11 +57,11 @@ myGM <- read.csv("data/myGM.csv",row.names=1)
 str(myGM)
 myGM$Name %in% datacomb2tranmerge2$rn
 ###get all the match with the datacomb2tranmerge
-myGM2 <-myGM[match(datacomb2tranmerge2$rn,myGM$Name, nomatch=0),] 
+myGM2 <- myGM[match(datacomb2tranmerge2$rn, myGM$Name, nomatch=0),] 
 ###change the column name of the myGM3 to rn#
 colnames(myGM2)[which(names(myGM2) == "Name")] <- "rn"
 ###merger myGM and datacomb2tranmerge2, after they have the same name
-datacomb2tranmerge4 <- merge(myGM2,datacomb2tranmerge2,by="rn")
+datacomb2tranmerge4 <- merge(myGM2, datacomb2tranmerge2, by="rn")
 snporder <- order(datacomb2tranmerge4$Chromosome, datacomb2tranmerge4$Position)
 datacomb2tranmerge4 <- datacomb2tranmerge4[snporder,]
 ###check 
