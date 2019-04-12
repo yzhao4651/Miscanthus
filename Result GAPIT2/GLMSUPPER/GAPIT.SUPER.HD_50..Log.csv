@@ -1,0 +1,12 @@
+Model,Value
+Trait,c("115", "2")
+group.by ,20
+Trait name ,SUPER.HD_50.
+Kinship,124:125
+Z Matrix,c(116, 116)
+Covariate,c(115, 9)
+SNP.P3D,TRUE
+Clustering algorithms,average
+Group kinship,Mean
+group.from ,1
+group.to ,1

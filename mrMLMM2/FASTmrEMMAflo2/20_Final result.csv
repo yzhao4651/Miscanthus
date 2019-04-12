@@ -1,0 +1,4 @@
+"Trait ID","Trait name","Method","RS#","Chromosome","Marker position (bp)","QTN effect","LOD score","-log10(P)","r2 (%)","MAF","Genotype  for code 1","Var_Error","Var_phen(total)"
+"20","Trait35","FASTmrEMMA","PstI.TP133136","5","65324990","0.3281","5.6137","6.4332","5.0662","0.2237","C","0.0855","0.2432"
+"20","Trait35","FASTmrEMMA","PstI.TP199807","11","1626","-0.3266","4.1421","4.9006","4.2418","0.1316","C","",""
+"20","Trait35","FASTmrEMMA","PstI.TP393010","11","3057","-0.6037","4.2987","5.0646","3.1017","0.0351","A","",""

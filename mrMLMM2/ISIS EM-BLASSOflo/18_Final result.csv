@@ -1,0 +1,2 @@
+"Trait ID","Trait name","Method","RS#","Chromosome","Marker Position (bp)","QTN effect","LOD score","-log10(P)","r2 (%)","MAF","Genotype  for code 1","Var_Error","Var_phen (total)"
+"18","Trait33","ISIS EM-BLASSO","PstI.TP1020545","11","7078","0.0084","3.0767","3.7768","7.3909","0.3465","A","3e-04","8e-04"

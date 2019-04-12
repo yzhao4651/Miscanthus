@@ -1,0 +1,3 @@
+"Trait ID","Trait name","Method","RS#","Chromosome","Marker Position (bp)","QTN effect","LOD score","-log10(P)","r2 (%)","MAF","Genotype  for code 1","Var_Error","Var_phen (total)"
+"14","Trait14","pLARmEB","PstI.TP651320","5","35481232","-0.7198","4.1931","4.954","12.1581","0.2588","A","1.5891","2.2344"
+"14","Trait14","pLARmEB","NsiI.TP484341","11","14956","-1.0896","3.4825","4.2068","14.8234","0.0746","A","",""

@@ -1,0 +1,4 @@
+"Trait ID","Trait name","Method","RS#","Chromosome","Marker Position (bp)","QTN effect","LOD score","-log10(P)","r2 (%)","MAF","Genotype  for code 1","Var_Error","Var_phen (total)"
+"18","Trait18","pLARmEB","PstI.TP510262","3","10002322","-1.961e-05","4.1596","4.9189","0.7973","0.4385","C","0","0"
+"18","Trait18","pLARmEB","GFSSContig6446_373","3","72296527","2.4107e-05","4.4501","5.2229","1.0311","0.4057","T","",""
+"18","Trait18","pLARmEB","NsiI.TP784131","4","60322804","3.6739e-05","3.4792","4.2033","0.0987","0.1639","A","",""

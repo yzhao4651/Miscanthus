@@ -1,0 +1,12 @@
+Model,Value
+Trait,c("110", "2")
+group.by ,10
+Trait name ,CMLM.FNMain
+Kinship,146:147
+Z Matrix,c(111, 111)
+Covariate,c(110, 9)
+SNP.P3D,TRUE
+Clustering algorithms,c("average", "complete", "ward")
+Group kinship,c("Mean", "Max")
+group.from ,100
+group.to ,146
