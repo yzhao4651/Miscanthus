@@ -44,7 +44,7 @@ datacomb2tranmerge <- merge(allsnp2sub,datacomb2transub,by="rn")
 ##checking the data
 str(datacomb2tranmerge)
 ### get the genotype with the genotype.for. code.1 for using later on 
-datacomb2tranmerge2 <- datacomb2tranmerge[,c(1,5,9:582)]
+datacomb2tranmerge2 <- datacomb2tranmerge[,c(1,5,8:582)]
 ###check the data again
 str(datacomb2tranmerge2)
 ###  writting out the data set datacomb2tranmerge2
