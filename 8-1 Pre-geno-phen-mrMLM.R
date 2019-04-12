@@ -81,7 +81,6 @@ all(myGMmrMLMM$Name %in% datacomb2tranmerge4$rn) # comes out to FALSE
 subgeno<- datacomb2tranmerge4[match(myGMmrMLMM$Name, datacomb2tranmerge4$rn,nomatch=0),]
 str(subgeno)
 ###write out the data set 
-write.csv(datacomb2tranmerge4, file = "data/datacomb2tranmerge4.csv", row.names = FALSE, na = "NA")
 write.csv(subgeno,file = "data/subgeno.csv", row.names = FALSE, na = "NA")
 ##checking the genotype
 #str(subgeno)
