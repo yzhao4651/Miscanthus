@@ -37,7 +37,7 @@ myGD.106.4185 <- Select.MAF(SNPnmcol)
 #############step4 myGM:Genetic mapping information
 ########## GM (Genetic mapping dataset)#############
 myGM <- read.csv("data/myGM.csv",row.names = 1)
-myGM$Name
+
 ### Function to get myGM 
 # put the SNPs back in order by chromosome and position
 identical(as.character(myGM$Name), colnames(myGD.106.4185))
@@ -47,10 +47,10 @@ myGD.106.4185 <- getmyGD(myGM,myGD.106.4185)
 myGM.106.4185 <- getmyGM(myGM,myGD.106.4185)
 ###check if they are shared the same name in the same order
 identical(as.character(myGM.106.4185$Name), colnames(myGD.106.4185))
-write.csv(myGM.106.4185, file = "data/myGMft.106.4185.csv",row.names = FALSE)
+write.csv(myGM.106.4185, file = "data/myGMf.106.4185.csv",row.names = FALSE)
 source("Function/FirstColumn.R")
 myGD.106.4185 <- FirstColumn(myGD.106.4185)
-write.csv(myGD.106.4185, file = "data/myGDft.106.4185.csv",row.names = FALSE)
+write.csv(myGD.106.4185, file = "data/myGDf.106.4185.csv",row.names = FALSE)
 
 
 ##############step5 myY: Phenotype data for GAPIT and FarmCPU 
@@ -60,7 +60,7 @@ myY.106.4185 <- droplevels(myY.106.4185)
 ######### order the Taxa
 #myYorderg <- na.omit(myYorderg[order(myYorderg$Taxa),])
 #### write out the phenotype with correct TAXA
-write.csv(myY.106.4185, file = "data/myYft.106.4185.csv", row.names = FALSE, na = "")
+write.csv(myY.106.4185, file = "data/myYf.106.4185.csv", row.names = FALSE, na = "")
 
 ##############step6 myQ: population structure
 ##############step6 myQ: population structure
@@ -76,7 +76,7 @@ myQ.106.4185 <- myQ[match(myY.106.4185$Taxa, myQ$Taxa, nomatch=0),]
 ##check the format
 #str(myQ.clum.107.3707)
 ####write out the dataset
-write.csv(myQ.106.4185, file = "data/myQft.106.4185.csv",row.names = FALSE)
+write.csv(myQ.106.4185, file = "data/myQf.106.4185.csv",row.names = FALSE)
 
 
 
