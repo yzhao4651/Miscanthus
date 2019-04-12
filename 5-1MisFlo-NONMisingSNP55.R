@@ -2,8 +2,9 @@
 ############step 1 import phenotypic data:myY
 allblup <- read.csv("data/alltraits.csv", na.strings = c("",".","NA"),row.names = 1)
 str(allblup)
-allblupflo <- allblup[,c(1, 3:13,17:19)]
-allblupflo<- allblupflo[-which(rowSums(is.na(allblupflo[1:15])) == 14),]
+allblupflo <- allblup[,c(1, 14:16,20:39)]
+str(allblupflo)
+allblupflo<- allblupflo[-which(rowSums(is.na(allblupflo)) == 23),]
 str(allblupflo)
 ############# step2 
 ############# step2
