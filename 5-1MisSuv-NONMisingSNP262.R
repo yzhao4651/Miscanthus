@@ -47,11 +47,11 @@ myGM.116.4685$Name
 str(myGM.116.4685)
 ###check if they are shared the same name in the same order
 identical(as.character(myGM.116.4685$Name), colnames(myGD.116.4685))
-write.csv(myGM.116.4685, file = "data/myGM.116.4685.csv",row.names = FALSE)
+write.csv(myGM.116.4685, file = "data/myGMS.116.4685.csv",row.names = FALSE)
 source("Function/FirstColumn.R")
 myGD.116.4685 <- FirstColumn(myGD.116.4685)
 str(myGD.116.4685)
-write.csv(myGD.116.4685, file = "data/myGD.116.4685.csv",row.names = FALSE)
+write.csv(myGD.116.4685, file = "data/myGDS.116.4685.csv",row.names = FALSE)
 
 
 ##############step5 myY: Phenotype data for GAPIT and FarmCPU 
@@ -62,7 +62,7 @@ myY.116.4685 <- droplevels(myY.116.4685)
 #myYorderg <- na.omit(myYorderg[order(myYorderg$Taxa),])
 str(myY.116.4685)
 #### write out the phenotype with correct TAXA
-write.csv(myY.116.4685, file = "data/myY.116.4685.csv", row.names = FALSE, na = "")
+write.csv(myY.116.4685, file = "data/myYS.116.4685.csv", row.names = FALSE, na = "")
 
 ##############step6 myQ: population structure
 ##############step6 myQ: population structure
@@ -78,7 +78,7 @@ myQ.116.4685 <- myQ[match(myY.116.4685$Taxa, myQ$Taxa, nomatch=0),]
 ##check the format
 #str(myQ.clum.107.3707)
 ####write out the dataset
-write.csv(myQ.116.4685, file = "data/myQ.116.4685.csv",row.names = FALSE)
+write.csv(myQ.116.4685, file = "data/myQS.116.4685.csv",row.names = FALSE)
 
 
 
