@@ -55,7 +55,7 @@ write.csv(datacomb2tranmerge2, file = "data/datacomb2tranmerge2.csv", row.names 
 ###importing the myGM from data set
 myGM <- read.csv("data/myGM.csv",row.names=1)
 str(myGM)
-myGM$Name %in% datacomb2tranmerge2$rn
+all(myGM$Name %in% datacomb2tranmerge2$rn) # This comes out FALSE
 ###get all the match with the datacomb2tranmerge
 myGM2 <- myGM[match(datacomb2tranmerge2$rn, myGM$Name, nomatch=0),] 
 ###change the column name of the myGM3 to rn#
@@ -76,7 +76,7 @@ write.csv(datacomb2tranmerge4, file = "data/datacomb2tranmerge4.csv", row.names 
 myGMmrMLMM <- read.csv("data/myGMimputedSNP19.csv")
 str(myGMmrMLMM)
 ###check they both if get the same name
-myGMmrMLMM$Name %in% datacomb2tranmerge4$rn
+all(myGMmrMLMM$Name %in% datacomb2tranmerge4$rn) # comes out to FALSE
 ###subset the matched Geotype (So this one will contain genotype for code 1)
 subgeno<- datacomb2tranmerge4[match(myGMmrMLMM$Name, datacomb2tranmerge4$rn,nomatch=0),]
 str(subgeno)
