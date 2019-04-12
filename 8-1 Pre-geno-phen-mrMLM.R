@@ -106,7 +106,7 @@ str(subgeno1)
 subgenotran <- data.frame(t(subgeno1[4:577]))
 str(subgenotran)
 ###check if the name of phenotype is the same to the name of genotype
-myYmrMlMM$Taxa %in% dimnames(subgenotran)[[1]]
+all(myYmrMlMM$Taxa %in% dimnames(subgenotran)[[1]]) # TRUE
 ### select the the individuals matched the individual in phenotype dataset 
 subgenotranonly<- subgenotran[match(myYmrMlMM$Taxa,dimnames(subgenotran)[[1]],nomatch=0),]
 subgenotranonly <- data.frame(subgenotranonly)+1
