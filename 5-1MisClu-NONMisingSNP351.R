@@ -21,8 +21,8 @@ SNP <- subsetNONmisingSNP.GAPIT(datacomb3,allblupClu)
 
 ##############step3 (myGD) select suitable SNP and individual for the next analysis 
 ##############step3 (myGD) select suitable SNP and individual for the next analysis 
-########1)remove row with missing value more than 38, 
-### Remove the row with 38% missing value (more than 38% NA)
+########1)remove row with missing value more than 351, 
+### Remove the row with 351% missing value (more than 351% NA)
 SNPnmrow <- SNP[-which(rowMeans(is.na(SNP)) > 0.351),]
 ########2) remove column with missng more than 0
 ### Remove the column with 0 missing value (more than 0 NA)
@@ -36,23 +36,22 @@ myGD.119.2988 <- Select.MAF(SNPnmcol)
 #############step4 myGM:Genetic mapping information
 ########## GM (Genetic mapping dataset)#############
 myGM <- read.csv("data/myGM.csv",row.names = 1)
-myGM$Name
+
 ### Function to get myGM 
 # put the SNPs back in order by chromosome and position
 identical(as.character(myGM$Name), colnames(myGD.119.2988))
 source("Function/getmyGM.R")
 source("Function/getmyGD.R")
 myGD.119.2988 <- getmyGD(myGM,myGD.119.2988)
-str(myGD.119.2988)
+
 myGM.119.2988 <- getmyGM(myGM,myGD.119.2988)
-myGM.119.2988$Name
-str(myGM.119.2988)
+
 ###check if they are shared the same name in the same order
 identical(as.character(myGM.119.2988$Name), colnames(myGD.119.2988))
 write.csv(myGM.119.2988, file = "data/myGMC.119.2988.csv",row.names = FALSE)
 source("Function/FirstColumn.R")
 myGD.119.2988 <- FirstColumn(myGD.119.2988)
-str(myGD.119.2988)
+
 write.csv(myGD.119.2988, file = "data/myGDC.119.2988.csv",row.names = FALSE)
 
 
@@ -62,7 +61,7 @@ myY.119.2988 <- allblupClu[match(myGD.119.2988$Taxa,allblupClu$Taxa, nomatch=0),
 myY.119.2988 <- droplevels(myY.119.2988)
 ######### order the Taxa
 #myYorderg <- na.omit(myYorderg[order(myYorderg$Taxa),])
-str(myY.119.2988)
+
 #### write out the phenotype with correct TAXA
 write.csv(myY.119.2988, file = "data/myYC.119.2988.csv", row.names = FALSE, na = "")
 
