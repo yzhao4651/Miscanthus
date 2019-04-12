@@ -32,7 +32,7 @@ allsnp2 <- data.frame(read_excel("data/allsnp.xlsx"))# I got all SNPs from the w
 ###change the data all snp to data frame
 colnames(allsnp2)[colnames(allsnp2)=="Original.marker.name"] <- "rn"
 ###check if the name in the datacomb3 is same to the name in the allsnps
-allsnp2[,2] %in% as.character(datacomb2tran[,1])
+all(allsnp2[,2] %in% as.character(datacomb2tran[,1]))
 #str(allsnp)
 ####find the datacomb2 data match the allsnpsub, pay attention the datacomb2tran should put the front of the %in%.
 datacomb2transub <- subset(datacomb2tran, (as.character(datacomb2tran[,1]) %in% allsnp2[,2]))
