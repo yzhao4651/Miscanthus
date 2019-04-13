@@ -1,5 +1,5 @@
 ############# this is prepare the dataset for mrMLMM software
-
+############# this is prepare the dataset for mrMLMM software
 ############step 1: import all SNP genotype with imputed value
 ############step 1: import all SNP genotype with imputed value
 ###trying to load in to GitHub, But this one is big, can not load from here. 
@@ -39,6 +39,7 @@ datacomb2transub <- subset(datacomb2tran, (as.character(datacomb2tran[,1]) %in% 
 ###select several column from all of the allsnps
 allsnp2sub <- data.frame(allsnp2[,c(1:2,3:7)])
 str(allsnp2sub)
+
 #### merge allsnpsub and datacomb2transub
 datacomb2tranmerge <- merge(allsnp2sub,datacomb2transub,by="rn")
 ##checking the data
@@ -68,6 +69,12 @@ datacomb2tranmerge4 <- datacomb2tranmerge4[snporder,]
 #str(datacomb2tranmerge3)
 ###write out the data, so far, we get all of the SNPs with all of the individuals with Chromosome, position and allele
 write.csv(datacomb2tranmerge4, file = "data/datacomb2tranmerge4.csv", row.names = FALSE, na = "NA")
+### write out the datasets with 
+allsnp2sub <- data.frame(allsnp2[,c(2,5)])
+str(allsnp2sub)
+write.csv(allsnp2sub, file = "data/allsnp2sub.csv", row.names = FALSE, na = "NA")
+
+allsnp2sub <- read.csv("data/allsnp2sub.csv")
 
 ###step 4 import the myGM dataset for the GAPIT to select matched Genotype from step 3
 ###step 4 import the myGM dataset for the GAPIT to select matched Genotype from step 3
