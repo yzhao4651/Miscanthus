@@ -30,8 +30,8 @@ write.csv(genomymrMLMMflo, file = "mrMLMM2/subgenomrMLMMflo3.csv", row.names = F
 ####including all of the methods: 
 
 library("mrMLM")
-mrMLM(fileGen="C:\\Users\\Admin\\Desktop\\Miscanthus\\Miscanthus\\mrMLMM2\\subgenomrMLMMflo3.csv",
-      filePhe="C:\\Users\\Admin\\Desktop\\Miscanthus\\Miscanthus\\mrMLMM2\\myYmrMlMMflo3.csv",
+mrMLM(fileGen="mrMLMM2\\subgenomrMLMMflo3.csv",
+      filePhe="mrMLMM2\\myYmrMlMMflo3.csv",
       fileKin=NULL,filePS=NULL,Genformat="Num",
       method=c("mrMLM","FASTmrMLM","FASTmrEMMA","pLARmEB","pKWmEB","ISIS EM-BLASSO"),
       Likelihood="REML",
@@ -66,8 +66,8 @@ colnames(genomymrMLMMflo)[which(names(genomymrMLMMflo) == "genotype.for.code.1")
 write.csv(genomymrMLMMflo, file = "mrMLMM2/subgenomrMLMMflo.csv", row.names = FALSE, na = "NA")
 
 library("mrMLM")
-mrMLM(fileGen="C:\\Users\\Admin\\Desktop\\Miscanthus\\Miscanthus\\mrMLMM2\\subgenomrMLMMflo.csv",
-      filePhe="C:\\Users\\Admin\\Desktop\\Miscanthus\\Miscanthus\\mrMLMM2\\myYmrMlMMflo3.csv",
+mrMLM(fileGen="mrMLMM2\\subgenomrMLMMflo.csv",
+      filePhe="mrMLMM2\\myYmrMlMMflo3.csv",
       fileKin=NULL,filePS=NULL,Genformat="Num",
       method=c("mrMLM","FASTmrMLM","FASTmrEMMA","pLARmEB","pKWmEB","ISIS EM-BLASSO"),
       Likelihood="REML",

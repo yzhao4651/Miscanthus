@@ -32,7 +32,7 @@ allsnp2 <- data.frame(read_excel("data/allsnp.xlsx"))# I got all SNPs from the w
 ###change the data all snp to data frame
 colnames(allsnp2)[colnames(allsnp2)=="Original.marker.name"] <- "rn"
 ###check if the name in the datacomb3 is same to the name in the allsnps
-allsnp2[,2] %in% as.character(datacomb2tran[,1])
+all(allsnp2[,2] %in% as.character(datacomb2tran[,1]))
 #str(allsnp)
 ####find the datacomb2 data match the allsnpsub, pay attention the datacomb2tran should put the front of the %in%.
 datacomb2transub <- subset(datacomb2tran, (as.character(datacomb2tran[,1]) %in% allsnp2[,2]))
@@ -45,7 +45,7 @@ datacomb2tranmerge <- merge(allsnp2sub,datacomb2transub,by="rn")
 ##checking the data
 str(datacomb2tranmerge)
 ### get the genotype with the genotype.for. code.1 for using later on 
-datacomb2tranmerge2 <- datacomb2tranmerge[,c(1,5,9:582)]
+datacomb2tranmerge2 <- datacomb2tranmerge[,c(1,5,8:582)]
 ###check the data again
 str(datacomb2tranmerge2)
 ###  writting out the data set datacomb2tranmerge2
@@ -56,13 +56,13 @@ write.csv(datacomb2tranmerge2, file = "data/datacomb2tranmerge2.csv", row.names 
 ###importing the myGM from data set
 myGM <- read.csv("data/myGM.csv",row.names=1)
 str(myGM)
-myGM$Name %in% datacomb2tranmerge2$rn
+all(myGM$Name %in% datacomb2tranmerge2$rn) # This comes out FALSE
 ###get all the match with the datacomb2tranmerge
-myGM2 <-myGM[match(datacomb2tranmerge2$rn,myGM$Name, nomatch=0),] 
+myGM2 <- myGM[match(datacomb2tranmerge2$rn, myGM$Name, nomatch=0),] 
 ###change the column name of the myGM3 to rn#
 colnames(myGM2)[which(names(myGM2) == "Name")] <- "rn"
 ###merger myGM and datacomb2tranmerge2, after they have the same name
-datacomb2tranmerge4 <- merge(myGM2,datacomb2tranmerge2,by="rn")
+datacomb2tranmerge4 <- merge(myGM2, datacomb2tranmerge2, by="rn")
 snporder <- order(datacomb2tranmerge4$Chromosome, datacomb2tranmerge4$Position)
 datacomb2tranmerge4 <- datacomb2tranmerge4[snporder,]
 ###check 
@@ -83,12 +83,11 @@ allsnp2sub <- read.csv("data/allsnp2sub.csv")
 myGMmrMLMM <- read.csv("data/myGMimputedSNP19.csv")
 str(myGMmrMLMM)
 ###check they both if get the same name
-myGMmrMLMM$Name %in% datacomb2tranmerge4$rn
+all(myGMmrMLMM$Name %in% datacomb2tranmerge4$rn) # comes out to FALSE
 ###subset the matched Geotype (So this one will contain genotype for code 1)
 subgeno<- datacomb2tranmerge4[match(myGMmrMLMM$Name, datacomb2tranmerge4$rn,nomatch=0),]
 str(subgeno)
 ###write out the data set 
-write.csv(datacomb2tranmerge4, file = "data/datacomb2tranmerge4.csv", row.names = FALSE, na = "NA")
 write.csv(subgeno,file = "data/subgeno.csv", row.names = FALSE, na = "NA")
 ##checking the genotype
 #str(subgeno)
@@ -114,7 +113,7 @@ str(subgeno1)
 subgenotran <- data.frame(t(subgeno1[4:577]))
 str(subgenotran)
 ###check if the name of phenotype is the same to the name of genotype
-myYmrMlMM$Taxa %in% dimnames(subgenotran)[[1]]
+all(myYmrMlMM$Taxa %in% dimnames(subgenotran)[[1]]) # TRUE
 ### select the the individuals matched the individual in phenotype dataset 
 subgenotranonly<- subgenotran[match(myYmrMlMM$Taxa,dimnames(subgenotran)[[1]],nomatch=0),]
 subgenotranonly <- data.frame(subgenotranonly)+1
