@@ -22,8 +22,8 @@ SNP <- subsetNONmisingSNP.GAPIT(datacomb3,allblupflo)
 
 ##############step3 (myGD) select suitable SNP and individual for the next analysis 
 ##############step3 (myGD) select suitable SNP and individual for the next analysis 
-########1)remove row with missing value more than 38, 
-### Remove the row with 38% missing value (more than 38% NA)
+########1)remove row with missing value more than 0.55, 
+### Remove the row with 55% missing value (more than 55% NA)
 SNPnmrow <- SNP[-which(rowMeans(is.na(SNP)) > 0.55),]
 ########2) remove column with missng more than 0
 ### Remove the column with 0 missing value (more than 0 NA)
@@ -56,7 +56,7 @@ write.csv(myGD.119.2537, file = "data/myGDf.119.2537.csv",row.names = FALSE)
 
 ##############step5 myY: Phenotype data for GAPIT and FarmCPU 
 ##############step5 myY: Phenotype data for GAPIT and FarmCPU 
-myY.119.2537 <- allblup[match(myGD.119.2537$Taxa,allblup$Taxa, nomatch=0),]
+myY.119.2537 <- allblupflo[match(myGD.119.2537$Taxa,allblupflo$Taxa, nomatch=0),]
 myY.119.2537 <- droplevels(myY.119.2537)
 ######### order the Taxa
 #myYorderg <- na.omit(myYorderg[order(myYorderg$Taxa),])
