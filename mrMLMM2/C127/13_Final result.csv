@@ -1,0 +1,4 @@
+"Trait ID","Trait name","Method","RS#","Chromosome","Marker Position (bp)","QTN effect","LOD score","-log10(P)","r2 (%)","MAF","Genotype  for code 1","Var_Error","Var_phen (total)"
+"13","Trait13","mrMLM","NsiI.TP383667","7","419094","2.0237","4.8094","5.597717","6.3894","0.1098","A","5.1081","6.0053"
+"13","Trait13","FASTmrMLM","NsiI.TP383667","7","419094","1.6883","4.3333","5.1008","4.447","0.108","A","5.2146","6.0053"
+"13","Trait13","FASTmrEMMA","NsiI.TP383667","7","419094","3.1552","4.1433","4.9018","9.0074","0.108","A","4.7125","6.0053"
