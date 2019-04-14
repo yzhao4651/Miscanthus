@@ -54,9 +54,11 @@ str(datacomb2tranmerge2)
 ###importing the myGM from data set
 myGM <- read.csv("data/myGM.csv",row.names=1)
 str(myGM)
+
 all(myGM$Name %in% datacomb2tranmerge2$rn) # This comes out FALSE
 ###get all the match with the datacomb2tranmerge
 myGM2 <- myGM[match(datacomb2tranmerge2$rn, myGM$Name, nomatch=0),] 
+str(myGM2)
 ###change the column name of the myGM3 to rn#
 colnames(myGM2)[which(names(myGM2) == "Name")] <- "rn"
 ###merger myGM and datacomb2tranmerge2, after they have the same name
@@ -64,7 +66,7 @@ datacomb2tranmerge4 <- merge(myGM2, datacomb2tranmerge2, by="rn")
 snporder <- order(datacomb2tranmerge4$Chromosome, datacomb2tranmerge4$Position)
 datacomb2tranmerge4 <- datacomb2tranmerge4[snporder,]
 ###check 
-str(datacomb2tranmerge3)
+str(datacomb2tranmerge4)
 
 ### write out the datasets with 
 allsnp2sub <- data.frame(allsnp2[,c(2,5)])
@@ -143,7 +145,7 @@ myYmrMlMMSuv <- myYmrMlMM[1:2]
 myYmrMlMMflo <- myYmrMlMM[,c(1,14:16,20:39)]
 myYmrMlMMculm <- myYmrMlMM[,c(1,3:13,17:19)]
 
-###get the column names of phenotype in order to check the later one 
+###get the column names of phenotype in order to check the later on 
 #names(myYmrMlMM)
 ##[1] "Taxa"      "Surv"      "CmDW_g"    "Cml_cm"    "CmD_BI_mm" "CmD_LI_mm" "CmN."      "Bcirc_cm"  "Yld_kg"    "SDW_kg"    "CCirc_cm" 
 ##[12] "Lg"        "GS"        "TFN."      "FNMain"    "FNsmall"   "FD"        "SRD"       "ADD"       "HD_1"      "FD_1"      "HD_50."   
@@ -163,9 +165,8 @@ colRename<-function(x){
   return(x)
 }
 myYmrMlMM <- colRename(myYmrMlMM)
+
 ###check the column name if changed 
-
-
 names(myYmrMlMM)
 ###write out the dataset
 write.csv(myYmrMlMM, file = "mrMLMM2/myYmrMlMM.csv", row.names = FALSE, na = "NA")
@@ -177,7 +178,6 @@ myYmrMlMMflo <- myYmrMlMM[,c(1,14:16,20:39)]
 myYmrMlMMflo<- myYmrMlMMflo[-which(rowSums(is.na(myYmrMlMMflo)) ==23),]
 ###write out the dataset
 write.csv(myYmrMlMMflo, file = "mrMLMM2/myYmrMlMMflo3.csv", row.names = FALSE, na = "NA")
-
 ###culm traits
 myYmrMlMMculm <- myYmrMlMM[,c(1,3:13,17:19)]
 myYmrMlMMculm<- myYmrMlMMculm[-which(rowSums(is.na(myYmrMlMMculm)) ==14),]
