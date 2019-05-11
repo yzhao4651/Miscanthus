@@ -7,8 +7,8 @@
 ###TFN.
 ###this one is for TFN. with single locus analysis 
 ###import trait TFN.
-setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Allimages/TFN.")
-GLM <- read.csv("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.TFN..GWAS.Results.csv")
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
+GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.TFN..GWAS.Results.csv")
 GLM <- GLM[1:4]
 colnames(GLM)[colnames(GLM)=="P.value"] <- "GLM.TFN."
 str(GLM)
@@ -28,6 +28,7 @@ names(gwasResultsqq)
 ###merge all of them 
 plot <-  plyr::join_all(list(GLM,MLM,CMLM,MLMSUPER,gwasResultsqq), by="SNP")
 ###plot QQ plot inone image
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Allimages/TFN.")
 library("CMplot")
 CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=0.05/nrow(plot),
        signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
