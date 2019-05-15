@@ -36,7 +36,7 @@ P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 |
                         plot.p.adjusted[,9] < 0.05 | plot.p.adjusted[,10] < 0.05|
                         plot.p.adjusted[,11] < 0.05)
 str(P.less.0.05)
-write.csv(plot, file="Allimages/FarmCPU.p.less.0.05.csv")
+write.csv(P.less.0.05, file="Allimages/FarmCPU.p.less.0.05.csv")
 
 setwd("Allimages/FarmCPU.all")
 source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
