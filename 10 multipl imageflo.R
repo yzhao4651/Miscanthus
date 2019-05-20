@@ -1,481 +1,7 @@
-
-### Multiple image together for flowering related traits
-### The path i set up probably hard for you.  
-### Every time, I set up the path at beginning,i need full path for import the result. 
-### how to edit it?
-### I did trait one by one, do you have any idea that i can do it on one time. 
-###TFN.
-###this one is for TFN. with single locus analysis 
-###import trait TFN.
-setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
-GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.TFN..GWAS.Results.csv")
-GLM <- GLM[1:4]
-colnames(GLM)[colnames(GLM)=="P.value"] <- "GLM.TFN."
-str(GLM)
-MLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLM.TFN..GWAS.Results.csv")
-MLM <- MLM[,c(1,4)]
-colnames(MLM)[colnames(MLM)=="P.value"] <- "MLM.TFN."
-CMLM <- read.csv("Result GAPIT1/ECMMLCV/GAPIT.CMLM.TFN..GWAS.Results.csv")
-CMLM <- CMLM[,c(1,4)]
-colnames(CMLM)[colnames(CMLM)=="P.value"] <- "CMLM.TFN."
-MLMSUPER <- read.csv("Result GAPIT1/MLMSUPPER/GAPIT.SUPER.TFN..GWAS.Results.csv")
-MLMSUPER<- MLMSUPER[,c(1,4)]
-colnames(MLMSUPER)[colnames(MLMSUPER)=="P.value"] <- "SUPER.TFN."
-gwasResultsqq <- read.csv("rrBLUPim/rrBLUPgwasResultsqq.csv",row.names = 1)
-gwasResultsqq <- gwasResultsqq[, c(1,54)]
-colnames(gwasResultsqq)[colnames(gwasResultsqq)=="Name"] <- "SNP"
-names(gwasResultsqq)
-###merge all of them 
-plot <-  plyr::join_all(list(GLM,MLM,CMLM,MLMSUPER,gwasResultsqq), by="SNP")
-
-adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
-  for(i in start_var:end_var){
-    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="fdr", n = length(data[[i]]))
-  }
-  return(data)
-}
-plot.p.ajusted <- adj_P_function(plot,4,8)
-P.less.0.05 <- subset(plot.p.ajusted, plot.p.ajusted[9] < 0.05 | 
-                        plot.p.ajusted[10] < 0.05 | plot.p.ajusted[11] < 0.05 |
-                        plot.p.ajusted[12] < 0.05 | plot.p.ajusted[13] < 0.05)
-str(P.less.0.05)
-###write the result
-write.csv(P.less.0.05, file="Allimages/TFN/TFN.csv")
-
-###plot QQ plot inone image
-setwd("Allimages/TFN")
-source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
-library("CMplot")
-CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=0.05/nrow(plot),
-       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
-         TRUE,file="jpg",memo="",dpi=300,
-       file.output = TRUE, verbose=TRUE)
-###plot manhattan plot in one image
-CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
-       multracks=TRUE, threshold=c(0.05/nrow(plot)),threshold.lty=c(1,2), 
-       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
-       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red","blue"),signal.cex=c(1,1),
-       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-###this one plot manhttan plot in circur 
-CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
-       threshold=c(0.05/nrow(plot)),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red","blue"),
-       signal.line=1,signal.col=c("red","blue"),chr.den.col=c("darkgreen","yellow","red"),
-       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-
-###this one is for TFN. with multiple locus analysis 
-###this one is for TFN. with multiple locus analysis 
-###import trait TFN.
-setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
-FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.TFN..GWAS.Results.csv")
-FarmCPU <- FarmCPU[1:4]
-str(FarmCPU)
-colnames(FarmCPU)[colnames(FarmCPU)=="P.value"] <- "FarmCPU.TFN."
-MLMM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLMM.TFN..GWAS.Results.csv")
-MLMM <- MLMM[,c(1,4)]
-colnames(MLMM)[colnames(MLMM)=="P.value"] <- "MLMM.TFN."
-intermediate <- read.csv("Resultfloall1/1_intermediate result.csv")
-str(intermediate)
-intermediate$X.log10.P. <- 10^-(intermediate$X.log10.P.)
-colnames(intermediate)[colnames(intermediate)=="RS."] <- "SNP"
-intermediate <- intermediate[,c(3:4,8)]
-levels(intermediate$Method)
-###FASTmrMLM
-FASTmrMLM <- subset(intermediate,intermediate$Method=="FASTmrMLM")
-FASTmrMLM <- FASTmrMLM[2:3]
-colnames(FASTmrMLM)[colnames(FASTmrMLM)=="X.log10.P."] <- "FASTmrMLM.TFN."
-###mrMLM
-mrMLM <- subset(intermediate,intermediate$Method=="mrMLM")
-mrMLM <- mrMLM[2:3]
-colnames(mrMLM)[colnames(mrMLM)=="X.log10.P."] <- "mrMLM.TFN."
-###pKWmEB
-#pKWmEB <- subset(intermediate,intermediate$Method=="pKWmEB")
-#pKWmEB <- pKWmEB[2:3]
-#colnames(pKWmEB)[colnames(pKWmEB)=="X.log10.P."] <- "pKWmEB.TFN."
-#subset(pKWmEB,is.na(pKWmEB$pKWmEB.TFN.))
-###merge all of them 
-plot <-  plyr::join_all(list(FarmCPU,MLMM,FASTmrMLM,mrMLM), type = "left", by="SNP")
-plot[is.na(plot)] <- 1
-
-str(plot)
-## get the final data set with suitabbl p-value:
-adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
-  for(i in start_var:end_var){
-    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="bonferroni", n = length(data[[i]]))
-  }
-  return(data)
-}
-plot.p.adjusted <- adj_P_function(plot, 4, 5)
-
-str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
-                        plot.p.adjusted[,9] < 0.05)
-str(P.less.0.05)
-if (nrow(P.less.0.05) > 0){
-  colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.TFN."] <- "P.value"
-  P.less.0.05$Method <- paste("FarmCPU")
-  P.less.0.05$Trait.name <- paste("TFN")
-  P.less.0.05 <- P.less.0.05[,c(11,10,1:4)]
-  ###The result from mrMLM
-  mrmlm.final <- read.csv("Resultfloall1/1_Final result.csv")
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
-  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait13"] <- "TFN"
-  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
-  mrmlm.final <- mrmlm.final[,c(2:6,15)]
-  ##combine the result from above two
-  ## Vertical
-  #install.packages("lessR")
-  library(lessR)
-  total <- Merge(mrmlm.final, P.less.0.05)
-  #install.packages("tidyverse")
-  library(tidyverse)
-  total <- tibble::rowid_to_column(total, "ID")
-  ###write the result
-  write.csv(total, file="Allimages/TFN/mrmlm.final2.csv")
-} else {
-  mrmlm.final <- read.csv("Resultfloall1/1_Final result.csv")
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
-  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait13"] <- "TFN"
-  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
-  mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(mrmlm.final, file="Allimages/TFN/mrmlm.final.csv")
-}
-setwd("Allimages/TFN")
-#library("CMplot")
-source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
-library("CMplot")
-CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=0.05/nrow(plot),
-       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
-         TRUE,file="jpg",memo="",dpi=300,
-       file.output = TRUE, verbose=TRUE)
-###plot manhattan plot in one image
-CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
-       multracks=TRUE, threshold=c(0.05/nrow(plot)),threshold.lty=c(1,2), 
-       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
-       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red","blue"),signal.cex=c(1,1),
-       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-###this one plot manhttan plot in circur 
-CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
-       threshold=c(0.05/nrow(plot)),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red","blue"),
-       signal.line=1,signal.col=c("red","blue"),chr.den.col=c("darkgreen","yellow","red"),
-       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-
-
-###FNMain
-###this one is for FNMain with single locus analysis 
-###import trait FNMain
-setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
-GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.FNMain.GWAS.Results.csv")
-GLM <- GLM[1:4]
-colnames(GLM)[colnames(GLM)=="P.value"] <- "GLM.FNMain"
-str(GLM)
-MLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLM.FNMain.GWAS.Results.csv")
-MLM <- MLM[,c(1,4)]
-colnames(MLM)[colnames(MLM)=="P.value"] <- "MLM.FNMain"
-CMLM <- read.csv("Result GAPIT1/ECMMLCV/GAPIT.CMLM.FNMain.GWAS.Results.csv")
-CMLM <- CMLM[,c(1,4)]
-colnames(CMLM)[colnames(CMLM)=="P.value"] <- "CMLM.FNMain"
-MLMSUPER <- read.csv("Result GAPIT1/MLMSUPPER/GAPIT.SUPER.FNMain.GWAS.Results.csv")
-MLMSUPER<- MLMSUPER[,c(1,4)]
-colnames(MLMSUPER)[colnames(MLMSUPER)=="P.value"] <- "SUPER.FNMain"
-gwasResultsqq <- read.csv("rrBLUPim/rrBLUPgwasResultsqq.csv",row.names = 1)
-gwasResultsqq <- gwasResultsqq[, c(1,55)]
-colnames(gwasResultsqq)[colnames(gwasResultsqq)=="Name"] <- "SNP"
-names(gwasResultsqq)
-###merge all of them 
-plot <-  plyr::join_all(list(GLM,MLM,CMLM,MLMSUPER,gwasResultsqq), by="SNP")
-adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
-  for(i in start_var:end_var){
-    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="fdr", n = length(data[[i]]))
-  }
-  return(data)
-}
-plot.p.ajusted <- adj_P_function(plot,4,8)
-P.less.0.05 <- subset(plot.p.ajusted, plot.p.ajusted[9] < 0.05 | 
-                        plot.p.ajusted[10] < 0.05 | plot.p.ajusted[11] < 0.05 |
-                        plot.p.ajusted[12] < 0.05 | plot.p.ajusted[13] < 0.05)
-str(P.less.0.05)
-###write the result
-write.csv(P.less.0.05, file="Allimages/FNMain/FNMain.csv")
-min(plot[4:8])
-###plot QQ plot inone image
-setwd("Allimages/FNMain")
-source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
-###plot QQ plot inone image
-library("CMplot")
-CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=1e-5,
-       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
-         TRUE,file="jpg",memo="",dpi=300,
-       file.output = TRUE, verbose=TRUE)
-###plot manhattan plot in one image
-CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
-       multracks=TRUE, threshold=c(1e-5),threshold.lty=c(1,2), 
-       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
-       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red","blue"),signal.cex=c(1,1),
-       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-###this one plot manhttan plot in circur 
-CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
-       threshold=c(1e-5),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red","blue"),
-       signal.line=1,signal.col=c("red","blue"),chr.den.col=c("darkgreen","yellow","red"),
-       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-
-###this one is for FNMain with multiple locus analysis 
-###this one is for FNMain with multiple locus analysis 
-###import trait FNMain
-setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
-FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FNMain.GWAS.Results.csv")
-FarmCPU <- FarmCPU[1:4]
-str(FarmCPU)
-colnames(FarmCPU)[colnames(FarmCPU)=="P.value"] <- "FarmCPU.FNMain"
-MLMM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLMM.FNMain.GWAS.Results.csv")
-MLMM <- MLMM[,c(1,4)]
-colnames(MLMM)[colnames(MLMM)=="P.value"] <- "MLMM.FNMain"
-intermediate <- read.csv("Resultfloall1/2_intermediate result.csv")
-intermediate$X.log10.P. <- 10^-(intermediate$X.log10.P.)
-colnames(intermediate)[colnames(intermediate)=="RS."] <- "SNP"
-intermediate <- intermediate[,c(3:4,8)]
-levels(intermediate$Method)
-###FASTmrMLM
-FASTmrMLM <- subset(intermediate,intermediate$Method=="FASTmrMLM")
-FASTmrMLM <- FASTmrMLM[2:3]
-colnames(FASTmrMLM)[colnames(FASTmrMLM)=="X.log10.P."] <- "FASTmrMLM.FNMain"
-###mrMLM
-mrMLM <- subset(intermediate,intermediate$Method=="mrMLM")
-mrMLM <- mrMLM[2:3]
-colnames(mrMLM)[colnames(mrMLM)=="X.log10.P."] <- "mrMLM.FNMain"
-###pKWmEB
-#pKWmEB <- subset(intermediate,intermediate$Method=="pKWmEB")
-#pKWmEB <- pKWmEB[2:3]
-#colnames(pKWmEB)[colnames(pKWmEB)=="X.log10.P."] <- "pKWmEB.FNMain"
-#subset(pKWmEB,is.na(pKWmEB$pKWmEB.FNMain))
-###merge all of them 
-plot <-  plyr::join_all(list(FarmCPU,MLMM,FASTmrMLM,mrMLM), type = "left", by="SNP")
-plot[is.na(plot)] <- 1
-## get the final data set with suitabbl p-value:
-adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
-  for(i in start_var:end_var){
-    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="bonferroni", n = length(data[[i]]))
-  }
-  return(data)
-}
-plot.p.adjusted <- adj_P_function(plot, 4, 5)
-
-str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
-                        plot.p.adjusted[,9] < 0.05)
-str(P.less.0.05)
-if (nrow(P.less.0.05) > 0){
-  colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.FNMain"] <- "P.value"
-  P.less.0.05$Method <- paste("FarmCPU")
-  P.less.0.05$Trait.name <- paste("FNMain")
-  P.less.0.05 <- P.less.0.05[,c(11,10,1:4)]
-  ###The result from mrMLM
-  mrmlm.final <- read.csv("Resultfloall1/2_Final result.csv")
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
-  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait14"] <- "FNMain"
-  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
-  mrmlm.final <- mrmlm.final[,c(2:6,15)]
-  ##combine the result from above two
-  ## Vertical
-  #install.packages("lessR")
-  library(lessR)
-  total <- Merge(mrmlm.final, P.less.0.05)
-  #install.packages("tidyverse")
-  library(tidyverse)
-  total <- tibble::rowid_to_column(total, "ID")
-  ###write the result
-  write.csv(total, file="Allimages/FNMain/mrmlm.final2.csv")
-} else {
-  mrmlm.final <- read.csv("Resultfloall1/2_Final result.csv")
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
-  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait14"] <- "FNMain"
-  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
-  mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(mrmlm.final, file="Allimages/FNMain/mrmlm.final.csv")
-}
-setwd("Allimages/FNMain")
-#library("CMplot")
-source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
-library("CMplot")
-CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=0.05/nrow(plot),
-       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
-         TRUE,file="jpg",memo="",dpi=300,
-       file.output = TRUE, verbose=TRUE)
-###plot manhattan plot in one image
-CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
-       multracks=TRUE, threshold=c(0.05/nrow(plot)),threshold.lty=c(1,2), 
-       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
-       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red","blue"),signal.cex=c(1,1),
-       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-###this one plot manhttan plot in circur 
-CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
-       threshold=c(0.05/nrow(plot)),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red","blue"),
-       signal.line=1,signal.col=c("red","blue"),chr.den.col=c("darkgreen","yellow","red"),
-       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-
-###FNsmall
-###this one is for FNsmall with single locus analysis 
-###import trait FNsmall
-##this one for desktop
-#setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/")
-##get the current path way
-#getwd()
-##set up the 
-#setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
-GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.FNsmall.GWAS.Results.csv")
-GLM <- GLM[1:4]
-colnames(GLM)[colnames(GLM)=="P.value"] <- "GLM.FNsmall"
-str(GLM)
-MLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLM.FNsmall.GWAS.Results.csv")
-MLM <- MLM[,c(1,4)]
-colnames(MLM)[colnames(MLM)=="P.value"] <- "MLM.FNsmall"
-CMLM <- read.csv("Result GAPIT1/ECMMLCV/GAPIT.CMLM.FNsmall.GWAS.Results.csv")
-CMLM <- CMLM[,c(1,4)]
-colnames(CMLM)[colnames(CMLM)=="P.value"] <- "CMLM.FNsmall"
-MLMSUPER <- read.csv("Result GAPIT1/MLMSUPPER/GAPIT.SUPER.FNsmall.GWAS.Results.csv")
-MLMSUPER<- MLMSUPER[,c(1,4)]
-colnames(MLMSUPER)[colnames(MLMSUPER)=="P.value"] <- "SUPER.FNsmall"
-gwasResultsqq <- read.csv("rrBLUPim/rrBLUPgwasResultsqq.csv",row.names = 1)
-gwasResultsqq <- gwasResultsqq[, c(1,56)]
-colnames(gwasResultsqq)[colnames(gwasResultsqq)=="Name"] <- "SNP"
-names(gwasResultsqq)
-###merge all of them 
-plot <-  plyr::join_all(list(GLM,MLM,CMLM,MLMSUPER,gwasResultsqq), by="SNP")
-str(plot)
-min(plot[4:8])
-adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
-  for(i in start_var:end_var){
-    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="fdr", n = length(data[[i]]))
-  }
-  return(data)
-}
-plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/FNsmall/FNsmall.p.less.0.05.csv")
-
-###plot QQ plot inone image
-setwd("Allimages/FNsmall")
-source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
-CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=1.4e-05,
-       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
-         TRUE,file="jpg",memo="",dpi=300,
-       file.output = TRUE, verbose=TRUE)
-###plot manhattan plot in one image
-CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
-       multracks=TRUE, threshold=c(1.4e-05),threshold.lty=c(1,2), 
-       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
-       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red"),signal.cex=c(1,1),
-       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-###this one plot manhttan plot in circur 
-CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
-       threshold=c(1.4e-05),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red"),
-       signal.line=1,signal.col=c("red"),chr.den.col=c("darkgreen","yellow","red"),
-       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-
-###this one is for FNsmall with multiple locus analysis 
-###this one is for FNsmall with multiple locus analysis 
-###import trait FNsmall
-setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/")
-FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FNsmall.GWAS.Results.csv")
-FarmCPU <- FarmCPU[1:4]
-str(FarmCPU)
-colnames(FarmCPU)[colnames(FarmCPU)=="P.value"] <- "FarmCPU.FNsmall"
-MLMM <- read.csv("Result GAPIT1/MLMM/GAPIT.MLMM.FNsmall.GWAS.Results.csv")
-MLMM <- MLMM[,c(1,4)]
-colnames(MLMM)[colnames(MLMM)=="P.value"] <- "MLMM.FNsmall"
-intermediate <- read.csv("Resultfloall1/3_intermediate result.csv")
-intermediate$X.log10.P. <- 10^-(intermediate$X.log10.P.)
-colnames(intermediate)[colnames(intermediate)=="RS."] <- "SNP"
-intermediate <- intermediate[,c(3:4,8)]
-levels(intermediate$Method)
-###FASTmrMLM
-FASTmrMLM <- subset(intermediate,intermediate$Method=="FASTmrMLM")
-FASTmrMLM <- FASTmrMLM[2:3]
-colnames(FASTmrMLM)[colnames(FASTmrMLM)=="X.log10.P."] <- "FASTmrMLM.FNsmall"
-###mrMLM
-mrMLM <- subset(intermediate,intermediate$Method=="mrMLM")
-mrMLM <- mrMLM[2:3]
-colnames(mrMLM)[colnames(mrMLM)=="X.log10.P."] <- "mrMLM.FNsmall"
-###pKWmEB
-#pKWmEB <- subset(intermediate,intermediate$Method=="pKWmEB")
-#pKWmEB <- pKWmEB[2:3]
-#colnames(pKWmEB)[colnames(pKWmEB)=="X.log10.P."] <- "pKWmEB.FNsmall"
-#subset(pKWmEB,is.na(pKWmEB$pKWmEB.FNsmall))
-###merge all of them 
-plot <-  plyr::join_all(list(FarmCPU,MLMM,FASTmrMLM,mrMLM), type = "left", by="SNP")
-plot[is.na(plot)] <- 1
-## get the final data set with suitabbl p-value:
-adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
-  for(i in start_var:end_var){
-    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="bonferroni", n = length(data[[i]]))
-  }
-  return(data)
-}
-plot.p.adjusted <- adj_P_function(plot, 4, 5)
-
-str(plot.p.adjusted)
-min(plot.p.adjusted[8:9])
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
-                        plot.p.adjusted[,9] < 0.05)
-str(P.less.0.05)
-if (nrow(P.less.0.05) > 0){
-  colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.FNsmall"] <- "P.value"
-  P.less.0.05$Method <- paste("FarmCPU")
-  P.less.0.05$Trait.name <- paste("FNsmall")
-  P.less.0.05 <- P.less.0.05[,c(11,10,1:4)]
-  ###The result from mrMLM
-  mrmlm.final <- read.csv("Resultfloall1/3_Final result.csv")
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
-  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait15"] <- "FNsmall"
-  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
-  mrmlm.final <- mrmlm.final[,c(2:6,15)]
-  ##combine the result from above two
-  ## Vertical
-  #install.packages("lessR")
-  library(lessR)
-  total <- Merge(mrmlm.final, P.less.0.05)
-  #install.packages("tidyverse")
-  library(tidyverse)
-  total <- tibble::rowid_to_column(total, "ID")
-  ###write the result
-  write.csv(total, file="Allimages/FNsmall/mrmlm.final2.csv")
-} else {
-  mrmlm.final <- read.csv("Resultfloall1/3_Final result.csv")
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
-  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
-  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait15"] <- "FNsmall"
-  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
-  mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(mrmlm.final, file="Allimages/FNsmall/mrmlm.final.csv")
-}
-setwd("Allimages/FNsmall")
-#library("CMplot")
-source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
-library("CMplot")
-CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=0.05/nrow(plot),
-       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
-         TRUE,file="jpg",memo="",dpi=300,
-       file.output = TRUE, verbose=TRUE)
-###plot manhattan plot in one image
-CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
-       multracks=TRUE, threshold=c(0.05/nrow(plot)),threshold.lty=c(1,2), 
-       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
-       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red","blue"),signal.cex=c(1,1),
-       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-###this one plot manhttan plot in circur 
-CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
-       threshold=c(0.05/nrow(plot)),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red","blue"),
-       signal.line=1,signal.col=c("red","blue"),chr.den.col=c("darkgreen","yellow","red"),
-       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
-
+### Multiple images for flowering related traits
+###qeustion: 
+###1: The path I set up i do not know if it is  hard for you. let me know if you haave better way? 
+###2: I did trait one by one, do you have any idea that i can do it one time?
 ###HD_1
 ###this one is for HD_1 with single locus analysis 
 ###import trait HD_1
@@ -500,8 +26,8 @@ colnames(gwasResultsqq)[colnames(gwasResultsqq)=="Name"] <- "SNP"
 names(gwasResultsqq)
 ###merge all of them 
 plot <-  plyr::join_all(list(GLM,MLM,CMLM,MLMSUPER,gwasResultsqq), by="SNP")
-str(plot)
-min(plot[4:8])
+
+###using this function to adjust the p value 
 adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   for(i in start_var:end_var){
     data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="fdr", n = length(data[[i]]))
@@ -509,13 +35,8 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/HD_1/HD_1.p.less.0.05.csv")
 
+###and get all of the SNPS suitable for the p-value
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.HD_1 < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.HD_1"] <- "P.value"
 p.GLM$Method <- paste("GLM")
@@ -550,8 +71,6 @@ total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
 write.csv(total, file="Allimages/HD_1/HD_1.1.csv")
-
-min()
 ###plot QQ plot inone image
 setwd("Allimages/HD_1")
 source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
@@ -603,7 +122,7 @@ colnames(mrMLM)[colnames(mrMLM)=="X.log10.P."] <- "mrMLM.HD_1"
 ###merge all of them 
 plot <-  plyr::join_all(list(FarmCPU,MLMM,FASTmrMLM,mrMLM), type = "left", by="SNP")
 plot[is.na(plot)] <- 1
-## get the final data set with suitabbl p-value:
+## get the final data sets with suitable p-value 
 adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   for(i in start_var:end_var){
     data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="bonferroni", n = length(data[[i]]))
@@ -612,11 +131,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 5)
 
-str(plot.p.adjusted)
-min(plot.p.adjusted[8:9])
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
-                        plot.p.adjusted[,9] < 0.05)
-str(P.less.0.05)
 if (nrow(P.less.0.05) > 0){
   colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.HD_1"] <- "P.value"
   P.less.0.05$Method <- paste("FarmCPU")
@@ -4196,4 +3710,478 @@ CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
 CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
        threshold=c(0.05/nrow(plot)),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red"),
        signal.line=1,signal.col=c("red"),chr.den.col=c("darkgreen","yellow","red"),
+       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+
+###TFN.
+###this one is for TFN. with single locus analysis 
+###import trait TFN.
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
+GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.TFN..GWAS.Results.csv")
+GLM <- GLM[1:4]
+colnames(GLM)[colnames(GLM)=="P.value"] <- "GLM.TFN."
+str(GLM)
+MLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLM.TFN..GWAS.Results.csv")
+MLM <- MLM[,c(1,4)]
+colnames(MLM)[colnames(MLM)=="P.value"] <- "MLM.TFN."
+CMLM <- read.csv("Result GAPIT1/ECMMLCV/GAPIT.CMLM.TFN..GWAS.Results.csv")
+CMLM <- CMLM[,c(1,4)]
+colnames(CMLM)[colnames(CMLM)=="P.value"] <- "CMLM.TFN."
+MLMSUPER <- read.csv("Result GAPIT1/MLMSUPPER/GAPIT.SUPER.TFN..GWAS.Results.csv")
+MLMSUPER<- MLMSUPER[,c(1,4)]
+colnames(MLMSUPER)[colnames(MLMSUPER)=="P.value"] <- "SUPER.TFN."
+gwasResultsqq <- read.csv("rrBLUPim/rrBLUPgwasResultsqq.csv",row.names = 1)
+gwasResultsqq <- gwasResultsqq[, c(1,54)]
+colnames(gwasResultsqq)[colnames(gwasResultsqq)=="Name"] <- "SNP"
+names(gwasResultsqq)
+###merge all of them 
+plot <-  plyr::join_all(list(GLM,MLM,CMLM,MLMSUPER,gwasResultsqq), by="SNP")
+##get the 
+adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
+  for(i in start_var:end_var){
+    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="fdr", n = length(data[[i]]))
+  }
+  return(data)
+}
+plot.p.ajusted <- adj_P_function(plot,4,8)
+P.less.0.05 <- subset(plot.p.ajusted, plot.p.ajusted[9] < 0.05 | 
+                        plot.p.ajusted[10] < 0.05 | plot.p.ajusted[11] < 0.05 |
+                        plot.p.ajusted[12] < 0.05 | plot.p.ajusted[13] < 0.05)
+str(P.less.0.05)
+###write the result
+write.csv(P.less.0.05, file="Allimages/TFN/TFN.csv")
+
+###plot QQ plot inone image
+setwd("Allimages/TFN")
+source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
+library("CMplot")
+CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=0.05/nrow(plot),
+       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
+         TRUE,file="jpg",memo="",dpi=300,
+       file.output = TRUE, verbose=TRUE)
+###plot manhattan plot in one image
+CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
+       multracks=TRUE, threshold=c(0.05/nrow(plot)),threshold.lty=c(1,2), 
+       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
+       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red","blue"),signal.cex=c(1,1),
+       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+###this one plot manhttan plot in circur 
+CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
+       threshold=c(0.05/nrow(plot)),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red","blue"),
+       signal.line=1,signal.col=c("red","blue"),chr.den.col=c("darkgreen","yellow","red"),
+       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+
+###this one is for TFN. with multiple locus analysis 
+###this one is for TFN. with multiple locus analysis 
+###import trait TFN.
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
+FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.TFN..GWAS.Results.csv")
+FarmCPU <- FarmCPU[1:4]
+str(FarmCPU)
+colnames(FarmCPU)[colnames(FarmCPU)=="P.value"] <- "FarmCPU.TFN."
+### if this one does not work get the data set, the second path will works
+MLMM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLMM.TFN..GWAS.Results.csv")
+MLMM <- read.csv("Result GAPIT1/MLMM/GAPIT.MLMM.TFN..GWAS.Results.csv")
+MLMM <- MLMM[,c(1,4)]
+colnames(MLMM)[colnames(MLMM)=="P.value"] <- "MLMM.TFN."
+intermediate <- read.csv("Resultfloall1/1_intermediate result.csv")
+str(intermediate)
+intermediate$X.log10.P. <- 10^-(intermediate$X.log10.P.)
+colnames(intermediate)[colnames(intermediate)=="RS."] <- "SNP"
+intermediate <- intermediate[,c(3:4,8)]
+levels(intermediate$Method)
+###FASTmrMLM
+FASTmrMLM <- subset(intermediate,intermediate$Method=="FASTmrMLM")
+FASTmrMLM <- FASTmrMLM[2:3]
+colnames(FASTmrMLM)[colnames(FASTmrMLM)=="X.log10.P."] <- "FASTmrMLM.TFN."
+###mrMLM
+mrMLM <- subset(intermediate,intermediate$Method=="mrMLM")
+mrMLM <- mrMLM[2:3]
+colnames(mrMLM)[colnames(mrMLM)=="X.log10.P."] <- "mrMLM.TFN."
+###pKWmEB
+#pKWmEB <- subset(intermediate,intermediate$Method=="pKWmEB")
+#pKWmEB <- pKWmEB[2:3]
+#colnames(pKWmEB)[colnames(pKWmEB)=="X.log10.P."] <- "pKWmEB.TFN."
+#subset(pKWmEB,is.na(pKWmEB$pKWmEB.TFN.))
+###merge all of them 
+plot <-  plyr::join_all(list(FarmCPU,MLMM,FASTmrMLM,mrMLM), type = "left", by="SNP")
+plot[is.na(plot)] <- 1
+
+str(plot)
+## get the final data set with suitabbl p-value:
+adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
+  for(i in start_var:end_var){
+    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="bonferroni", n = length(data[[i]]))
+  }
+  return(data)
+}
+plot.p.adjusted <- adj_P_function(plot, 4, 5)
+
+str(plot.p.adjusted)
+P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
+                        plot.p.adjusted[,9] < 0.05)
+str(P.less.0.05)
+if (nrow(P.less.0.05) > 0){
+  colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.TFN."] <- "P.value"
+  P.less.0.05$Method <- paste("FarmCPU")
+  P.less.0.05$Trait.name <- paste("TFN")
+  P.less.0.05 <- P.less.0.05[,c(11,10,1:4)]
+  ###The result from mrMLM
+  mrmlm.final <- read.csv("Resultfloall1/1_Final result.csv")
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
+  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait13"] <- "TFN"
+  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
+  mrmlm.final <- mrmlm.final[,c(2:6,15)]
+  ##combine the result from above two
+  ## Vertical
+  #install.packages("lessR")
+  library(lessR)
+  total <- Merge(mrmlm.final, P.less.0.05)
+  #install.packages("tidyverse")
+  library(tidyverse)
+  total <- tibble::rowid_to_column(total, "ID")
+  ###write the result
+  write.csv(total, file="Allimages/TFN/mrmlm.final2.csv")
+} else {
+  mrmlm.final <- read.csv("Resultfloall1/1_Final result.csv")
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
+  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait13"] <- "TFN"
+  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
+  mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(mrmlm.final, file="Allimages/TFN/mrmlm.final.csv")
+}
+setwd("Allimages/TFN")
+#library("CMplot")
+source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
+library("CMplot")
+CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=0.05/nrow(plot),
+       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
+         TRUE,file="jpg",memo="",dpi=300,
+       file.output = TRUE, verbose=TRUE)
+###plot manhattan plot in one image
+CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
+       multracks=TRUE, threshold=c(0.05/nrow(plot)),threshold.lty=c(1,2), 
+       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
+       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red","blue"),signal.cex=c(1,1),
+       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+###this one plot manhttan plot in circur 
+CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
+       threshold=c(0.05/nrow(plot)),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red","blue"),
+       signal.line=1,signal.col=c("red","blue"),chr.den.col=c("darkgreen","yellow","red"),
+       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+
+
+###FNMain
+###this one is for FNMain with single locus analysis 
+###import trait FNMain
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
+GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.FNMain.GWAS.Results.csv")
+GLM <- GLM[1:4]
+colnames(GLM)[colnames(GLM)=="P.value"] <- "GLM.FNMain"
+str(GLM)
+MLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLM.FNMain.GWAS.Results.csv")
+MLM <- MLM[,c(1,4)]
+colnames(MLM)[colnames(MLM)=="P.value"] <- "MLM.FNMain"
+CMLM <- read.csv("Result GAPIT1/ECMMLCV/GAPIT.CMLM.FNMain.GWAS.Results.csv")
+CMLM <- CMLM[,c(1,4)]
+colnames(CMLM)[colnames(CMLM)=="P.value"] <- "CMLM.FNMain"
+MLMSUPER <- read.csv("Result GAPIT1/MLMSUPPER/GAPIT.SUPER.FNMain.GWAS.Results.csv")
+MLMSUPER<- MLMSUPER[,c(1,4)]
+colnames(MLMSUPER)[colnames(MLMSUPER)=="P.value"] <- "SUPER.FNMain"
+gwasResultsqq <- read.csv("rrBLUPim/rrBLUPgwasResultsqq.csv",row.names = 1)
+gwasResultsqq <- gwasResultsqq[, c(1,55)]
+colnames(gwasResultsqq)[colnames(gwasResultsqq)=="Name"] <- "SNP"
+names(gwasResultsqq)
+###merge all of them 
+plot <-  plyr::join_all(list(GLM,MLM,CMLM,MLMSUPER,gwasResultsqq), by="SNP")
+adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
+  for(i in start_var:end_var){
+    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="fdr", n = length(data[[i]]))
+  }
+  return(data)
+}
+plot.p.ajusted <- adj_P_function(plot,4,8)
+P.less.0.05 <- subset(plot.p.ajusted, plot.p.ajusted[9] < 0.05 | 
+                        plot.p.ajusted[10] < 0.05 | plot.p.ajusted[11] < 0.05 |
+                        plot.p.ajusted[12] < 0.05 | plot.p.ajusted[13] < 0.05)
+str(P.less.0.05)
+###write the result
+write.csv(P.less.0.05, file="Allimages/FNMain/FNMain.csv")
+min(plot[4:8])
+###plot QQ plot inone image
+setwd("Allimages/FNMain")
+source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
+###plot QQ plot inone image
+library("CMplot")
+CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=1e-5,
+       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
+         TRUE,file="jpg",memo="",dpi=300,
+       file.output = TRUE, verbose=TRUE)
+###plot manhattan plot in one image
+CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
+       multracks=TRUE, threshold=c(1e-5),threshold.lty=c(1,2), 
+       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
+       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red","blue"),signal.cex=c(1,1),
+       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+###this one plot manhttan plot in circur 
+CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
+       threshold=c(1e-5),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red","blue"),
+       signal.line=1,signal.col=c("red","blue"),chr.den.col=c("darkgreen","yellow","red"),
+       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+
+###this one is for FNMain with multiple locus analysis 
+###this one is for FNMain with multiple locus analysis 
+###import trait FNMain
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
+FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FNMain.GWAS.Results.csv")
+FarmCPU <- FarmCPU[1:4]
+str(FarmCPU)
+colnames(FarmCPU)[colnames(FarmCPU)=="P.value"] <- "FarmCPU.FNMain"
+MLMM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLMM.FNMain.GWAS.Results.csv")
+MLMM <- MLMM[,c(1,4)]
+colnames(MLMM)[colnames(MLMM)=="P.value"] <- "MLMM.FNMain"
+intermediate <- read.csv("Resultfloall1/2_intermediate result.csv")
+intermediate$X.log10.P. <- 10^-(intermediate$X.log10.P.)
+colnames(intermediate)[colnames(intermediate)=="RS."] <- "SNP"
+intermediate <- intermediate[,c(3:4,8)]
+levels(intermediate$Method)
+###FASTmrMLM
+FASTmrMLM <- subset(intermediate,intermediate$Method=="FASTmrMLM")
+FASTmrMLM <- FASTmrMLM[2:3]
+colnames(FASTmrMLM)[colnames(FASTmrMLM)=="X.log10.P."] <- "FASTmrMLM.FNMain"
+###mrMLM
+mrMLM <- subset(intermediate,intermediate$Method=="mrMLM")
+mrMLM <- mrMLM[2:3]
+colnames(mrMLM)[colnames(mrMLM)=="X.log10.P."] <- "mrMLM.FNMain"
+###pKWmEB
+#pKWmEB <- subset(intermediate,intermediate$Method=="pKWmEB")
+#pKWmEB <- pKWmEB[2:3]
+#colnames(pKWmEB)[colnames(pKWmEB)=="X.log10.P."] <- "pKWmEB.FNMain"
+#subset(pKWmEB,is.na(pKWmEB$pKWmEB.FNMain))
+###merge all of them 
+plot <-  plyr::join_all(list(FarmCPU,MLMM,FASTmrMLM,mrMLM), type = "left", by="SNP")
+plot[is.na(plot)] <- 1
+## get the final data set with suitabbl p-value:
+adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
+  for(i in start_var:end_var){
+    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="bonferroni", n = length(data[[i]]))
+  }
+  return(data)
+}
+plot.p.adjusted <- adj_P_function(plot, 4, 5)
+
+str(plot.p.adjusted)
+P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
+                        plot.p.adjusted[,9] < 0.05)
+str(P.less.0.05)
+if (nrow(P.less.0.05) > 0){
+  colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.FNMain"] <- "P.value"
+  P.less.0.05$Method <- paste("FarmCPU")
+  P.less.0.05$Trait.name <- paste("FNMain")
+  P.less.0.05 <- P.less.0.05[,c(11,10,1:4)]
+  ###The result from mrMLM
+  mrmlm.final <- read.csv("Resultfloall1/2_Final result.csv")
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
+  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait14"] <- "FNMain"
+  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
+  mrmlm.final <- mrmlm.final[,c(2:6,15)]
+  ##combine the result from above two
+  ## Vertical
+  #install.packages("lessR")
+  library(lessR)
+  total <- Merge(mrmlm.final, P.less.0.05)
+  #install.packages("tidyverse")
+  library(tidyverse)
+  total <- tibble::rowid_to_column(total, "ID")
+  ###write the result
+  write.csv(total, file="Allimages/FNMain/mrmlm.final2.csv")
+} else {
+  mrmlm.final <- read.csv("Resultfloall1/2_Final result.csv")
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
+  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait14"] <- "FNMain"
+  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
+  mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(mrmlm.final, file="Allimages/FNMain/mrmlm.final.csv")
+}
+setwd("Allimages/FNMain")
+#library("CMplot")
+source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
+library("CMplot")
+CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=0.05/nrow(plot),
+       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
+         TRUE,file="jpg",memo="",dpi=300,
+       file.output = TRUE, verbose=TRUE)
+###plot manhattan plot in one image
+CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
+       multracks=TRUE, threshold=c(0.05/nrow(plot)),threshold.lty=c(1,2), 
+       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
+       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red","blue"),signal.cex=c(1,1),
+       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+###this one plot manhttan plot in circur 
+CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
+       threshold=c(0.05/nrow(plot)),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red","blue"),
+       signal.line=1,signal.col=c("red","blue"),chr.den.col=c("darkgreen","yellow","red"),
+       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+
+###FNsmall
+###this one is for FNsmall with single locus analysis 
+###import trait FNsmall
+##this one for desktop
+#setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/")
+##get the current path way
+#getwd()
+##set up the 
+#setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.FNsmall.GWAS.Results.csv")
+GLM <- GLM[1:4]
+colnames(GLM)[colnames(GLM)=="P.value"] <- "GLM.FNsmall"
+str(GLM)
+MLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLM.FNsmall.GWAS.Results.csv")
+MLM <- MLM[,c(1,4)]
+colnames(MLM)[colnames(MLM)=="P.value"] <- "MLM.FNsmall"
+CMLM <- read.csv("Result GAPIT1/ECMMLCV/GAPIT.CMLM.FNsmall.GWAS.Results.csv")
+CMLM <- CMLM[,c(1,4)]
+colnames(CMLM)[colnames(CMLM)=="P.value"] <- "CMLM.FNsmall"
+MLMSUPER <- read.csv("Result GAPIT1/MLMSUPPER/GAPIT.SUPER.FNsmall.GWAS.Results.csv")
+MLMSUPER<- MLMSUPER[,c(1,4)]
+colnames(MLMSUPER)[colnames(MLMSUPER)=="P.value"] <- "SUPER.FNsmall"
+gwasResultsqq <- read.csv("rrBLUPim/rrBLUPgwasResultsqq.csv",row.names = 1)
+gwasResultsqq <- gwasResultsqq[, c(1,56)]
+colnames(gwasResultsqq)[colnames(gwasResultsqq)=="Name"] <- "SNP"
+names(gwasResultsqq)
+###merge all of them 
+plot <-  plyr::join_all(list(GLM,MLM,CMLM,MLMSUPER,gwasResultsqq), by="SNP")
+str(plot)
+min(plot[4:8])
+adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
+  for(i in start_var:end_var){
+    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="fdr", n = length(data[[i]]))
+  }
+  return(data)
+}
+plot.p.adjusted <- adj_P_function(plot, 4, 8)
+str(plot.p.adjusted)
+P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
+                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
+                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
+str(P.less.0.05)
+write.csv(P.less.0.05, file="Allimages/FNsmall/FNsmall.p.less.0.05.csv")
+
+###plot QQ plot inone image
+setwd("Allimages/FNsmall")
+source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
+CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=1.4e-05,
+       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
+         TRUE,file="jpg",memo="",dpi=300,
+       file.output = TRUE, verbose=TRUE)
+###plot manhattan plot in one image
+CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
+       multracks=TRUE, threshold=c(1.4e-05),threshold.lty=c(1,2), 
+       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
+       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red"),signal.cex=c(1,1),
+       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+###this one plot manhttan plot in circur 
+CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
+       threshold=c(1.4e-05),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red"),
+       signal.line=1,signal.col=c("red"),chr.den.col=c("darkgreen","yellow","red"),
+       bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+
+###this one is for FNsmall with multiple locus analysis 
+###this one is for FNsmall with multiple locus analysis 
+###import trait FNsmall
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/")
+FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FNsmall.GWAS.Results.csv")
+FarmCPU <- FarmCPU[1:4]
+str(FarmCPU)
+colnames(FarmCPU)[colnames(FarmCPU)=="P.value"] <- "FarmCPU.FNsmall"
+MLMM <- read.csv("Result GAPIT1/MLMM/GAPIT.MLMM.FNsmall.GWAS.Results.csv")
+MLMM <- MLMM[,c(1,4)]
+colnames(MLMM)[colnames(MLMM)=="P.value"] <- "MLMM.FNsmall"
+intermediate <- read.csv("Resultfloall1/3_intermediate result.csv")
+intermediate$X.log10.P. <- 10^-(intermediate$X.log10.P.)
+colnames(intermediate)[colnames(intermediate)=="RS."] <- "SNP"
+intermediate <- intermediate[,c(3:4,8)]
+levels(intermediate$Method)
+###FASTmrMLM
+FASTmrMLM <- subset(intermediate,intermediate$Method=="FASTmrMLM")
+FASTmrMLM <- FASTmrMLM[2:3]
+colnames(FASTmrMLM)[colnames(FASTmrMLM)=="X.log10.P."] <- "FASTmrMLM.FNsmall"
+###mrMLM
+mrMLM <- subset(intermediate,intermediate$Method=="mrMLM")
+mrMLM <- mrMLM[2:3]
+colnames(mrMLM)[colnames(mrMLM)=="X.log10.P."] <- "mrMLM.FNsmall"
+###pKWmEB
+#pKWmEB <- subset(intermediate,intermediate$Method=="pKWmEB")
+#pKWmEB <- pKWmEB[2:3]
+#colnames(pKWmEB)[colnames(pKWmEB)=="X.log10.P."] <- "pKWmEB.FNsmall"
+#subset(pKWmEB,is.na(pKWmEB$pKWmEB.FNsmall))
+###merge all of them 
+plot <-  plyr::join_all(list(FarmCPU,MLMM,FASTmrMLM,mrMLM), type = "left", by="SNP")
+plot[is.na(plot)] <- 1
+## get the final data set with suitabbl p-value:
+adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
+  for(i in start_var:end_var){
+    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="bonferroni", n = length(data[[i]]))
+  }
+  return(data)
+}
+plot.p.adjusted <- adj_P_function(plot, 4, 5)
+
+str(plot.p.adjusted)
+min(plot.p.adjusted[8:9])
+P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
+                        plot.p.adjusted[,9] < 0.05)
+str(P.less.0.05)
+if (nrow(P.less.0.05) > 0){
+  colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.FNsmall"] <- "P.value"
+  P.less.0.05$Method <- paste("FarmCPU")
+  P.less.0.05$Trait.name <- paste("FNsmall")
+  P.less.0.05 <- P.less.0.05[,c(11,10,1:4)]
+  ###The result from mrMLM
+  mrmlm.final <- read.csv("Resultfloall1/3_Final result.csv")
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
+  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait15"] <- "FNsmall"
+  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
+  mrmlm.final <- mrmlm.final[,c(2:6,15)]
+  ##combine the result from above two
+  ## Vertical
+  #install.packages("lessR")
+  library(lessR)
+  total <- Merge(mrmlm.final, P.less.0.05)
+  #install.packages("tidyverse")
+  library(tidyverse)
+  total <- tibble::rowid_to_column(total, "ID")
+  ###write the result
+  write.csv(total, file="Allimages/FNsmall/mrmlm.final2.csv")
+} else {
+  mrmlm.final <- read.csv("Resultfloall1/3_Final result.csv")
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
+  colnames(mrmlm.final)[colnames(mrmlm.final) == "Marker.Position..bp."] <- "Position"
+  levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait15"] <- "FNsmall"
+  mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
+  mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(mrmlm.final, file="Allimages/FNsmall/mrmlm.final.csv")
+}
+setwd("Allimages/FNsmall")
+#library("CMplot")
+source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
+library("CMplot")
+CMplot(plot,plot.type="q",col=c("blue", "orange", "cyan","magenta","green3"),threshold=0.05/nrow(plot),
+       signal.pch=19,cex=0.5,signal.cex=1.0, signal.col="blue",conf.int.col="grey",box=FALSE,multracks=
+         TRUE,file="jpg",memo="",dpi=300,
+       file.output = TRUE, verbose=TRUE)
+###plot manhattan plot in one image
+CMplot(plot, plot.type="m", col=c("magenta", "orange", "cyan","green3","blue"),
+       multracks=TRUE, threshold=c(0.05/nrow(plot)),threshold.lty=c(1,2), 
+       threshold.lwd=c(1,1), threshold.col=c("black","grey"), amplify=TRUE,bin.size=1e6,
+       chr.den.col=c("darkgreen", "yellow", "red"), signal.col=c("red","blue"),signal.cex=c(1,1),
+       file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
+###this one plot manhttan plot in circur 
+CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",c(1:18,"X"),sep=""),
+       threshold=c(0.05/nrow(plot)),cir.chr.h=1.5,amplify=TRUE,threshold.lty=c(1,2),threshold.col=c("red","blue"),
+       signal.line=1,signal.col=c("red","blue"),chr.den.col=c("darkgreen","yellow","red"),
        bin.size=1e6,outward=FALSE,file="jpg",memo="",dpi=300,file.output=TRUE,verbose=TRUE)
