@@ -1,7 +1,8 @@
 ### Multiple images for flowering related traits
 ###qeustion: 
-###1: The path I set up i do not know if it is  hard for you. let me know if you haave better way? 
-###2: I did trait one by one, do you have any idea that i can do it one time?
+###1: The path I set up i do not know if it is hard for you. 
+###I do not know if there is a better way to work for us?
+###2: I did trait one by one, do you have any idea that can do it one time for many traits?
 ###HD_1
 ###this one is for HD_1 with single locus analysis 
 ###import trait HD_1
@@ -99,6 +100,7 @@ FarmCPU <- FarmCPU[1:4]
 str(FarmCPU)
 colnames(FarmCPU)[colnames(FarmCPU)=="P.value"] <- "FarmCPU.HD_1"
 MLMM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLMM.HD_1.GWAS.Results.csv")
+MLMM <- read.csv("Result GAPIT1/MLMM/GAPIT.MLMM.HD_1.GWAS.Results.csv")
 MLMM <- MLMM[,c(1,4)]
 colnames(MLMM)[colnames(MLMM)=="P.value"] <- "MLMM.HD_1"
 intermediate <- read.csv("Resultfloall1/4_intermediate result.csv")
@@ -216,18 +218,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/FD_1/FD_1.p.less.0.05.csv")
-
-P.less.0.01 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.01 | 
-                        plot.p.adjusted[,10] < 0.01 | plot.p.adjusted[,11] < 0.01 |
-                        plot.p.adjusted[,12] < 0.01 | plot.p.adjusted[,13] < 0.01)
-str(P.less.0.01)
-write.csv(P.less.0.01, file="Allimages/FD_1/FD_1.p.less.0.01.csv")
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.FD_1 < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.FD_1"] <- "P.value"
@@ -416,13 +406,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/HD_50/HD_50.p.less.0.05.csv")
-min(plot[4:8])
 
 
 ###plot QQ plot inone image
@@ -574,25 +557,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/FD_50/FD_50.p.less.0.05.csv")
-
-P.less.0.015 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.015 | 
-                         plot.p.adjusted[,10] < 0.015 | plot.p.adjusted[,11] < 0.015 |
-                         plot.p.adjusted[,12] < 0.015 | plot.p.adjusted[,13] < 0.015)
-str(P.less.0.015)
-write.csv(P.less.0.015, file="Allimages/FD_50/FD_50.p.less.0.015.csv")
-
-P.less.0.02 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.02 | 
-                        plot.p.adjusted[,10] < 0.02 | plot.p.adjusted[,11] < 0.02 |
-                        plot.p.adjusted[,12] < 0.02 | plot.p.adjusted[,13] < 0.02)
-str(P.less.0.02)
-write.csv(P.less.0.02, file="Allimages/FD_50/FD_50.p.less.0.02.csv")
-min(plot[4:8])
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.FD_50. < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.FD_50."] <- "P.value"
@@ -778,26 +742,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/HW_1/HW_1.p.less.0.05.csv")
-
-P.less.0.015 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.015 | 
-                         plot.p.adjusted[,10] < 0.015 | plot.p.adjusted[,11] < 0.015 |
-                         plot.p.adjusted[,12] < 0.015 | plot.p.adjusted[,13] < 0.015)
-str(P.less.0.015)
-write.csv(P.less.0.015, file="Allimages/HW_1/HW_1.p.less.0.015.csv")
-
-P.less.0.02 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.02 | 
-                        plot.p.adjusted[,10] < 0.02 | plot.p.adjusted[,11] < 0.02 |
-                        plot.p.adjusted[,12] < 0.02 | plot.p.adjusted[,13] < 0.02)
-str(P.less.0.02)
-write.csv(P.less.0.02, file="Allimages/HW_1/HW_1.p.less.0.02.csv")
-min(plot[4:8])
-
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.HW_1 < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.HW_1"] <- "P.value"
@@ -984,41 +928,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/FW_1/FW_1.p.less.0.05.csv")
-P.less.0.04 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.04 | 
-                        plot.p.adjusted[,10] < 0.04 | plot.p.adjusted[,11] < 0.04 |
-                        plot.p.adjusted[,12] < 0.04 | plot.p.adjusted[,13] < 0.04)
-str(P.less.0.04)
-write.csv(P.less.0.04, file="Allimages/FW_1/FW_1.p.less.0.04.csv")
-
-P.less.0.035 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.035 | 
-                        plot.p.adjusted[,10] < 0.035 | plot.p.adjusted[,11] < 0.035 |
-                        plot.p.adjusted[,12] < 0.035 | plot.p.adjusted[,13] < 0.035)
-str(P.less.0.035)
-write.csv(P.less.0.035, file="Allimages/FW_1/FW_1.p.less.0.035.csv")
-
-P.less.0.015 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.015 | 
-                         plot.p.adjusted[,10] < 0.015 | plot.p.adjusted[,11] < 0.015 |
-                         plot.p.adjusted[,12] < 0.015 | plot.p.adjusted[,13] < 0.015)
-str(P.less.0.015)
-write.csv(P.less.0.015, file="Allimages/FW_1/FW_1.p.less.0.015.csv")
-
-P.less.0.01 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.01| 
-                         plot.p.adjusted[,10] < 0.01 | plot.p.adjusted[,11] < 0.01 |
-                         plot.p.adjusted[,12] < 0.01 | plot.p.adjusted[,13] < 0.01)
-str(P.less.0.01)
-write.csv(P.less.0.01, file="Allimages/FW_1/FW_1.p.less.0.05.csv")
-P.less.0.03 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.03 | 
-                        plot.p.adjusted[,10] < 0.03 | plot.p.adjusted[,11] < 0.03 |
-                        plot.p.adjusted[,12] < 0.03 | plot.p.adjusted[,13] < 0.03)
-str(P.less.0.03)
-write.csv(P.less.0.03, file="Allimages/FW_1/FW_1.p.less.0.03.csv")
-min(plot[4:8])
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.FW_1 < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.FW_1"] <- "P.value"
@@ -1114,9 +1023,7 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 5)
-
 str(plot.p.adjusted)
-
 P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
                         plot.p.adjusted[,9] < 0.05)
 str(P.less.0.05)
@@ -1356,13 +1263,7 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
 
-write.csv(P.less.0.05, file="Allimages/FW_50/FW_50.p.less.0.05.csv")
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.FW_50. < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.FW_50."] <- "P.value"
 p.GLM$Method <- paste("GLM")
@@ -1544,25 +1445,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-
-adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
-  for(i in start_var:end_var){
-    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="fdr", n = length(data[[i]]))
-  }
-  return(data)
-}
-plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.SUPER <- subset(plot.p.adjusted, plot.p.adjusted$SUPER.GHW_1 < 1.43E-05)
-str(P.less.SUPER)
-write.csv(P.less.SUPER, file="Allimages/GHW_1/GHW_1.p.less.SUPER.csv")
-
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/GHW_1/GHW_1.p.less.0.05.csv")
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.GHW_1 < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.GHW_1"] <- "P.value"
@@ -1598,8 +1480,6 @@ total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
 write.csv(total, file="Allimages/GHW_1/GHW_1.1.csv")
-
-
 
 setwd("Allimages/GHW_1")
 source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
@@ -1748,36 +1628,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
 str(plot.p.adjusted)
-
-adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
-  for(i in start_var:end_var){
-    data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="fdr", n = length(data[[i]]))
-  }
-  return(data)
-}
-plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.SUPER <- subset(plot.p.adjusted, plot.p.adjusted$SUPER.GFW_1 < 8.73E-06)
-str(P.less.SUPER)
-write.csv(P.less.SUPER, file="Allimages/GFW_1/GFW_1.p.less.SUPER.csv")
-
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/GFW_1/GFW_1.p.less.0.05.csv")
-
-P.less.0.012 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.012 | 
-                        plot.p.adjusted[,10] < 0.012 | plot.p.adjusted[,11] < 0.012 |
-                        plot.p.adjusted[,12] < 0.012 | plot.p.adjusted[,13] < 0.012)
-str(P.less.0.012)
-write.csv(P.less.0.012, file="Allimages/GFW_1/GFW_1.p.less.0.012.csv")
-
-P.less.0.0145 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.0145 | 
-                         plot.p.adjusted[,10] < 0.0145 | plot.p.adjusted[,11] < 0.0145 |
-                         plot.p.adjusted[,12] < 0.0145 | plot.p.adjusted[,13] < 0.0145)
-str(P.less.0.0145)
-write.csv(P.less.0.0145, file="Allimages/GFW_1/GFW_1.p.less.0.0145.csv")
 
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.GFW_1 < 0.05),]
@@ -2119,13 +1969,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/GFW_50/GFW_50.p.less.0.05.csv")
-min(plot[4:8])
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.GFW_50. < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.GFW_50."] <- "P.value"
@@ -2226,9 +2069,7 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 5)
-
 str(plot.p.adjusted)
-
 P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
                         plot.p.adjusted[,9] < 0.05)
 str(P.less.0.05)
@@ -2314,13 +2155,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-str(plot.p.adjusted)
-P.less.0.0154 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.0154 | 
-                        plot.p.adjusted[,10] < 0.0154 | plot.p.adjusted[,11] < 0.0154 |
-                        plot.p.adjusted[,12] < 0.0154 | plot.p.adjusted[,13] < 0.0154)
-str(P.less.0.0154)
-write.csv(P.less.0.0154, file="Allimages/HM_1/HM_1.p.less.0.0154.csv")
-min(plot[4:8])
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.HM_1 < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.HM_1"] <- "P.value"
@@ -2511,12 +2345,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
 str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                          plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                          plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/FM_1/FM_1.p.less.0.05.csv")
-min(plot[4:8])
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.FM_1 < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.FM_1"] <- "P.value"
@@ -2703,12 +2531,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
 str(plot.p.adjusted)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
-                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
-                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
-str(P.less.0.05)
-write.csv(P.less.0.05, file="Allimages/HM_50/HM_50.p.less.0.05.csv")
-min(plot[4:8])
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.HM_50. < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.HM_50."] <- "P.value"
@@ -2892,12 +2714,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
 str(plot.p.adjusted)
-P.less.0.04 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.04 | 
-                        plot.p.adjusted[,10] < 0.04 | plot.p.adjusted[,11] < 0.04 |
-                        plot.p.adjusted[,12] < 0.04 | plot.p.adjusted[,13] < 0.04)
-str(P.less.0.04)
-write.csv(P.less.0.05, file="Allimages/FM_50/FM_50.p.less.0.04.csv")
-min(plot[4:8])
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.FM_50. < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.FM_50."] <- "P.value"
@@ -3239,10 +3055,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot,4,8)
-P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[9] < 0.05 | 
-                        plot.p.adjusted[10] < 0.05 | plot.p.adjusted[11] < 0.05 |
-                        plot.p.adjusted[12] < 0.05 | plot.p.adjusted[13] < 0.05)
-str(P.less.0.05)
 
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.fprinW < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.fprinW"] <- "P.value"
