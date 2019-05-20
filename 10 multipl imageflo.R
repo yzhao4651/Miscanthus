@@ -71,6 +71,7 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/HD_1_1.csv")
 write.csv(total, file="Allimages/HD_1/HD_1.1.csv")
 ###plot QQ plot inone image
 setwd("Allimages/HD_1")
@@ -94,13 +95,14 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for HD_1 with multiple locus analysis 
 ###this one is for HD_1 with multiple locus analysis 
 ###import trait HD_1
-setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/")
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+#setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.HD_1.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
 str(FarmCPU)
 colnames(FarmCPU)[colnames(FarmCPU)=="P.value"] <- "FarmCPU.HD_1"
 MLMM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.MLMM.HD_1.GWAS.Results.csv")
-MLMM <- read.csv("Result GAPIT1/MLMM/GAPIT.MLMM.HD_1.GWAS.Results.csv")
+#MLMM <- read.csv("Result GAPIT1/MLMM/GAPIT.MLMM.HD_1.GWAS.Results.csv")
 MLMM <- MLMM[,c(1,4)]
 colnames(MLMM)[colnames(MLMM)=="P.value"] <- "MLMM.HD_1"
 intermediate <- read.csv("Resultfloall1/4_intermediate result.csv")
@@ -132,7 +134,7 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 5)
-
+P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,7] < 0.05 | plot.p.adjusted[,8] < 0.05)
 if (nrow(P.less.0.05) > 0){
   colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.HD_1"] <- "P.value"
   P.less.0.05$Method <- paste("FarmCPU")
@@ -147,13 +149,14 @@ if (nrow(P.less.0.05) > 0){
   mrmlm.final <- mrmlm.final[,c(2:6,15)]
   ##combine the result from above two
   ## Vertical
-  #install.packages("lessR")
+  install.packages("lessR")
   library(lessR)
   total <- Merge(mrmlm.final, P.less.0.05)
   #install.packages("tidyverse")
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/HD_1_2.csv")
   write.csv(total, file="Allimages/HD_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/4_Final result.csv")
@@ -162,6 +165,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait19"] <- "HD_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(mrmlm.final, file="Allimages/HD_1_3.csv")
   write.csv(mrmlm.final, file="Allimages/HD_1/mrmlm.final.csv")
 }
 setwd("Allimages/HD_1")
@@ -218,7 +222,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.FD_1 < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.FD_1"] <- "P.value"
 p.GLM$Method <- paste("GLM")
@@ -252,8 +255,8 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/FD_1_1.csv")
 write.csv(total, file="Allimages/FD_1/FD_1.1.csv")
-
 
 ###plot QQ plot inone image
 setwd("Allimages/FD_1")
@@ -277,6 +280,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for FD_1 with multiple locus analysis 
 ###this one is for FD_1 with multiple locus analysis 
 ###import trait FD_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FD_1.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -315,9 +319,7 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 5)
-
 str(plot.p.adjusted)
-
 P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,7] < 0.05 | plot.p.adjusted[,8] < 0.05)
 str(P.less.0.05)
 if (nrow(P.less.0.05) > 0){
@@ -341,6 +343,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/FD_1_2.csv")
   write.csv(total, file="Allimages/FD_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/5_Final result.csv")
@@ -349,6 +352,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait20"] <- "FD_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/FD_1_3.csv")
   write.csv(mrmlm.final, file="Allimages/FD_1/mrmlm.final.csv")
 }
 setwd("Allimages/FD_1")
@@ -430,6 +434,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for HD_50. with multiple locus analysis 
 ###this one is for HD_50. with multiple locus analysis 
 ###import trait HD_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.HD_50..GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -466,9 +471,7 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 5)
-
 str(plot.p.adjusted)
-
 P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
                         plot.p.adjusted[,9] < 0.05)
 str(P.less.0.05)
@@ -493,6 +496,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/HD_50_2.csv")
   write.csv(total, file="Allimages/HD_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/6_Final result.csv")
@@ -501,6 +505,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait21"] <- "HD_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/HD_50_3.csv")
   write.csv(mrmlm.final, file="Allimages/HD_50/mrmlm.final.csv")
 }
 
@@ -591,8 +596,8 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/FD_50_1.csv")
 write.csv(total, file="Allimages/FD_50./FD_50.1.csv")
-
 
 ###plot QQ plot inone image
 setwd("Allimages/FD_50")
@@ -616,6 +621,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for FD_50. with multiple locus analysis 
 ###this one is for FD_50. with multiple locus analysis 
 ###import trait FD_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FD_50..GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -679,6 +685,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/FD_50_2.csv")
   write.csv(total, file="Allimages/FD_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/7_Final result.csv")
@@ -687,6 +694,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait22"] <- "FD_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/FD_50_3.csv")
   write.csv(mrmlm.final, file="Allimages/FD_50/mrmlm.final.csv")
 }
 
@@ -776,6 +784,7 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/HW_1_1.csv")
 write.csv(total, file="Allimages/HW_1/HW_1.1.csv")
 
 ###plot QQ plot inone image
@@ -802,6 +811,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for HW_1 with multiple locus analysis 
 ###this one is for HW_1 with multiple locus analysis 
 ###import trait HW_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.HW_1.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -839,9 +849,7 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 5)
-
 str(plot.p.adjusted)
-
 P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
                         plot.p.adjusted[,9] < 0.05)
 str(P.less.0.05)
@@ -866,6 +874,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/HW_1_2.csv")
   write.csv(total, file="Allimages/HW_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/8_Final result.csv")
@@ -874,6 +883,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait23"] <- "HW_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/HW_1_3.csv")
   write.csv(mrmlm.final, file="Allimages/HW_1/mrmlm.final.csv")
 }
 
@@ -900,6 +910,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###FW_1
 ###this one is for FW_1 with single locus analysis 
 ###import trait FW_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.FW_1.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -962,6 +973,7 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/FW_1_1csv")
 write.csv(total, file="Allimages/FW_1/FW_1.1.csv")
 
 ###plot QQ plot inone image
@@ -986,6 +998,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for FW_1 with multiple locus analysis 
 ###this one is for FW_1 with multiple locus analysis 
 ###import trait FW_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FW_1.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -1048,6 +1061,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/FW_1_2.csv")
   write.csv(total, file="Allimages/FW_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/9_Final result.csv")
@@ -1056,6 +1070,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait24"] <- "FW_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/FW_1_3.csv")
   write.csv(mrmlm.final, file="Allimages/FW_1/mrmlm.final.csv")
 }
 
@@ -1082,6 +1097,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###HW_50.
 ###this one is for HW_50. with single locus analysis 
 ###import trait HW_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.HW_50.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -1116,7 +1132,6 @@ P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 |
 str(P.less.0.05)
 write.csv(P.less.0.05, file="Allimages/HW_50/HW_50.p.less.0.05.csv")
 
-
 ###plot QQ plot inone image
 setwd("Allimages/HW_50")
 source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")
@@ -1139,6 +1154,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for HW_50. with multiple locus analysis 
 ###this one is for HW_50. with multiple locus analysis 
 ###import trait HW_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.HW_50.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -1176,9 +1192,7 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 5)
-
 str(plot.p.adjusted)
-
 P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,8] < 0.05 | 
                         plot.p.adjusted[,9] < 0.05)
 str(P.less.0.05)
@@ -1203,6 +1217,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/HW_50_2.csv")
   write.csv(total, file="Allimages/HW_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/10_Final result.csv")
@@ -1211,6 +1226,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait25"] <- "HW_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/HW_50_3.csv")
   write.csv(mrmlm.final, file="Allimages/HW_50/mrmlm.final.csv")
 }
 
@@ -1236,6 +1252,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###FW_50.
 ###this one is for FW_50. with single locus analysis 
 ###import trait FW_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.FW_50.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -1263,7 +1280,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   return(data)
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
-
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.FW_50. < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.FW_50."] <- "P.value"
 p.GLM$Method <- paste("GLM")
@@ -1297,6 +1313,7 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/FW_50_1.csv")
 write.csv(total, file="Allimages/FW_50/FW_50.1.csv")
 
 setwd("Allimages/FW_50")
@@ -1320,6 +1337,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for FW_50. with multiple locus analysis 
 ###this one is for FW_50. with multiple locus analysis 
 ###import trait FW_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FW_50.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -1384,6 +1402,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/FW_50_2.csv")
   write.csv(total, file="Allimages/FW_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/11_Final result.csv")
@@ -1392,6 +1411,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait26"] <- "FW_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(mrmlm.final, file="Allimages/FW_50_3.csv")
   write.csv(mrmlm.final, file="Allimages/FW_50/mrmlm.final.csv")
 }
 
@@ -1418,6 +1438,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###GHW_1
 ###this one is for GHW_1 with single locus analysis 
 ###import trait GHW_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.GHW_1.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -1479,6 +1500,8 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/GHW_1_1.csv")
+
 write.csv(total, file="Allimages/GHW_1/GHW_1.1.csv")
 
 setwd("Allimages/GHW_1")
@@ -1502,6 +1525,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for GHW_1 with multiple locus analysis 
 ###this one is for GHW_1 with multiple locus analysis 
 ###import trait GHW_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.GHW_1.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -1566,6 +1590,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/GHW_1_2.csv")
   write.csv(total, file="Allimages/GHW_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/12_Final result.csv")
@@ -1574,6 +1599,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait27"] <- "GHW_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/GHW_1_3.csv")
   write.csv(mrmlm.final, file="Allimages/GHW_1/mrmlm.final.csv")
 }
 
@@ -1600,6 +1626,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###GFW_1
 ###this one is for GFW_1 with single locus analysis 
 ###import trait GFW_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.GFW_1.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -1628,8 +1655,6 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
 str(plot.p.adjusted)
-
-
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.GFW_1 < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.GFW_1"] <- "P.value"
 p.GLM$Method <- paste("GLM")
@@ -1663,6 +1688,7 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/GFW_1_1.csv")
 write.csv(total, file="Allimages/GFW_1/GFW_1.1.csv")
 
 ###plot QQ plot inone image
@@ -1688,6 +1714,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for GFW_1 with multiple locus analysis 
 ###this one is for GFW_1 with multiple locus analysis 
 ###import trait GFW_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.GFW_1.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -1717,7 +1744,6 @@ colnames(mrMLM)[colnames(mrMLM)=="X.log10.P."] <- "mrMLM.GFW_1"
 ###merge all of them 
 plot <-  plyr::join_all(list(FarmCPU,MLMM,FASTmrMLM,mrMLM), type = "left", by="SNP")
 plot[is.na(plot)] <- 1
-
 adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
   for(i in start_var:end_var){
     data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="bonferroni", n = length(data[[i]]))
@@ -1752,6 +1778,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/GFW_1_2.csv")
   write.csv(total, file="Allimages/GFW_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/13_Final result.csv")
@@ -1760,6 +1787,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait28"] <- "GFW_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/GFW_1_3.csv")
   write.csv(mrmlm.final, file="Allimages/GFW_1/mrmlm.final.csv")
 }
 
@@ -1786,6 +1814,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###GHW_50.
 ###this one is for GHW_50. with single locus analysis 
 ###import trait GHW_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.GHW_50.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -1845,6 +1874,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for GHW_50. with multiple locus analysis 
 ###this one is for GHW_50. with multiple locus analysis 
 ###import trait GHW_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.GHW_50.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -1909,6 +1939,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/GHW_50_2.csv")
   write.csv(total, file="Allimages/GHW_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/14_Final result.csv")
@@ -1917,6 +1948,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait29"] <- "GHW_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/GHW_50_3.csv")
   write.csv(mrmlm.final, file="Allimages/GHW_50/mrmlm.final.csv")
 }
 
@@ -1942,6 +1974,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###GFW_50.
 ###this one is for GFW_50. with single locus analysis 
 ###import trait GFW_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.GFW_50.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -2003,6 +2036,7 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/GFW_50_1.csv")
 write.csv(total, file="Allimages/GFW_50./GFW_50.1.csv")
 
 
@@ -2032,6 +2066,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for GFW_50. with multiple locus analysis 
 ###this one is for GFW_50. with multiple locus analysis 
 ###import trait GFW_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.GFW_50.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -2094,6 +2129,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(mrmlm.final, file="Allimages/GFW_50_2.csv")
   write.csv(total, file="Allimages/GFW_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/14_Final result.csv")
@@ -2102,6 +2138,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait29"] <- "GFW_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(mrmlm.final, file="Allimages/GFW_50_3.csv")
   write.csv(mrmlm.final, file="Allimages/GFW_50/mrmlm.final.csv")
 }
 
@@ -2127,6 +2164,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###HM_1
 ###this one is for HM_1 with single locus analysis 
 ###import trait HM_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.HM_1.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -2189,9 +2227,8 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/HM_1_1.csv")
 write.csv(total, file="Allimages/HM_1/HM_1.1.csv")
-
-
 
 ###plot QQ plot inone image
 setwd("Allimages/HM_1")
@@ -2217,6 +2254,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for HM_1 with multiple locus analysis 
 ###this one is for HM_1 with multiple locus analysis 
 ###import trait HM_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.HM_1.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -2281,6 +2319,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/HM_1_2.csv")
   write.csv(total, file="Allimages/HM_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/15_Final result.csv")
@@ -2289,6 +2328,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait30"] <- "HM_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/HM_1_3.csv")
   write.csv(mrmlm.final, file="Allimages/HM_1/mrmlm.final.csv")
 }
 str(plot)
@@ -2316,6 +2356,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###FM_1
 ###this one is for FM_1 with single locus analysis 
 ###import trait FM_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.FM_1.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -2379,6 +2420,7 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/FM_1/FM_1_1.csv")
 write.csv(total, file="Allimages/FM_1/FM_1.1.csv")
 
 
@@ -2406,6 +2448,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for FM_1 with multiple locus analysis 
 ###this one is for FM_1 with multiple locus analysis 
 ###import trait FM_1
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FM_1.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -2469,6 +2512,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/FM_1_2.csv")
   write.csv(total, file="Allimages/FM_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/16_Final result.csv")
@@ -2477,6 +2521,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait31"] <- "FM_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/FM_1_3.csv")
   write.csv(mrmlm.final, file="Allimages/FM_1/mrmlm.final.csv")
 }
 
@@ -2503,6 +2548,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###HM_50.
 ###this one is for HM_50. with single locus analysis 
 ###import traitHM_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.HM_50.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -2565,6 +2611,7 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/HM_50_1.csv")
 write.csv(total, file="Allimages/HM_50/HM_50.1.csv")
 
 ###plot QQ plot inone image
@@ -2589,6 +2636,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for HM_50. with multiple locus analysis 
 ###this one is for HM_50. with multiple locus analysis 
 ###import trait HM_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.HM_50.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -2652,6 +2700,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/HM_50_2.csv")
   write.csv(total, file="Allimages/HM_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/17_Final result.csv")
@@ -2660,6 +2709,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait32"] <- "HM_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/HM_50_3.csv")
   write.csv(mrmlm.final, file="Allimages/HM_50/mrmlm.final.csv")
 }
 
@@ -2685,6 +2735,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###FM_50.
 ###this one is for FM_50. with single locus analysis 
 ###import trait FM_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.FM_50.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -2748,6 +2799,7 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/FM_50_1.csv")
 write.csv(total, file="Allimages/FM_50/FM_50.1.csv")
 
 ###plot QQ plot inone image
@@ -2774,6 +2826,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for FM_50. with multiple locus analysis 
 ###this one is for FM_50. with multiple locus analysis 
 ###import trait FM_50.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FM_50.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -2838,6 +2891,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/FM_50_2.csv")
   write.csv(total, file="Allimages/FM_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/18_Final result.csv")
@@ -2846,6 +2900,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait33"] <- "FM_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/FM_50_3.csv")
   write.csv(mrmlm.final, file="Allimages/FM_50/mrmlm.final.csv")
 }
 
@@ -2871,6 +2926,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###fprind
 ###this one is for fprind with single locus analysis 
 ###import trait fprind
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.fprind.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -2904,6 +2960,7 @@ P.less.0.05 <- subset(plot.p.ajusted, plot.p.ajusted[9] < 0.05 |
                         plot.p.ajusted[12] < 0.05 | plot.p.ajusted[13] < 0.05)
 str(P.less.0.05)
 ###write the result
+write.csv(P.less.0.05, file="Allimages/fprind_1.csv")
 write.csv(P.less.0.05, file="Allimages/fprind/fprind.csv")
 
 ###plot QQ plot inone image
@@ -2928,6 +2985,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for fprind with multiple locus analysis 
 ###this one is for fprind with multiple locus analysis 
 ###import trait fprind
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.fprind.GWAS.Results.csv")
 colnames(FarmCPU)[colnames(FarmCPU)=="Name"] <- "SNP"
@@ -2980,6 +3038,7 @@ if (nrow(P.less.0.05) == 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait35"] <- "fprind"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(mrmlm.final, file="Allimages/fprind_2.csv")
   write.csv(mrmlm.final, file="Allimages/fprind/mrmlm.final.csv")
 } else {
   colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.fprind"] <- "P.value"
@@ -3002,6 +3061,7 @@ if (nrow(P.less.0.05) == 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(mrmlm.final, file="Allimages/fprind_3.csv")
   write.csv(total, file="Allimages/fprind/mrmlm.final2.csv")
 }
 setwd("Allimages/fprindCV")
@@ -3027,6 +3087,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###fprinW
 ###this one is for fprinW with single locus analysis 
 ###import trait fprinW
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.fprinW.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -3089,6 +3150,7 @@ total <- tibble::rowid_to_column(p.SUPER, "ID")
 total <- total[,c(1,6:7,2:5)]
 str(total)
 ###write the result
+write.csv(total, file="Allimages/fprinW_1.csv")
 write.csv(total, file="Allimages/fprinW/fprinW.1.csv")
 
 
@@ -3117,6 +3179,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for fprinW with multiple locus analysis 
 ###this one is for fprinW with multiple locus analysis 
 ###import trait fprinW
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.fprinW.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -3168,6 +3231,7 @@ if (nrow(P.less.0.05) == 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == levels(intermediate$Trait.name)] <- "fprinW"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(mrmlm.final, file="Allimages/fprinW_2.csv")
   write.csv(mrmlm.final, file="Allimages/fprinW/mrmlm.final.csv")
 } else {
   colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.fprinW"] <- "P.value"
@@ -3190,6 +3254,7 @@ if (nrow(P.less.0.05) == 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(mrmlm.final, file="Allimages/fprinW_3.csv")
   write.csv(total, file="Allimages/fprinW/mrmlm.final2.csv")
 }
 setwd("Allimages/fprinW")
@@ -3215,6 +3280,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###fprinGW
 ###this one is for fprinGW with single locus analysis 
 ###import trait fprinGW
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.fprinGW.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -3272,6 +3338,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for fprinGW with multiple locus analysis 
 ###this one is for fprinGW with multiple locus analysis 
 ###import trait fprinGW
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.fprinGW.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -3322,6 +3389,7 @@ if (nrow(P.less.0.05) == 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == levels(intermediate$Trait.name)] <- "fprinGW"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(mrmlm.final, file="Allimages/fprinGW_2.csv")
   write.csv(mrmlm.final, file="Allimages/fprinGW/mrmlm.final.csv")
 } else {
   colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.fprinGW"] <- "P.value"
@@ -3344,6 +3412,7 @@ if (nrow(P.less.0.05) == 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(mrmlm.final, file="Allimages/fprinGW_3.csv")
   write.csv(total, file="Allimages/fprinGW/mrmlm.final2.csv")
 }
 
@@ -3369,6 +3438,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###fprinM
 ###this one is for fprinM with single locus analysis 
 ###import trait fprinM
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.fprinM.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -3429,6 +3499,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for fprinM with multiple locus analysis 
 ###this one is for fprinM with multiple locus analysis 
 ###import trait fprinM
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.fprinM.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -3479,6 +3550,7 @@ if (nrow(P.less.0.05) == 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == levels(intermediate$Trait.name)] <- "fprinM"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(mrmlm.final, file="Allimages/fprinM_2.csv")
   write.csv(mrmlm.final, file="Allimages/fprinM/mrmlm.final.csv")
 } else {
   colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.fprinM"] <- "P.value"
@@ -3501,6 +3573,7 @@ if (nrow(P.less.0.05) == 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(mrmlm.final, file="Allimages/fprinM_3.csv")
   write.csv(total, file="Allimages/fprinM/mrmlm.final2.csv")
 }
 
@@ -3527,6 +3600,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###TFN.
 ###this one is for TFN. with single locus analysis 
 ###import trait TFN.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.TFN..GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -3585,6 +3659,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for TFN. with multiple locus analysis 
 ###this one is for TFN. with multiple locus analysis 
 ###import trait TFN.
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.TFN..GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -3653,6 +3728,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/TFN_2.csv")
   write.csv(total, file="Allimages/TFN/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/1_Final result.csv")
@@ -3661,6 +3737,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait13"] <- "TFN"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/TFN_3.csv")
   write.csv(mrmlm.final, file="Allimages/TFN/mrmlm.final.csv")
 }
 setwd("Allimages/TFN")
@@ -3687,6 +3764,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###FNMain
 ###this one is for FNMain with single locus analysis 
 ###import trait FNMain
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.FNMain.GWAS.Results.csv")
 GLM <- GLM[1:4]
@@ -3745,6 +3823,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for FNMain with multiple locus analysis 
 ###this one is for FNMain with multiple locus analysis 
 ###import trait FNMain
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FNMain.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -3808,6 +3887,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/FNMain_2.csv")
   write.csv(total, file="Allimages/FNMain/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/2_Final result.csv")
@@ -3816,6 +3896,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait14"] <- "FNMain"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/FNMain_3.csv")
   write.csv(mrmlm.final, file="Allimages/FNMain/mrmlm.final.csv")
 }
 setwd("Allimages/FNMain")
@@ -3842,11 +3923,9 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for FNsmall with single locus analysis 
 ###import trait FNsmall
 ##this one for desktop
-#setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/")
-##get the current path way
-#getwd()
-##set up the 
-#setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/")
+##this one for laptop
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 GLM <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.FNsmall.GWAS.Results.csv")
 GLM <- GLM[1:4]
 colnames(GLM)[colnames(GLM)=="P.value"] <- "GLM.FNsmall"
@@ -3904,6 +3983,7 @@ CMplot(plot,plot.type="c",r=0.4,col=c("grey30","grey60"),chr.labels=paste("Chr",
 ###this one is for FNsmall with multiple locus analysis 
 ###this one is for FNsmall with multiple locus analysis 
 ###import trait FNsmall
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/")
 FarmCPU <- read.csv("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.FarmCPU.FNsmall.GWAS.Results.csv")
 FarmCPU <- FarmCPU[1:4]
@@ -3968,6 +4048,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
+  write.csv(total, file="Allimages/FNsmall_2.csv")
   write.csv(total, file="Allimages/FNsmall/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/3_Final result.csv")
@@ -3976,6 +4057,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait15"] <- "FNsmall"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
+  write.csv(total, file="Allimages/FNsmall_3.csv")
   write.csv(mrmlm.final, file="Allimages/FNsmall/mrmlm.final.csv")
 }
 setwd("Allimages/FNsmall")
