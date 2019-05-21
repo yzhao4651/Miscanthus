@@ -68,10 +68,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/HD_1_1.csv")
+write.csv(total, file="allresults/HD_1_1.csv",row.names = F)
 write.csv(total, file="Allimages/HD_1/HD_1.1.csv")
 ###plot QQ plot inone image
 setwd("Allimages/HD_1")
@@ -149,14 +149,14 @@ if (nrow(P.less.0.05) > 0){
   mrmlm.final <- mrmlm.final[,c(2:6,15)]
   ##combine the result from above two
   ## Vertical
-  install.packages("lessR")
+  #install.packages("lessR")
   library(lessR)
   total <- Merge(mrmlm.final, P.less.0.05)
   #install.packages("tidyverse")
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/HD_1_2.csv")
+  write.csv(total, file="allresults/HD_1_2.csv",row.names = F)
   write.csv(total, file="Allimages/HD_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/4_Final result.csv")
@@ -165,7 +165,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait19"] <- "HD_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(mrmlm.final, file="Allimages/HD_1_3.csv")
+  write.csv(mrmlm.final, file="allresults/HD_1_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/HD_1/mrmlm.final.csv")
 }
 setwd("Allimages/HD_1")
@@ -252,10 +252,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/FD_1_1.csv")
+write.csv(total, file="allresults/FD_1_1.csv",row.names = F)
 write.csv(total, file="Allimages/FD_1/FD_1.1.csv")
 
 ###plot QQ plot inone image
@@ -343,7 +343,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/FD_1_2.csv")
+  write.csv(total, file="allresults/FD_1_2.csv",row.names = F)
   write.csv(total, file="Allimages/FD_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/5_Final result.csv")
@@ -352,7 +352,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait20"] <- "FD_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/FD_1_3.csv")
+  write.csv(total, file="allresults/FD_1_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/FD_1/mrmlm.final.csv")
 }
 setwd("Allimages/FD_1")
@@ -411,6 +411,10 @@ adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
 }
 plot.p.adjusted <- adj_P_function(plot, 4, 8)
 
+P.less.0.05 <- subset(plot.p.adjusted, plot.p.adjusted[,9] < 0.05 | 
+                        plot.p.adjusted[,10] < 0.05 | plot.p.adjusted[,11] < 0.05 |
+                        plot.p.adjusted[,12] < 0.05 | plot.p.adjusted[,13] < 0.05)
+str(P.less.0.05)
 
 ###plot QQ plot inone image
 setwd("Allimages/HD_50")
@@ -496,7 +500,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/HD_50_2.csv")
+  write.csv(total, file="allresults/HD_50_2.csv",row.names = F)
   write.csv(total, file="Allimages/HD_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/6_Final result.csv")
@@ -505,7 +509,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait21"] <- "HD_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/HD_50_3.csv")
+  write.csv(total, file="allresults/HD_50_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/HD_50/mrmlm.final.csv")
 }
 
@@ -593,10 +597,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/FD_50_1.csv")
+write.csv(total, file="allresults/FD_50_1.csv",row.names = F)
 write.csv(total, file="Allimages/FD_50./FD_50.1.csv")
 
 ###plot QQ plot inone image
@@ -685,8 +689,8 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/FD_50_2.csv")
-  write.csv(total, file="Allimages/FD_50/mrmlm.final2.csv")
+  write.csv(total, file="allresults/FD_50_2.csv",row.names = F)
+  write.csv(total, file="Allimages/FD_50/mrmlm.final2.csv",row.names = F)
 } else {
   mrmlm.final <- read.csv("Resultfloall1/7_Final result.csv")
   colnames(mrmlm.final)[colnames(mrmlm.final) == "RS."] <- "SNP"
@@ -694,7 +698,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait22"] <- "FD_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/FD_50_3.csv")
+  write.csv(total, file="allresults/FD_50_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/FD_50/mrmlm.final.csv")
 }
 
@@ -781,10 +785,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/HW_1_1.csv")
+write.csv(total, file="allresults/HW_1_1.csv",row.names = F)
 write.csv(total, file="Allimages/HW_1/HW_1.1.csv")
 
 ###plot QQ plot inone image
@@ -874,7 +878,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/HW_1_2.csv")
+  write.csv(total, file="allresults/HW_1_2.csv",row.names = F)
   write.csv(total, file="Allimages/HW_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/8_Final result.csv")
@@ -883,7 +887,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait23"] <- "HW_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/HW_1_3.csv")
+  write.csv(total, file="allresults/HW_1_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/HW_1/mrmlm.final.csv")
 }
 
@@ -970,10 +974,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/FW_1_1csv")
+write.csv(total, file="Allimages/FW_1_1csv",row.names = F)
 write.csv(total, file="Allimages/FW_1/FW_1.1.csv")
 
 ###plot QQ plot inone image
@@ -1061,7 +1065,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/FW_1_2.csv")
+  write.csv(total, file="allresults/FW_1_2.csv",row.names = F)
   write.csv(total, file="Allimages/FW_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/9_Final result.csv")
@@ -1070,7 +1074,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait24"] <- "FW_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/FW_1_3.csv")
+  write.csv(total, file="allresults/FW_1_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/FW_1/mrmlm.final.csv")
 }
 
@@ -1217,7 +1221,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/HW_50_2.csv")
+  write.csv(total, file="allresults/HW_50_2.csv",row.names = F)
   write.csv(total, file="Allimages/HW_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/10_Final result.csv")
@@ -1226,7 +1230,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait25"] <- "HW_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/HW_50_3.csv")
+  write.csv(total, file="allresults/HW_50_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/HW_50/mrmlm.final.csv")
 }
 
@@ -1310,10 +1314,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/FW_50_1.csv")
+write.csv(total, file="allresults/FW_50_1.csv",row.names = F)
 write.csv(total, file="Allimages/FW_50/FW_50.1.csv")
 
 setwd("Allimages/FW_50")
@@ -1402,7 +1406,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/FW_50_2.csv")
+  write.csv(total, file="allresults/FW_50_2.csv",row.names = F)
   write.csv(total, file="Allimages/FW_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/11_Final result.csv")
@@ -1411,7 +1415,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait26"] <- "FW_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(mrmlm.final, file="Allimages/FW_50_3.csv")
+  write.csv(mrmlm.final, file="allresults/FW_50_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/FW_50/mrmlm.final.csv")
 }
 
@@ -1497,10 +1501,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/GHW_1_1.csv")
+write.csv(total, file="allresults/GHW_1_1.csv",row.names = F)
 
 write.csv(total, file="Allimages/GHW_1/GHW_1.1.csv")
 
@@ -1590,7 +1594,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/GHW_1_2.csv")
+  write.csv(total, file="allresults/GHW_1_2.csv",row.names = F)
   write.csv(total, file="Allimages/GHW_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/12_Final result.csv")
@@ -1599,7 +1603,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait27"] <- "GHW_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/GHW_1_3.csv")
+  write.csv(total, file="allresults/GHW_1_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/GHW_1/mrmlm.final.csv")
 }
 
@@ -1685,10 +1689,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/GFW_1_1.csv")
+write.csv(total, file="allresults/GFW_1_1.csv",row.names = F)
 write.csv(total, file="Allimages/GFW_1/GFW_1.1.csv")
 
 ###plot QQ plot inone image
@@ -1778,7 +1782,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/GFW_1_2.csv")
+  write.csv(total, file="allresults/GFW_1_2.csv",row.names = F)
   write.csv(total, file="Allimages/GFW_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/13_Final result.csv")
@@ -1787,7 +1791,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait28"] <- "GFW_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/GFW_1_3.csv")
+  write.csv(total, file="allresults/GFW_1_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/GFW_1/mrmlm.final.csv")
 }
 
@@ -1939,7 +1943,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/GHW_50_2.csv")
+  write.csv(total, file="allresults/GHW_50_2.csv",row.names = F)
   write.csv(total, file="Allimages/GHW_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/14_Final result.csv")
@@ -1948,7 +1952,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait29"] <- "GHW_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/GHW_50_3.csv")
+  write.csv(total, file="allresults/GHW_50_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/GHW_50/mrmlm.final.csv")
 }
 
@@ -2033,10 +2037,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/GFW_50_1.csv")
+write.csv(total, file="allresults/GFW_50_1.csv",row.names = F)
 write.csv(total, file="Allimages/GFW_50./GFW_50.1.csv")
 
 
@@ -2129,7 +2133,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(mrmlm.final, file="Allimages/GFW_50_2.csv")
+  write.csv(mrmlm.final, file="allresults/GFW_50_2.csv",row.names = F)
   write.csv(total, file="Allimages/GFW_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/14_Final result.csv")
@@ -2138,7 +2142,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait29"] <- "GFW_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(mrmlm.final, file="Allimages/GFW_50_3.csv")
+  write.csv(mrmlm.final, file="allresults/GFW_50_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/GFW_50/mrmlm.final.csv")
 }
 
@@ -2224,10 +2228,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/HM_1_1.csv")
+write.csv(total, file="allresults/HM_1_1.csv",row.names = F)
 write.csv(total, file="Allimages/HM_1/HM_1.1.csv")
 
 ###plot QQ plot inone image
@@ -2319,7 +2323,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/HM_1_2.csv")
+  write.csv(total, file="allresults/HM_1_2.csv",row.names = F)
   write.csv(total, file="Allimages/HM_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/15_Final result.csv")
@@ -2328,7 +2332,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait30"] <- "HM_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/HM_1_3.csv")
+  write.csv(total, file="allresults/HM_1_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/HM_1/mrmlm.final.csv")
 }
 str(plot)
@@ -2417,10 +2421,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/FM_1/FM_1_1.csv")
+write.csv(total, file="allresults/FM_1_1.csv",row.names = F)
 write.csv(total, file="Allimages/FM_1/FM_1.1.csv")
 
 
@@ -2512,7 +2516,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/FM_1_2.csv")
+  write.csv(total, file="allresults/FM_1_2.csv",row.names = F)
   write.csv(total, file="Allimages/FM_1/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/16_Final result.csv")
@@ -2521,7 +2525,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait31"] <- "FM_1"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/FM_1_3.csv")
+  write.csv(total, file="allresults/FM_1_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/FM_1/mrmlm.final.csv")
 }
 
@@ -2608,10 +2612,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/HM_50_1.csv")
+write.csv(total, file="allresults/HM_50_1.csv",row.names = F)
 write.csv(total, file="Allimages/HM_50/HM_50.1.csv")
 
 ###plot QQ plot inone image
@@ -2700,7 +2704,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/HM_50_2.csv")
+  write.csv(total, file="allresults/HM_50_2.csv",row.names = F)
   write.csv(total, file="Allimages/HM_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/17_Final result.csv")
@@ -2709,7 +2713,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait32"] <- "HM_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/HM_50_3.csv")
+  write.csv(total, file="allresults/HM_50_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/HM_50/mrmlm.final.csv")
 }
 
@@ -2796,10 +2800,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/FM_50_1.csv")
+write.csv(total, file="allresults/FM_50_1.csv",row.names = F)
 write.csv(total, file="Allimages/FM_50/FM_50.1.csv")
 
 ###plot QQ plot inone image
@@ -2891,7 +2895,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/FM_50_2.csv")
+  write.csv(total, file="allresults/FM_50_2.csv",row.names = F)
   write.csv(total, file="Allimages/FM_50/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/18_Final result.csv")
@@ -2900,7 +2904,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait33"] <- "FM_50"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/FM_50_3.csv")
+  write.csv(total, file="allresults/FM_50_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/FM_50/mrmlm.final.csv")
 }
 
@@ -3038,7 +3042,7 @@ if (nrow(P.less.0.05) == 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait35"] <- "fprind"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(mrmlm.final, file="Allimages/fprind_2.csv")
+  write.csv(mrmlm.final, file="allresults/fprind_2.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/fprind/mrmlm.final.csv")
 } else {
   colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.fprind"] <- "P.value"
@@ -3061,7 +3065,7 @@ if (nrow(P.less.0.05) == 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(mrmlm.final, file="Allimages/fprind_3.csv")
+  write.csv(mrmlm.final, file="allresults/fprind_3.csv",row.names = F)
   write.csv(total, file="Allimages/fprind/mrmlm.final2.csv")
 }
 setwd("Allimages/fprindCV")
@@ -3147,10 +3151,10 @@ total <- Merge(p.SUPER, p.rrBLUP)
 #install.packages("tidyverse")
 library(tidyverse)
 total <- tibble::rowid_to_column(p.SUPER, "ID")
-total <- total[,c(1,6:7,2:5)]
+total <- total[,c(1,7:6,2:5)]
 str(total)
 ###write the result
-write.csv(total, file="Allimages/fprinW_1.csv")
+write.csv(total, file="allresults/fprinW_1.csv",row.names = F)
 write.csv(total, file="Allimages/fprinW/fprinW.1.csv")
 
 
@@ -3231,7 +3235,7 @@ if (nrow(P.less.0.05) == 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == levels(intermediate$Trait.name)] <- "fprinW"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(mrmlm.final, file="Allimages/fprinW_2.csv")
+  write.csv(mrmlm.final, file="allresults/fprinW_2.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/fprinW/mrmlm.final.csv")
 } else {
   colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.fprinW"] <- "P.value"
@@ -3254,7 +3258,7 @@ if (nrow(P.less.0.05) == 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(mrmlm.final, file="Allimages/fprinW_3.csv")
+  write.csv(mrmlm.final, file="allresults/fprinW_3.csv",row.names = F)
   write.csv(total, file="Allimages/fprinW/mrmlm.final2.csv")
 }
 setwd("Allimages/fprinW")
@@ -3389,7 +3393,7 @@ if (nrow(P.less.0.05) == 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == levels(intermediate$Trait.name)] <- "fprinGW"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(mrmlm.final, file="Allimages/fprinGW_2.csv")
+  write.csv(mrmlm.final, file="allresults/fprinGW_2.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/fprinGW/mrmlm.final.csv")
 } else {
   colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.fprinGW"] <- "P.value"
@@ -3412,7 +3416,7 @@ if (nrow(P.less.0.05) == 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(mrmlm.final, file="Allimages/fprinGW_3.csv")
+  write.csv(mrmlm.final, file="allresults/fprinGW_3.csv",row.names = F)
   write.csv(total, file="Allimages/fprinGW/mrmlm.final2.csv")
 }
 
@@ -3550,8 +3554,8 @@ if (nrow(P.less.0.05) == 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == levels(intermediate$Trait.name)] <- "fprinM"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(mrmlm.final, file="Allimages/fprinM_2.csv")
-  write.csv(mrmlm.final, file="Allimages/fprinM/mrmlm.final.csv")
+  write.csv(mrmlm.final, file="allresults/fprinM_2.csv")
+  write.csv(mrmlm.final, file="Allimages/fprinM/mrmlm.final.csv",row.names = F)
 } else {
   colnames(P.less.0.05)[colnames(P.less.0.05)=="FarmCPU.fprinM"] <- "P.value"
   P.less.0.05$Method <- paste("FarmCPU")
@@ -3573,7 +3577,7 @@ if (nrow(P.less.0.05) == 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(mrmlm.final, file="Allimages/fprinM_3.csv")
+  write.csv(mrmlm.final, file="allresults/fprinM_3.csv",row.names = F)
   write.csv(total, file="Allimages/fprinM/mrmlm.final2.csv")
 }
 
@@ -3728,7 +3732,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/TFN_2.csv")
+  write.csv(total, file="allresults/TFN_2.csv",row.names = F)
   write.csv(total, file="Allimages/TFN/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/1_Final result.csv")
@@ -3737,7 +3741,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait13"] <- "TFN"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/TFN_3.csv")
+  write.csv(total, file="allresults/TFN_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/TFN/mrmlm.final.csv")
 }
 setwd("Allimages/TFN")
@@ -3887,7 +3891,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/FNMain_2.csv")
+  write.csv(total, file="allresults/FNMain_2.csv",row.names = F)
   write.csv(total, file="Allimages/FNMain/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/2_Final result.csv")
@@ -3896,7 +3900,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait14"] <- "FNMain"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/FNMain_3.csv")
+  write.csv(total, file="allresults/FNMain_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/FNMain/mrmlm.final.csv")
 }
 setwd("Allimages/FNMain")
@@ -4048,7 +4052,7 @@ if (nrow(P.less.0.05) > 0){
   library(tidyverse)
   total <- tibble::rowid_to_column(total, "ID")
   ###write the result
-  write.csv(total, file="Allimages/FNsmall_2.csv")
+  write.csv(total, file="allresults/FNsmall_2.csv",row.names = F)
   write.csv(total, file="Allimages/FNsmall/mrmlm.final2.csv")
 } else {
   mrmlm.final <- read.csv("Resultfloall1/3_Final result.csv")
@@ -4057,7 +4061,7 @@ if (nrow(P.less.0.05) > 0){
   levels(mrmlm.final$Trait.name)[levels(mrmlm.final$Trait.name) == "Trait15"] <- "FNsmall"
   mrmlm.final$P.value <- 10^-(mrmlm.final$X.log10.P.)
   mrmlm.final <- mrmlm.final[,c(2:6, 15)]
-  write.csv(total, file="Allimages/FNsmall_3.csv")
+  write.csv(total, file="allresults/FNsmall_3.csv",row.names = F)
   write.csv(mrmlm.final, file="Allimages/FNsmall/mrmlm.final.csv")
 }
 setwd("Allimages/FNsmall")
