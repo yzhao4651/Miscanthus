@@ -40,28 +40,28 @@ plot.p.adjusted <- adj_P_function(plot, 4, 8)
 ###and get all of the SNPS suitable for the p-value
 p.GLM <- plot.p.adjusted[,c(1:4)][which(plot.p.adjusted$Adj.P.GLM.HD_1 < 0.05),]
 colnames(p.GLM)[colnames(p.GLM)=="GLM.HD_1"] <- "P.value"
-p.GLM$Method <- paste("GLM")
-p.GLM$Trait.name <- paste("HD_1")
+p.GLM$Method <- rep("GLM", nrow(p.GLM))
+p.GLM$Trait.name <- rep("HD_1", nrow(p.GLM))
 str(p.GLM)
 p.MLM <- plot.p.adjusted[,c(1:3,5)][which(plot.p.adjusted$Adj.P.MLM.HD_1 < 0.05),]
 colnames(p.MLM)[colnames(p.MLM)=="MLM.HD_1"] <- "P.value"
-p.MLM$Method <- paste("MLM")
-p.MLM$Trait.name <- paste("HD_1")
+p.MLM$Method <- rep("MLM", nrow(p.MLM))
+p.MLM$Trait.name <- rep("HD_1", nrow(p.MLM))
 str(p.MLM)
 p.CMLM <- plot.p.adjusted[,c(1:3,6)][which(plot.p.adjusted$Adj.P.CMLM.HD_1 < 0.05),]
 colnames(p.CMLM)[colnames(p.CMLM)=="CMLM.HD_1"] <- "P.value"
-p.CMLM$Method <- paste("CMLM")
-p.CMLM$Trait.name <- paste("HD_1")
+p.CMLM$Method <- rep("CMLM", nrow(p.CMLM))
+p.CMLM$Trait.name <- rep("HD_1", nrow(p.CMLM))
 str(p.CMLM)
 p.SUPER <- plot.p.adjusted[,c(1:3,7)][which(plot.p.adjusted$Adj.P.SUPER.HD_1 < 0.05),]
 colnames(p.SUPER)[colnames(p.SUPER)=="SUPER.HD_1"] <- "P.value"
-p.SUPER$Method <- paste("SUPER")
-p.SUPER$Trait.name <- paste("HD_1")
+p.SUPER$Method <- rep("SUPER", nrow(p.SUPER))
+p.SUPER$Trait.name <- rep("HD_1", nrow(p.SUPER))
 str(p.SUPER)
 p.rrBLUP <- plot.p.adjusted[,c(1:3,8)][which(plot.p.adjusted$Adj.P.rrBLUP.HD_1 < 0.05),]
 colnames(p.rrBLUP)[colnames(p.rrBLUP)=="rrBLUP.HD_1"] <- "P.value"
-p.rrBLUP$Method <- paste("rrBLUP")
-p.rrBLUP$Trait.name <- paste("HD_1")
+p.rrBLUP$Method <- rep("rrBLUP", nrow(p.rrBLUP))
+p.rrBLUP$Trait.name <- rep("HD_1", nrow(p.rrBLUP))
 str(p.rrBLUP)
 library(lessR)
 total <- Merge(p.SUPER, p.rrBLUP)
