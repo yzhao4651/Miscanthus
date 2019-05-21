@@ -16,6 +16,11 @@ adj_P_function <- function(data, start_var, end_var){
 ## If the function needs to behave differently for the single locus vs. multi
 ## locus methods, use the `multi` argument to control that behavior.
 
+# Example use
+# for(tr in c("HD_1", "FD_1", "HD_50", "FD_50", "CM_N", "CmDW_g")){
+#   multiple_plots(trait = tr)
+# }
+
 # Main function
 multiple_plots <- function(trait = "HD_1", methods = c("GLM", "MLM", "CMLM", "SUPER"),
                            files = c("Result GAPIT1/GLMMLMMLMMFarmCPUCV/GAPIT.GLM.TRAIT.GWAS.Results.csv",
