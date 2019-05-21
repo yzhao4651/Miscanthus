@@ -1,5 +1,5 @@
 ############# this is prepare the dataset for mrMLMM software
-
+############# this is prepare the dataset for mrMLMM software
 ############step 1: import all SNP genotype with imputed value
 ############step 1: import all SNP genotype with imputed value
 ###trying to load in to GitHub, But this one is big, can not load from here. 
@@ -39,6 +39,7 @@ datacomb2transub <- subset(datacomb2tran, (as.character(datacomb2tran[,1]) %in% 
 ###select several column from all of the allsnps
 allsnp2sub <- data.frame(allsnp2[,c(1:2,3:7)])
 str(allsnp2sub)
+
 #### merge allsnpsub and datacomb2transub
 datacomb2tranmerge <- merge(allsnp2sub,datacomb2transub,by="rn")
 ##checking the data
@@ -47,17 +48,17 @@ str(datacomb2tranmerge)
 datacomb2tranmerge2 <- datacomb2tranmerge[,c(1,5,8:582)]
 ###check the data again
 str(datacomb2tranmerge2)
-###  writting out the data set datacomb2tranmerge2
-write.csv(datacomb2tranmerge2, file = "data/datacomb2tranmerge2.csv", row.names = FALSE, na = "NA")
 
 ###step 3 load GM data sets to select matched Genotype from step 2
 ###step 3 load GM data sets to select matched Genotype from step 2
 ###importing the myGM from data set
 myGM <- read.csv("data/myGM.csv",row.names=1)
 str(myGM)
+
 all(myGM$Name %in% datacomb2tranmerge2$rn) # This comes out FALSE
 ###get all the match with the datacomb2tranmerge
 myGM2 <- myGM[match(datacomb2tranmerge2$rn, myGM$Name, nomatch=0),] 
+str(myGM2)
 ###change the column name of the myGM3 to rn#
 colnames(myGM2)[which(names(myGM2) == "Name")] <- "rn"
 ###merger myGM and datacomb2tranmerge2, after they have the same name
@@ -65,14 +66,17 @@ datacomb2tranmerge4 <- merge(myGM2, datacomb2tranmerge2, by="rn")
 snporder <- order(datacomb2tranmerge4$Chromosome, datacomb2tranmerge4$Position)
 datacomb2tranmerge4 <- datacomb2tranmerge4[snporder,]
 ###check 
-#str(datacomb2tranmerge3)
-###write out the data, so far, we get all of the SNPs with all of the individuals with Chromosome, position and allele
-write.csv(datacomb2tranmerge4, file = "data/datacomb2tranmerge4.csv", row.names = FALSE, na = "NA")
+str(datacomb2tranmerge4)
+
+### write out the datasets with 
+allsnp2sub <- data.frame(allsnp2[,c(2,5)])
+str(allsnp2sub)
+write.csv(allsnp2sub, file = "data/allsnp2sub.csv", row.names = FALSE, na = "NA")
+allsnp2sub <- read.csv("data/allsnp2sub.csv")
 
 ###step 4 import the myGM dataset for the GAPIT to select matched Genotype from step 3
 ###step 4 import the myGM dataset for the GAPIT to select matched Genotype from step 3
 ####import the GM data set for GAPIT to select the genotype dataset
-
 myGMmrMLMM <- read.csv("data/myGMimputedSNP19.csv")
 str(myGMmrMLMM)
 ###check they both if get the same name
@@ -80,18 +84,11 @@ all(myGMmrMLMM$Name %in% datacomb2tranmerge4$rn) # comes out to FALSE
 ###subset the matched Geotype (So this one will contain genotype for code 1)
 subgeno<- datacomb2tranmerge4[match(myGMmrMLMM$Name, datacomb2tranmerge4$rn,nomatch=0),]
 str(subgeno)
-###write out the data set 
-write.csv(subgeno,file = "data/subgeno.csv", row.names = FALSE, na = "NA")
-##checking the genotype
-#str(subgeno)
-###all of the data sets are really larger, they can not push to the GitHub
-##Question: Is there a way i can push there?
-
 
 ###step5 import the phenotype myY for GAPIT to select the matched individual from genotype from step 4
 ###step5 import the phenotype myY for GAPIT to select the matched individual from genotype from step 4
 ###import the genotype and phonetype:
-subgeno <- read.csv("data/subgeno.csv")
+
 myYmrMlMM<- read.csv("data/myYimputedSNP19.csv")
 #str(myYmrMlMM)
 ##change the name of individuals in the phenotype data to the same of individuals in the genotypes
@@ -148,7 +145,7 @@ myYmrMlMMSuv <- myYmrMlMM[1:2]
 myYmrMlMMflo <- myYmrMlMM[,c(1,14:16,20:39)]
 myYmrMlMMculm <- myYmrMlMM[,c(1,3:13,17:19)]
 
-###get the column names of phenotype in order to check the later one 
+###get the column names of phenotype in order to check the later on 
 #names(myYmrMlMM)
 ##[1] "Taxa"      "Surv"      "CmDW_g"    "Cml_cm"    "CmD_BI_mm" "CmD_LI_mm" "CmN."      "Bcirc_cm"  "Yld_kg"    "SDW_kg"    "CCirc_cm" 
 ##[12] "Lg"        "GS"        "TFN."      "FNMain"    "FNsmall"   "FD"        "SRD"       "ADD"       "HD_1"      "FD_1"      "HD_50."   
@@ -168,9 +165,8 @@ colRename<-function(x){
   return(x)
 }
 myYmrMlMM <- colRename(myYmrMlMM)
+
 ###check the column name if changed 
-
-
 names(myYmrMlMM)
 ###write out the dataset
 write.csv(myYmrMlMM, file = "mrMLMM2/myYmrMlMM.csv", row.names = FALSE, na = "NA")
@@ -182,7 +178,6 @@ myYmrMlMMflo <- myYmrMlMM[,c(1,14:16,20:39)]
 myYmrMlMMflo<- myYmrMlMMflo[-which(rowSums(is.na(myYmrMlMMflo)) ==23),]
 ###write out the dataset
 write.csv(myYmrMlMMflo, file = "mrMLMM2/myYmrMlMMflo3.csv", row.names = FALSE, na = "NA")
-
 ###culm traits
 myYmrMlMMculm <- myYmrMlMM[,c(1,3:13,17:19)]
 myYmrMlMMculm<- myYmrMlMMculm[-which(rowSums(is.na(myYmrMlMMculm)) ==14),]
