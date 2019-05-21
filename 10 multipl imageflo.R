@@ -29,7 +29,7 @@ names(gwasResultsqq)
 plot <-  plyr::join_all(list(GLM,MLM,CMLM,MLMSUPER,gwasResultsqq), by="SNP")
 
 ###using this function to adjust the p value 
-adj_P_function <- function(data,start_var, end_var,na.rm=TRUE){
+adj_P_function <- function(data, start_var, end_var){
   for(i in start_var:end_var){
     data[ ,paste0("Adj.P.",colnames(data[i]))] <- p.adjust(data[[i]], method ="fdr", n = length(data[[i]]))
   }
