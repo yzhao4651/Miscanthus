@@ -1,12 +1,15 @@
 ####import the data####
 ####import the data####
 source("0 Qualdat import.R")
-qualdat <- read_qualdat("data/trait1718.3.16.19withoutliers.csv")
+qualdat <- read_qualdat("data/trait1718.3.16.19withoutliers1.csv")
 ###write out the data set 
-write.csv(qualdat,file="~/Documents/whole traits/trait1718SAS.csv")
+write.csv(qualdat,file="~/Documents/whole traits/trait1718SAS1.csv")
+write.csv(qualdat,file="data/trait1718SAS1.csv")
 ####check the data formate
 str(qualdat)
-
+##import 
+qualdat <- read.csv("data/trait1718SAS1.csv", na.strings = c("",".","NA"),row.names = 1)
+str(qualdat)
 ###seperate dataset using year in order to use later on 
 qualdat.17 <- subset(qualdat,qualdat$Year=="2017")
 str(qualdat.17)
@@ -27,40 +30,40 @@ write.csv(summary,file="data/summary.csv",row.names = T,
 ####scatterplot
 source("Function/Scatterplot.R")
 ###flowering traits with 2017 and 2018
-pdf(paste("Scatterplot of flowering traits", 10,".pdf",sep="")) 
+pdf(paste("Scatterplot of flowering traits", 2,".pdf",sep="")) 
 Scatterplot(qualdat[,6:9])  
 dev.off() 
 ###flowering traits with 2017
-pdf(paste("Scatterplot of 2017 flowering traits", 10,".pdf",sep="")) 
+pdf(paste("Scatterplot of 2017 flowering traits", 2,".pdf",sep="")) 
 Scatterplot(qualdat.17[,6:9])  
 dev.off()
 ###flowering traits with 2017
-pdf(paste("Scatterplot of 2018 flowering traits", 10 ,".pdf",sep="")) 
+pdf(paste("Scatterplot of 2018 flowering traits", 2 ,".pdf",sep="")) 
 Scatterplot(qualdat.18[,6:9])  
 dev.off()
 ####other traits with 2017 years
 ###check the format of the data 
 
-pdf(paste("Scatterplot of 2017 traits", 10 ,".pdf",sep="")) 
+pdf(paste("Scatterplot of 2017 traits", 2 ,".pdf",sep="")) 
 Scatterplot(qualdat.17[,c(10:17,19:21,24)])  
 dev.off() 
 ####other traits with 2018 years
 ###check the format of the data 
 
-pdf(paste("Scatterplot of 2018 traits", 10,".pdf",sep="")) 
+pdf(paste("Scatterplot of 2018 traits", 2,".pdf",sep="")) 
 Scatterplot(qualdat.18[,c(10:23,25:26)])  
 dev.off() 
 ####other traits with 2017, 2018 years
 
-pdf(paste("Scatterplot of 1718 traits", 10 ,".pdf",sep="")) 
+pdf(paste("Scatterplot of 1718 traits", 2 ,".pdf",sep="")) 
 Scatterplot(qualdat[,c(10:17,19:21)])  
 dev.off() 
 
 #####BoxPlot VS Replication
 #####BoxPlot VS Replication
 
-source("Function/plotboxFuncVSRep.R")
-pdf(paste("Boxplot of all traits VS Replication", 10 ,".pdf",sep=""))
+source("Function/plotboxFunc.R")
+pdf(paste("Boxplot of all traits VS Replication", 2 ,".pdf",sep=""))
 plotboxFunc(5,38,qualdat)
 dev.off()
 #####BoxPlot VS Year
@@ -69,9 +72,9 @@ dev.off()
 ###select the dataset with both years
 
 qualdat1718 <- qualdat[, c(2,4:17,19:21,27:38)]
-source("Function/plotboxFuncVSYear.R")
-pdf(paste("Boxplot of all traits VS Year", 10 ,".pdf",sep=" "))
-plotboxFuncVSYear(3,30,qualdat1718)
+source("Function/BoxplotFunVSYear.R")
+pdf(paste("Boxplot of all traits VS Year", 2 ,".pdf",sep=" "))
+BoxplotFunVSYear(3,30,qualdat1718)
 dev.off()
 ####qq plot and histogram 
 ####qq plot and histogram 
@@ -80,7 +83,7 @@ str(qualdat)
 qualdat$Surv <- as.numeric(as.character(qualdat$Surv))
 qualdat$CmN. <- as.numeric(as.character(qualdat$CmN.))
 qualdat$FNsmall <- as.numeric(as.character(qualdat$FNsmall))
-pdf(paste("Q-Q normal plot and Histogram", 10 ,".pdf",sep=""))
+pdf(paste("Q-Q normal plot and Histogram", 2,".pdf",sep=""))
 histqq(qualdat[5:38])
 dev.off()
 
@@ -88,7 +91,7 @@ dev.off()
 ####Normality
 #### Boxcox function R codes from online to get lambda
 source("Function/bcplot function.txt")
-pdf(paste("lambda", 10 ,".pdf",sep=""))####question: only produce one image --> Did we solve this earlier?  seems to product all images now
+pdf(paste("lambda", 2 ,".pdf",sep=""))####question: only produce one image --> Did we solve this earlier?  seems to product all images now
 par(mar=rep(2,4))
 par(mfrow=c(4,4))
 out_start=5
@@ -141,6 +144,6 @@ source("Function/bc1.R")
 qualdat_BC <- bc1(qualdat, lda)
 
 ####write the data out 
-write.csv(qualdat_BC, file = "data/traits1718normalited2.csv",row.names = T, na = ".")
+write.csv(qualdat_BC, file = "data/traits1718normalited3.csv",row.names = T, na = ".")
 write.csv(qualdat_BC, file = "~/Documents/whole traits/traits1718normalited2.csv", row.names = T, na = ".")
 

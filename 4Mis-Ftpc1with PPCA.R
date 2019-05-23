@@ -8,6 +8,8 @@
 ####import the data
 #ranefvalueall<- read.csv("~/Documents/whole traits/ranefvalueall2.csv",na.strings = c("",".","NA"))
 ranefvalueall<- read.csv("data/ranefvalueall2.csv",na.strings = c("",".","NA"))
+ranefvalueall<- read.csv("data/traits1718normalited3.csv",na.strings = c("",".","NA"))
+ranefvalueall <- ranefvalueall[3:39]
 ###check data format
 str(ranefvalueall)
 ###rename of the column name 

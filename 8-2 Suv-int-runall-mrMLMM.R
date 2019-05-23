@@ -47,6 +47,7 @@ subgenomrMLMM1 <- data.frame(subgenomrMLMM[,c(1,5:157)],row.names = 1)
 subgenomrMLMMtran <- data.frame(t(subgenomrMLMM1))
 str(subgenomrMLMMtran)
 #mymrMLMMflo <- read.csv("data/myYmrMLMMflo.csv")# this one has no any missing values 
+
 mymrMLMMSuv <- read.csv("mrMLMM2/myYmrMlMMSuv.csv")
 str(mymrMLMMSuv)
 ###get the same
@@ -75,3 +76,47 @@ mrMLM(fileGen="mrMLMM2\\subgenomrMLMMSuv.csv",
       SearchRadius=20,CriLOD=3,SelectVariable=50,
       Bootstrap=FALSE,DrawPlot=FALSE,
       Plotformat ="jpeg",Resolution="Low", dir= "mrMLMM2/ResultSuvall1")
+
+###this one for OWA
+###using the one with imputed number in SNPs datasets
+subgenomrMLMM <- read.csv("data/subgenomrMLMM.csv")
+str(subgenomrMLMM)
+subgenomrMLMM1 <- data.frame(subgenomrMLMM[,c(1,5:157)],row.names = 1)
+subgenomrMLMMtran <- data.frame(t(subgenomrMLMM1))
+str(subgenomrMLMMtran)
+#mymrMLMMflo <- read.csv("data/myYmrMLMMflo.csv")# this one has no any missing values 
+mymrMLMMSuv <- read.csv("data/myYimputedSNP19OWA.csv")
+mymrMLMMSuv$Taxa <- make.names(mymrMLMMSuv$Taxa)
+colnames(mymrMLMMSuv)[which(names(mymrMLMMSuv) == "Taxa")] <- "<phenotype>"
+colnames(mymrMLMMSuv)[which(names(mymrMLMMSuv) == "OWA")] <- "Trait1"
+write.csv(mymrMLMMSuv, file="mrMLMM2/myYmrMlMMOWA.csv",row.names = FALSE,na = "NA")
+#mymrMLMMSuv <- read.csv("mrMLMM2/myYmrMlMMSuv.csv")
+str(mymrMLMMSuv)
+###get the same
+genomymrMLMMSuv <-subgenomrMLMMtran[match(mymrMLMMSuv$Taxa,rownames(subgenomrMLMMtran), nomatch=0),]
+genomymrMLMMSuv <- data.frame(genomymrMLMMSuv)+1
+###select the MAF>0.01
+source("Function/SelectMAF-mrMLMM.R")
+genomymrMLMMSuv <- Select.MAF(genomymrMLMMSuv)
+genomymrMLMMSuv1 <-subgenomrMLMM[1:4][match(genomymrMLMMSuv$rn,subgenomrMLMM$rs., nomatch=0),]
+colnames(genomymrMLMMSuv1)[which(names(genomymrMLMMSuv1) == "rs.")] <- "rn"
+genomymrMLMMSuv <- plyr::join_all(list(genomymrMLMMSuv1,genomymrMLMMSuv),by="rn")
+str(genomymrMLMMSuv)
+###change the name in order to fit the software requirment
+colnames(genomymrMLMMSuv)[which(names(genomymrMLMMSuv) == "rn")] <- "rs#"
+colnames(genomymrMLMMSuv)[which(names(genomymrMLMMSuv) == "genotype.for.code.1")] <- "genotype for code 1"
+###write out the dataset
+write.csv(genomymrMLMMSuv, file = "mrMLMM2/subgenomrMLMMOWA.csv", row.names = FALSE, na = "NA")
+str(genomymrMLMMSuv)
+
+library("mrMLM")
+mrMLM(fileGen="mrMLMM2\\subgenomrMLMMOWA.csv",
+      filePhe="mrMLMM2\\myYmrMlMMOWA.csv",
+      fileKin=NULL,filePS=NULL,Genformat="Num",
+      method=c("mrMLM","FASTmrMLM","FASTmrEMMA","pLARmEB","pKWmEB","ISIS EM-BLASSO"),
+      Likelihood="REML",
+      trait=1,
+      SearchRadius=20,CriLOD=3,SelectVariable=50,
+      Bootstrap=FALSE,DrawPlot=FALSE,
+      Plotformat ="jpeg",Resolution="Low", dir= "mrMLMM2/ResultOWAall1")
+

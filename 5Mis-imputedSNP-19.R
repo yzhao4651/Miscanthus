@@ -8,6 +8,7 @@ str(Altable)
 
 ###data2 import the  all traits 
 alltraitsblup <- read.csv("data/alltraitsblup.csv", stringsAsFactors = FALSE, header = TRUE,row.names = 1)
+
 ###check the data format 
 str(alltraitsblup)
 ####combine the traits data with indexdata  
@@ -24,6 +25,17 @@ str(allblup)
 ###write out the data set 
 write.csv(allblup, file = "data/alltraits.csv",row.names = T)
 
+### this one for OWA
+alltraitsblup <- read.csv("data/ranefvalueOWA.csv", na.strings = c("",".","NA"), header = TRUE)
+colnames(alltraitsblup)[colnames(alltraitsblup)=="X"] <- "Entry"
+str(alltraitsblup)
+####combine the traits data with indexdata  
+allblup <- plyr::join_all(list(Altable[1:2],alltraitsblup), by='Entry')
+###check the data format and delete the missing value
+allblup <- na.omit(allblup)
+str(allblup)
+###rename of the column name of Acession to Taxa 
+colnames(allblup)[colnames(allblup)=="Accession"] <- "Taxa"
 ############# step2 Download the genotype data
 ############# step2 Download the genotype data
 ############download the SNP data that Lindsay gave to me ################### 
@@ -31,6 +43,7 @@ write.csv(allblup, file = "data/alltraits.csv",row.names = T)
 ###trying to load in to GitHub, But this one is big, can not load from here. 
 load("~/Documents/MiacnathusSNPinformation /160324EMimputedSNP_Msi.RData")
 # load("~/DOE Msi study/yield manuscript/phenotypic and GWAS analysis/160324EMimputedSNP_Msi.RData") # Lindsay's version
+load("C:/Users/Admin/Desktop/New folder/miscanthus study-1/Misthcanthus CCA data analysis/160324EMimputedSNP_Msi.RData")
 ### this data set in value part, change the value into data.frame
 ##check the name of that value:
 names(myA.EM.Msi)
@@ -95,7 +108,8 @@ mymatg <- cbind(Taxa,mymatg)
 myGDorderg <-mymatg[order(mymatg$Taxa),]
 #### write out the phenotype with correct TAXA for GAPIT analysis 
 write.csv(myGDorderg, file = "data/myGDimputedSNP19.csv",row.names = FALSE)
-
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
+write.csv(myGDorderg, file = "data/myGDimputedSNP19OWA.csv",row.names = FALSE)
 # free up RAM by removing large unused objects
 rm(myA.EM.Msi, mymat, mymatg, SNP)
 
@@ -108,6 +122,7 @@ myYorderg <- droplevels(myYorderg)
 str(myYorderg)
 #### write out the phenotype with correct TAXA
 write.csv(myYorderg, file = "data/myYimputedSNP19.csv", row.names = FALSE, na = "")
+write.csv(myYorderg[,c(1,3)], file = "data/myYimputedSNP19OWA.csv", row.names = FALSE, na = "")
 
 ##############step7 myQ: population structure
 ##############step7 myQ: population structure
@@ -127,6 +142,7 @@ myQorder <- myQorder[,c(10,2:9)]
 str(myQorder)
 ####write out the dataset
 write.csv(myQorder, file = "data/myQimputedSNP19.csv",row.names = FALSE)
+write.csv(myQorder, file = "data/myQimputedSNP19OWA.csv",row.names = FALSE)
 
 #############step8 myGM:Genetic mapping information
 #############step8 myGM:Genetic mapping information
@@ -136,6 +152,7 @@ load("~/Documents/MiacnathusSNPinformation /161025forGAPIT.RData")
 #load("~/DOE Msi study/yield manuscript/phenotypic and GWAS analysis/161025forGAPIT.RData") # on Lindsay's computer
 ### select the GM dataset with the same ID with GD
 #myGDorderg <- read.csv("~/Documents/whole traits/myGDordfrrblup19.csv")
+load("C:/Users/Admin/Desktop/New folder/miscanthus study-1/Misthcanthus CCA data analysis/161025forGAPIT.RData")
 n <- data.frame(myGDorderg,row.names = 1)
 a <- data.frame(t(n))
 myGM2 <- myGM[match(dimnames(a)[[1]],myGM$Name, nomatch=0),]
@@ -147,7 +164,7 @@ myGDorderg <- myGDorderg[,c(1, snporder + 1)]
 identical(as.character(myGM2$Name), colnames(myGDorderg)[-1])
 ####output GM data with csv format
 write.csv(myGM2, "data/myGMimputedSNP19.csv",row.names = FALSE)
-
+write.csv(myGM2, "data/myGMimputedSNP19OWA.csv",row.names = FALSE)
 #### this one for rrBLUP
 #### this one for rrBLUP
 ####rrBLUP analysis
