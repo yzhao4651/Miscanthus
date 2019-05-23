@@ -34,8 +34,7 @@ seqinfo(txdb)
 ###install.packags library(IRanges)
 #BiocManager::install("IRanges")
 ### fucntion to get the neargenes 
-mySNPs <- full_data
-str(mySNPs)
+
 Findneargenes <- function(mySNPs, search_radius){
   saved_genes <- list()
   length(saved_genes) <- nrow(mySNPs)
@@ -53,7 +52,8 @@ Findneargenes <- function(mySNPs, search_radius){
                         Gene = unlist(saved_genes))
   return(gene_df)
 }
-gene_df <- Findneargenes(mySNPs,1e4)
+
+gene_df <- Findneargenes(full_data, 1e4)
 str(gene_df)
 
 ###but i did not get any information from gene_df?
