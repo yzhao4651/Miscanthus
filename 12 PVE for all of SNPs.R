@@ -25,11 +25,7 @@ for(i in 1:length(fileNames)){
     flowerSNPs <- merge(myY, ftdGDSNPs,by="Taxa")
     #### method according to the Xiaolei Liu
     lm1 <-lm(flowerSNPs[[levels(sample$Trait.name)]] ~ as.matrix(flowerSNPs[,(ncol(myY)+1): ncol(flowerSNPs)]))
-    ##i do not think i did right for indicating the multiple variables here. 
-    ###i tried below one, but each method will give different number of SNPs, do you have any idea to 
-    ###indicate each of SNPs from each method
-    lm1 <-lm(flowerSNPs$ADD ~ colnames(ftdGDSNPs2)[1]+colnames(ftdGDSNPs2)[2]+colnames(ftdGDSNPs2)[3]+
-               colnames(ftdGDSNPs2)[3], flowerSNPs)
+
     af <- anova(lm1)
     afss <- af$"Sum Sq"
     PctExp <- afss/sum(afss)*100
