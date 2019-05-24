@@ -34,25 +34,26 @@ seqinfo(txdb)
 ###install.packags library(IRanges)
 #BiocManager::install("IRanges")
 ### fucntion to get the neargenes 
-mySNPs <- full_data
-str(mySNPs)
+
 Findneargenes <- function(mySNPs, search_radius){
-   saved_genes <- list()
-   length(saved_genes) <- nrow(mySNPs)
-   names(saved_genes) <- as.character(mySNPs$SNP)
+  saved_genes <- list()
+  length(saved_genes) <- nrow(mySNPs)
+  names(saved_genes) <- as.character(mySNPs$SNP)
+  chromnames <- paste("Chr", formatC(mySNPs$Chromosome, width = 2, flag = '0'), sep = "")
   for(i in 1:nrow(mySNPs)){
-  gr <- GRanges(mySNPs$Chromosome[i],
-                IRanges(mySNPs$Position[i] - search_radius,
-                        mySNPs$Position[i] + search_radius))
-  mygenes <- transcriptsByOverlaps(txdb, gr)
-  saved_genes[[i]] <- mygenes$tx_name
+    gr <- GRanges(chromnames[i],
+                  IRanges(mySNPs$Position[i] - search_radius,
+                          mySNPs$Position[i] + search_radius))
+    mygenes <- transcriptsByOverlaps(txdb, gr)
+    saved_genes[[i]] <- mygenes$tx_name
+  }
   gene_df <- data.frame(SNP = rep(mySNPs$SNP, 
                                   times = sapply(saved_genes, length)),
                         Gene = unlist(saved_genes))
- }
   return(gene_df)
 }
-gene_df <- Findneargenes(mySNPs,1e4)
+
+gene_df <- Findneargenes(full_data, 1e4)
 str(gene_df)
 
 ###but i did not get any information from gene_df?
