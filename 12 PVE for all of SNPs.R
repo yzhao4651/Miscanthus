@@ -6,13 +6,13 @@ extension <- "csv"
 fileNames <- Sys.glob(paste("allresults/*_2.", extension, sep = ""))#with _2, because some other files without_1, _2,_3 are not SNPs results
 ###actually, there is one file called full_data, which including all of the SNPs for all traits. 
 ### Maybe it will be better to use full_data to do this loop? 
+myY <- read.csv("data/myYimputedSNP19.csv")
+myGD <- read.csv("data/myGDimputedSNP19.csv")
 mzList = list()
 for(i in 1:length(fileNames)){
   sample = read.csv(fileNames[i])
   for(j in 1:nlevels(sample$Method)){
     sample_M <- sample[which(sample$Method==j),]
-    myY <- read.csv("data/myYimputedSNP19.csv")
-    myGD <- read.csv("data/myGDimputedSNP19.csv")
     ftdGDSNPs <- data.frame(myGD$Taxa,myGD[names(myGD) %in% sample_M$SNP])
     ###check if the new data set match with names from FarmCPU
     ####change the first column to the row name:
