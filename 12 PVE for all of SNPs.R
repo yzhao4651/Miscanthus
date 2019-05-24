@@ -11,7 +11,7 @@ myGD <- read.csv("data/myGDimputedSNP19.csv")
 mzList = list()
 for(i in 1:length(fileNames)){
   sample = read.csv(fileNames[i])
-  for(j in 1:nlevels(sample$Method)){
+  for(j in levels(sample$Method)){
     sample_M <- sample[which(sample$Method==j),]
     ftdGDSNPs <- data.frame(myGD$Taxa,myGD[names(myGD) %in% sample_M$SNP])
     ###check if the new data set match with names from FarmCPU
