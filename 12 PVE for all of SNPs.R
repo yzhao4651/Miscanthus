@@ -32,4 +32,4 @@ for(i in 1:length(fileNames)){
     mzList[[i]] <-  data.frame(PctExp)
   }
 }
-resultPVE = do.call("rbind", mzList)
+resultPVE = do.call("rbind", mzList) # you'll probably need something else here to identify trait and method
