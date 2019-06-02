@@ -2,7 +2,7 @@ Model,Value
 Trait,c("122", "2")
 group.by ,10
 Trait name ,GLM.SRD
-Kinship,153:154
+Kinship,122:123
 Z Matrix,c(123, 123)
 Covariate,c(122, 9)
 SNP.P3D,TRUE
