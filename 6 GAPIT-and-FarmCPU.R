@@ -1,10 +1,18 @@
 ####GAPIT 
 ###imported all the data need for GAPIT
-myY <- read.csv("data/myY.146.2728.csv")
-myGD <- read.csv("data/myGD.146.2728.csv")
-myGM <- read.csv("data/myGM.146.2728.csv")
-myQ<- read.csv("data/myQ.146.2728.csv")
-
+myY <- read.csv("data/myYimputedSNP19.csv")
+myGD <- read.csv("data/myGDimputedSNP19.csv")
+myGM <- read.csv("data/myGMimputedSNP19.csv")
+myQ<- read.csv("data/myQimputedSNP19.csv")
+###this one for OWA
+myY <- read.csv("data/myYimputedSNP19OWA.csv")
+str(myY)
+myGD <- read.csv("data/myGDimputedSNP19OWA.csv")
+str(myGD)
+myGM <- read.csv("data/myGMimputedSNP19OWA.csv")
+str(myGM)
+myQ<- read.csv("data/myQimputedSNP19OWA.csv")
+str(myQ)
 ###install the packaged need for GAPIT
 source("http://www.bioconductor.org/biocLite.R")
 biocLite("multtest")
@@ -26,7 +34,9 @@ source("http://zzlab.net/GAPIT/gapit_functions.txt")
 source("http://zzlab.net/GAPIT/emma.txt")
 
 ####Basic Scenario with Model selection in order to find the optimal number of PCs for different traits. 
-setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT/146modelselection")
+setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT1/modelselection")
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/modelselection")
+
 myGAPIT <- GAPIT(
   Y=myY,
   GD=myGD,
@@ -38,7 +48,8 @@ myGAPIT <- GAPIT(
 ###for convienence, I set up the PC=0 for all of the traits
 
 ####Basic Scenario using PCs=0 without incoporating CV:Population Structure
-setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT/146SNPNOCV")
+setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT1/ImputedSNPNOCV")
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/ImputedSNPNOCV")
 myGAPIT <- GAPIT(
   Y=myY,
   GD=myGD,
@@ -46,7 +57,8 @@ myGAPIT <- GAPIT(
 )
 
 ####Basic Scenario using PCs=0 with incoporate CV:Population Structure
-setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT/146SNPCV")
+setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT1/ImputedSNPCV")
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/ImputedSNPCV")
 myGAPIT <- GAPIT(
   Y=myY,
   GD=myGD,
@@ -55,19 +67,21 @@ myGAPIT <- GAPIT(
 )
 
 ####Enhanced Compression without CV
-setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT/146ECMMLNOCV")
+setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT1/ECMMLNOCV")
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/ECMMLNOCV")
 myGAPIT <- GAPIT(
   Y=myY,
   GD=myGD,
   GM=myGM,
   kinship.cluster=c("average", "complete", "ward"), kinship.group=c("Mean", "Max"), 
   group.from=100,
-  group.to=5000, 
+  group.to=32338, 
   group.by=10
 )
 
 ####Enhanced Compression with CV
-  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT/146ECMMLCV")
+  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT1/ECMMLCV")
+  setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/ECMMLCV")
   myGAPIT <- GAPIT(
     Y=myY,
     GD=myGD,
@@ -75,12 +89,13 @@ myGAPIT <- GAPIT(
     CV=myQ,
     kinship.cluster=c("average", "complete", "ward"), kinship.group=c("Mean", "Max"), 
     group.from=100,
-    group.to=5000, 
+    group.to=32338, 
     group.by=10
   )
   
 ###########"GLM","MLM","MLMM","FarmCPU" without CV
-  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT/146GLMMLMMLMMFarmCPU")
+  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT1/GLMMLMMLMMFarmCPU")
+  setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/GLMMLMMLMMFarmCPU")
   myGAPIT <- GAPIT(
     Y=myY,
     GD=myGD,
@@ -89,7 +104,8 @@ myGAPIT <- GAPIT(
   )
   
 ###########"GLM","MLM","MLMM","FarmCPU" with CV
-  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT/146GLMMLMMLMMFarmCPUCV")
+  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT1/GLMMLMMLMMFarmCPUCV")
+  setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/GLMMLMMLMMFarmCPUCV")
   myGAPIT <- GAPIT(
     Y=myY,
     GD=myGD,
@@ -101,7 +117,8 @@ myGAPIT <- GAPIT(
 ####ALL of R codes below using Bottom as Supper and changed different top. but without incorporating CV, 
 ####becasue i saw the example does not use the PCA, but CV in the manual 
 ##########Using MLM SUPPER with CV
-  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT/146MLMSUPPER")
+  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT1/MLMSUPPER")
+  setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/MLMSUPPER")
   myGAPIT <- GAPIT(
     Y=myY,
     GD=myGD,
@@ -113,7 +130,8 @@ myGAPIT <- GAPIT(
   )
   
 ###########Using GLM SUPPER with CV
-  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT/146GLMSUPPER")
+  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT1/GLMSUPPER")
+  setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/GLMSUPPER")
   myGAPIT <- GAPIT(
     Y=myY,
     GD=myGD,
@@ -125,7 +143,8 @@ myGAPIT <- GAPIT(
   )
   
 ###########Using CMLM SUPPER with CV
-  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT/146CMLMSUPPER")
+  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT1/CMLMSUPPER")
+  setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/CMLMSUPPER")
   myGAPIT <- GAPIT(
     Y=myY,
     GD=myGD,
@@ -137,7 +156,8 @@ myGAPIT <- GAPIT(
   )
   
 ###########Using SUPPER SUPPER with CV
-  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT/146SUPPERSUPPER")
+  setwd("~/Documents/R-corde for miscanthus project/Miscanthus/Result GAPIT1/SUPPERSUPPER")
+  setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/Result GAPIT1/SUPPERSUPPER")
   myGAPIT <- GAPIT(
     Y=myY,
     GD=myGD,
