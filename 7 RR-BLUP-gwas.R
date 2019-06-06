@@ -74,13 +74,13 @@ for (i in out_start:out_end){
 
 ###this one for OWA
 setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
-myY <- read.csv("data/myYimputedSNP19OWA.csv")
+myY <- read.csv("data/myYimputedSNP19OWA3.csv")
 str(myY)
-myGD <- read.csv("data/myGDimputedSNP19OWA.csv", row.names=1)
+myGD <- read.csv("data/myGDimputedSNP19OWA3.csv", row.names=1)
 str(myGD)
-myGM <- read.csv("data/myGMimputedSNP19OWA.csv")
+myGM <- read.csv("data/myGMimputedSNP19OWA3.csv")
 str(myGM)
-myQ<- read.csv("data/myQimputedSNP19OWA.csv",row.names=1)
+myQ<- read.csv("data/myQimputedSNP19OWA3.csv",row.names=1)
 str(myQ)
 ###tansform the genotype data set into rrblup data set
 myGDt <- t(myGD)-1
@@ -118,14 +118,14 @@ kmatrix <- A.mat(myGDk,min.MAF=0.05,max.missing=NULL,impute.method="mean",tol=0.
 ####do GWAS analysis again with Kmatrix
 gwasResultsowa <- GWAS(myY, genorrblup, fixed=NULL, K=kmatrix, n.PC=3,
                        min.MAF=0.05, n.core=1, P3D=TRUE, plot=FALSE)
-write.csv(gwasResultsowa, file = "rrBLUP/rrBLUP_GWAS_resultsowa.csv")
+write.csv(gwasResultsowa, file = "rrBLUP/rrBLUP_GWAS_resultsowa3.csv")
 
 ###this one for qq plots
 out_start=4
 out_end=4
 for (i in out_start:out_end){
   mypath <- file.path("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/rrBLUP",
-                      paste("QQ plot of VAR_", names(gwasResultsowa[i]), ".jpeg", sep = ""))
+                      paste("QQ plot of VAR3YR_", names(gwasResultsowa[i]), ".jpeg", sep = ""))
   jpeg(file=mypath) 
   require(qqman)
   par(mar = c(5,4,1,1))
@@ -137,7 +137,7 @@ out_start=4
 out_end=4
 for (i in out_start:out_end){
   mypath <- file.path("C:/Users/Admin/Desktop/Miscanthus/Miscanthus/rrBLUP",
-                      paste("Manhattan plots of _", names(gwasResultsowa[i]), ".jpeg", sep = ""))
+                      paste("Manhattan plots of 3YR_", names(gwasResultsowa[i]), ".jpeg", sep = ""))
   jpeg(file=mypath) 
   require(qqman)
   manhattan(data.frame(SNP = gwasResultsowa$Name,
