@@ -1,10 +1,8 @@
 ############step 1 import phenotypic data:myY 
 ############step 1 import phenotypic data:myY
-allblup <- read.csv("data/alltraits.csv", na.strings = c("",".","NA"),row.names = 1)
+allblup <- read.csv("data/alltraitsOWA.csv", na.strings = c("",".","NA"),row.names = 1)
+allblup <- allblup[,c(1,3)]
 str(allblup)
-allblupClu <- allblup[,c(1, 3:13,17:19)]
-allblupClu<- allblupClu[-which(rowSums(is.na(allblupClu[1:15])) == 14),]
-str(allblupClu)
 ############# step2 
 ############# step2
 ############download the SNP data that Lindsay gave to me ################### 
@@ -17,51 +15,55 @@ load("C:/Users/Admin/Desktop/New folder/miscanthus study-1/Misthcanthus CCA data
 
 #############changing the rowname to the first columne###########################
 source("Function/subsetNONmissingSNP.GAPIT.R")
-SNP <- subsetNONmisingSNP.GAPIT(datacomb3,allblupClu)
+SNP <- subsetNONmisingSNP.GAPIT(datacomb3,allblup)
 
 ##############step3 (myGD) select suitable SNP and individual for the next analysis 
 ##############step3 (myGD) select suitable SNP and individual for the next analysis 
-########1)remove row with missing value more than 42, 
-### Remove the row with 42% missing value (more than 42% NA)
-SNPnmrow <- SNP[-which(rowMeans(is.na(SNP)) > 0.42),]
+########1)remove row with missing value more than 0.345, 
+### Remove the row with 345% missing value (more than 345% NA)
+SNPnmrow <- SNP[-which(rowMeans(is.na(SNP)) > 0.346),]
 ########2) remove column with missng more than 0
 ### Remove the column with 0 missing value (more than 0 NA)
 SNPnmcol <- SNPnmrow[, -which(colMeans(is.na(SNPnmrow)) > 0)]
 
 ############select the MAF > 0.05
 source("Function/SelectMAF-GAPIT.R")
-myGD.125.2562 <- Select.MAF(SNPnmcol)
+myGD.135.2855 <- Select.MAF(SNPnmcol)
+
 
 #############step4 myGM:Genetic mapping information
 #############step4 myGM:Genetic mapping information
 ########## GM (Genetic mapping dataset)#############
 myGM <- read.csv("data/myGM.csv",row.names = 1)
-
+myGM$Name
 ### Function to get myGM 
 # put the SNPs back in order by chromosome and position
-identical(as.character(myGM$Name), colnames(myGD.125.2562))
+identical(as.character(myGM$Name), colnames(myGD.135.2855))
 source("Function/getmyGM.R")
 source("Function/getmyGD.R")
-myGD.125.2562 <- getmyGD(myGM,myGD.125.2562)
-myGM.125.2562 <- getmyGM(myGM,myGD.125.2562)
-
+myGD.135.2855 <- getmyGD(myGM,myGD.135.2855)
+str(myGD.135.2855)
+myGM.135.2855 <- getmyGM(myGM,myGD.135.2855)
+myGM.135.2855$Name
+str(myGM.135.2855)
 ###check if they are shared the same name in the same order
-identical(as.character(myGM.125.2562$Name), colnames(myGD.125.2562))
-write.csv(myGM.125.2562, file = "data/myGMC.125.2562.csv",row.names = FALSE)
+identical(as.character(myGM.135.2855$Name), colnames(myGD.135.2855))
+write.csv(myGM.135.2855, file = "data/myGMO.135.2855.csv",row.names = FALSE)
 source("Function/FirstColumn.R")
-myGD.125.2562 <- FirstColumn(myGD.125.2562)
-write.csv(myGD.125.2562, file = "data/myGDC.125.2562.csv",row.names = FALSE)
+myGD.135.2855 <- FirstColumn(myGD.135.2855)
+str(myGD.135.2855)
+write.csv(myGD.135.2855, file = "data/myGDO.135.2855.csv",row.names = FALSE)
 
 
 ##############step5 myY: Phenotype data for GAPIT and FarmCPU 
 ##############step5 myY: Phenotype data for GAPIT and FarmCPU 
-myY.125.2562 <- allblupClu[match(myGD.125.2562$Taxa,allblupClu$Taxa, nomatch=0),]
-myY.125.2562 <- droplevels(myY.125.2562)
+myY.135.2855 <- allblup[match(myGD.135.2855$Taxa,allblup$Taxa, nomatch=0),]
+myY.135.2855 <- droplevels(myY.135.2855)
 ######### order the Taxa
 #myYorderg <- na.omit(myYorderg[order(myYorderg$Taxa),])
-
+str(myY.135.2855)
 #### write out the phenotype with correct TAXA
-write.csv(myY.125.2562, file = "data/myYC.125.2562.csv", row.names = FALSE, na = "")
+write.csv(myY.135.2855, file = "data/myYO.135.2855.csv", row.names = FALSE, na = "")
 
 ##############step6 myQ: population structure
 ##############step6 myQ: population structure
@@ -71,13 +73,13 @@ myQ <- read.csv("data/myQ.csv", stringsAsFactors = FALSE,header = TRUE)
 ####change the Sample_name to Taxa
 colnames(myQ)[colnames(myQ)=="Sample_name"] <- "Taxa"
 ####check if the name match from both data
-myY.125.2562$Taxa %in% myQ$Taxa
+myY.135.2855$Taxa %in% myQ$Taxa
 ###elect myQ dataset using the phenotype data
-myQ.125.2562 <- myQ[match(myY.125.2562$Taxa, myQ$Taxa, nomatch=0),]
+myQ.135.2855 <- myQ[match(myY.135.2855$Taxa, myQ$Taxa, nomatch=0),]
 ##check the format
 #str(myQ.clum.107.3707)
 ####write out the dataset
-write.csv(myQ.125.2562, file = "data/myQC.125.2562.csv",row.names = FALSE)
+write.csv(myQ.135.2855, file = "data/myQO.135.2855.csv",row.names = FALSE)
 
 
 
