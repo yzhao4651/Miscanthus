@@ -86,6 +86,7 @@ mrMLM(fileGen="C:\\Users\\Admin\\Desktop\\Miscanthus\\Miscanthus\\data\\subgenom
 ####import all of the genotype data
 ###this one for SRD
 ###using the one with imputed number in SNPs datasets
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
 subgenomrMLMM <- read.csv("data/subgenomrMLMM.csv")
 str(subgenomrMLMM)
 subgenomrMLMM1 <- data.frame(subgenomrMLMM[,c(1,5:157)],row.names = 1)
