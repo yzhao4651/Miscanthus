@@ -55,7 +55,7 @@ total <- total[,c(7,6,5,1:4)]
 str(total)
 ###write the result
 if (nrow(total)>0) {
-write.csv(total, file="Owaresults106/OWA_1.csv",row.names = F)
+write.csv(total, file="Owaresults116/OWA_1.csv",row.names = F)
 }
 ###plot QQ plot inone image
 setwd("Allimage116OWA")
@@ -140,7 +140,7 @@ total <- do.call("rbind", list(mrmlm.final,FarmCPU, MLMM))
 total$SNP.N <- paste("116")
 total <- unique(total[,c(7,1:6)])
 ###write the result
-write.csv(total, file="Owaresults106/OWA_2.csv",row.names = F)
+write.csv(total, file="Owaresults116/OWA_2.csv",row.names = F)
 setwd("Allimage116OWA")
 #library("CMplot")
 source("https://raw.githubusercontent.com/YinLiLin/R-CMplot/master/R/CMplot.r")

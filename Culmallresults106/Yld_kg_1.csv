@@ -1,0 +1,4 @@
+"SNP.N","Trait.name","Method","SNP","Chromosome","Position","P.value"
+"106","Yld_kg","SUPER","PstI.TP577552",2,61335361,1.06883413124059e-05
+"106","Yld_kg","SUPER","NsiI.TP482576",11,14924,1.66472732770706e-05
+"106","Yld_kg","SUPER","PstI.TP353147",6,56747520,1.08865107141182e-05
