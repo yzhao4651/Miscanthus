@@ -80,3 +80,53 @@ mrMLM(fileGen="C:\\Users\\Admin\\Desktop\\Miscanthus\\Miscanthus\\data\\subgenom
       SearchRadius=20,CriLOD=3,SelectVariable=50,
       Bootstrap=FALSE,DrawPlot=FALSE,
       Plotformat ="jpeg",Resolution="Low", dir= "mrMLMM2/Resultculmall1")
+
+###this one has the SNPS with imputed number not int
+###this one has the SNPS with imputed number not int
+####import all of the genotype data
+###this one for SRD
+###using the one with imputed number in SNPs datasets
+setwd("C:/Users/Admin/Desktop/Miscanthus/Miscanthus")
+subgenomrMLMM <- read.csv("data/subgenomrMLMM.csv")
+str(subgenomrMLMM)
+subgenomrMLMM1 <- data.frame(subgenomrMLMM[,c(1,5:157)],row.names = 1)
+subgenomrMLMMtran <- data.frame(t(subgenomrMLMM1))
+str(subgenomrMLMMtran)
+#mymrMLMMflo <- read.csv("data/myYmrMLMMflo.csv")# this one has no any missing values 
+mymrMLMMSuv <- read.csv("data/myYimputedSNP19SRD.csv")
+mymrMLMMSuv$Taxa <- make.names(mymrMLMMSuv$Taxa)
+###get the same
+mymrMLMMSuv$Taxa %in% rownames(subgenomrMLMMtran)
+genomymrMLMMSuv <-subgenomrMLMMtran[match(mymrMLMMSuv$Taxa,rownames(subgenomrMLMMtran), nomatch=0),]
+genomymrMLMMSuv <- data.frame(genomymrMLMMSuv)+1
+###select the MAF>0.01
+source("Function/SelectMAF-mrMLMM.R")
+genomymrMLMMSuv <- Select.MAF(genomymrMLMMSuv)
+genomymrMLMMSuv1 <-subgenomrMLMM[1:4][match(genomymrMLMMSuv$rn,subgenomrMLMM$rs., nomatch=0),]
+colnames(genomymrMLMMSuv1)[which(names(genomymrMLMMSuv1) == "rs.")] <- "rn"
+genomymrMLMMSuv <- plyr::join_all(list(genomymrMLMMSuv1,genomymrMLMMSuv),by="rn")
+str(genomymrMLMMSuv)
+###change the name in order to fit the software requirment
+colnames(genomymrMLMMSuv)[which(names(genomymrMLMMSuv) == "rn")] <- "rs#"
+colnames(genomymrMLMMSuv)[which(names(genomymrMLMMSuv) == "genotype.for.code.1")] <- "genotype for code 1"
+###write out the dataset
+write.csv(genomymrMLMMSuv, file = "mrMLMM2/subgenomrMLMMSRD.csv", row.names = FALSE, na = "NA")
+str(genomymrMLMMSuv)
+###get 
+colnames(mymrMLMMSuv)[which(names(mymrMLMMSuv) == "Taxa")] <- "<phenotype>"
+colnames(mymrMLMMSuv)[which(names(mymrMLMMSuv) == "SRD")] <- "Trait1"
+write.csv(mymrMLMMSuv, file="mrMLMM2/myYmrMlMMSRD.csv",row.names = FALSE,na = "NA")
+#mymrMLMMSuv <- read.csv("mrMLMM2/myYmrMlMMSuv.csv")
+str(mymrMLMMSuv)
+
+library("mrMLM")
+mrMLM(fileGen="mrMLMM2\\subgenomrMLMMSRD.csv",
+      filePhe="mrMLMM2\\myYmrMlMMSRD.csv",
+      fileKin=NULL,filePS=NULL,Genformat="Num",
+      method=c("mrMLM","FASTmrMLM","FASTmrEMMA","pLARmEB","pKWmEB","ISIS EM-BLASSO"),
+      Likelihood="REML",
+      trait=1,
+      SearchRadius=20,CriLOD=3,SelectVariable=50,
+      Bootstrap=FALSE,DrawPlot=FALSE,
+      Plotformat ="jpeg",Resolution="Low", dir= "mrMLMM2/ResultSRDall1")
+
