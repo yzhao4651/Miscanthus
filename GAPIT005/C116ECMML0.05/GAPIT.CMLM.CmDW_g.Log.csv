@@ -1,0 +1,12 @@
+Model,Value
+Trait,c("116", "2")
+group.by ,10
+Trait name ,CMLM.CmDW_g
+Kinship,116:117
+Z Matrix,c(117, 117)
+Covariate,c(116, 2)
+SNP.P3D,TRUE
+Clustering algorithms,average
+Group kinship,Mean
+group.from ,100
+group.to ,116

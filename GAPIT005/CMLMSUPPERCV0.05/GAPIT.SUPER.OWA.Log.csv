@@ -1,0 +1,12 @@
+Model,Value
+Trait,c("142", "2")
+group.by ,20
+Trait name ,SUPER.OWA
+Kinship,153:154
+Z Matrix,c(143, 143)
+Covariate,c(142, 9)
+SNP.P3D,TRUE
+Clustering algorithms,average
+Group kinship,Mean
+group.from ,1
+group.to ,1

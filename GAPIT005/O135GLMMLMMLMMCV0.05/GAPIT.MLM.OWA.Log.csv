@@ -1,0 +1,12 @@
+Model,Value
+Trait,c("135", "2")
+group.by ,10
+Trait name ,MLM.OWA
+Kinship,135:136
+Z Matrix,c(136, 136)
+Covariate,c(135, 9)
+SNP.P3D,TRUE
+Clustering algorithms,average
+Group kinship,Mean
+group.from ,135
+group.to ,135
