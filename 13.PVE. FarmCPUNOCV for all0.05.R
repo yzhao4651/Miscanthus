@@ -1,0 +1,518 @@
+### this one for MLMSUPER
+
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+myYSRD <- read.csv("data/myYimputedSNP19SRD.csv")
+myYOWA <- read.csv("data/myYimputedSNP19OWA3.csv")
+myY1 <- read.csv("data/myYimputedSNP19.csv")
+myY1 <- myY1[,-c(2,18)]
+myY <- Reduce(function(x, y) merge(x, y, all.x=TRUE), list(myY1,myYOWA,myYSRD))
+
+colnames(myY)[colnames(myY)=="HD_50."] <- "HD_50"
+names(myY)
+colnames(myY)[colnames(myY)=="FD_50."] <- "FD_50"
+colnames(myY)[colnames(myY)=="CmN."] <- "CmN"
+colnames(myY)[colnames(myY)=="TFN."] <- "TFN"
+names(myY)
+flo.1 <- read.csv("Result.8.3/FarmCPU0.05.Adj.P.PSNO.csv")
+str(flo.1)
+levels(flo.1$Ind.SNP)
+flo <- flo.1[flo.1$Ind.SNP=="+36088im" & flo.1$Method=="FarmCPU",]
+str(flo)
+names(flo)
+flo <- droplevels(flo)
+levels(flo$Ind.SNP)
+levels(as.factor(flo$Method))
+levels(as.factor(flo$Trait.name))
+colnames(flo)[colnames(flo)=="Name"] <- "SNP"
+flo <- flo[!(flo$Trait.name=="Surv"),]
+flo <- flo[!(flo$Trait.name=="fprin"),]
+names(flo)
+names(myY)
+colnames(flo)[colnames(flo)=="Name"] <- "SNP"
+flo <- droplevels(flo)
+levels(flo$Trait.name)
+
+#setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus/FLOSUPPER.7.15.116im")
+#setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus/FLOSUPPER.7.25.116im")
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus/FarmCPU0.05.36088im")
+for (i in levels(flo$Trait.name)){
+  Trait <- flo[which(flo$Trait.name== i),]
+  if(nrow(Trait) >0) {
+    write.csv(Trait,file= paste('Trait', i, 'csv', sep = '.'))
+  }
+}
+
+
+PVE.fun <- function(sample,myY,myGD){
+  if (nrow(sample)==1){
+    ftdGDSNPs <- data.frame(myGD$Taxa,myGD[names(myGD) %in% sample$SNP])
+    colnames(ftdGDSNPs)[colnames(ftdGDSNPs)=="myGD.Taxa"] <- "Taxa"
+    flowerSNPs <- merge(myY, ftdGDSNPs,by="Taxa")
+    a <- ncol(myY)+1
+    lm1 <-lm(flowerSNPs[[levels(sample$Trait.name)]] ~ flowerSNPs[[a]])
+    af <- anova(lm1)
+    afss <- af$"Sum Sq"
+    PctExp <- afss/sum(afss)*100
+    PVE3 <- data.frame(cbind(colnames(ftdGDSNPs[2]),PctExp[[1]]))
+    colnames(PVE3) <- c("SNP","PVE")
+  } else {
+    ftdGDSNPs <- data.frame(myGD$Taxa,myGD[names(myGD) %in% sample$SNP])
+    colnames(ftdGDSNPs)[colnames(ftdGDSNPs)=="myGD.Taxa"] <- "Taxa"
+    flowerSNPs <- merge(myY, ftdGDSNPs,by="Taxa")
+    number=1
+    a <- ncol(myY)+1
+    b <- a+nrow(sample)-1
+    out_variable = colnames(flowerSNPs[a:b])
+    outcome <- matrix(NA, nrow=ncol(flowerSNPs[a:b]),
+                      ncol = 1, dimnames = list(out_variable, "PctExp"))
+    for(j in a:b){
+      lm1 <-lm(flowerSNPs[[levels(sample$Trait.name)]] ~ flowerSNPs[[j]])
+      af <- anova(lm1)
+      afss <- af$"Sum Sq"
+      PctExp <- afss/sum(afss)*100
+      outcome[number] <-PctExp[[1]]
+      number=number+1
+      PVE3 <- data.frame(outcome)
+      colnames(PVE3) <-  c("PVE")
+      SNP <- rownames(PVE3)
+      rownames(PVE3) <- NULL
+      PVE3 <- cbind(SNP,PVE3)
+    }
+  }
+  return(PVE3)
+}
+
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+extension <- "csv"
+fileNames <- Sys.glob(paste("FarmCPU0.05.36088im/*.", extension, sep = ""))
+
+#myY <- read.csv("data/myYimputedSNP19.csv")
+myGD <- read.csv("data/myGDimputedSNP19.csv")
+
+mzList = list()
+for(i in 1:length(fileNames)){
+  sample = read.csv(fileNames[i],row.names = 1)
+  sample.PVE <- PVE.fun(sample,myY,myGD)
+  mzList[[i]] = data.frame(sample.PVE, filename = rep(fileNames[i], length(nrow(sample))))
+}
+
+#resultPVE1 <- plyr::ldply(mzList, data.frame)
+FarmCPUCVNOim <- plyr::rbind.fill(mzList)
+#resultPVE = do.call("rbind", mzList)
+##combine all of the result with flo
+
+levels(as.factor(FarmCPUCVNOim$filename))
+
+FarmCPUCVNOim$filename <- gsub('FarmCPU0.05.36088im/Trait.', '', FarmCPUCVNOim$filename)
+FarmCPUCVNOim$filename <- gsub('.csv', '', FarmCPUCVNOim$filename)
+
+levels(as.factor(FarmCPUCVNOim$filename))
+
+FarmCPUCVNOim.1 <- unite(FarmCPUCVNOim,"SNP.T",SNP,filename,sep="/")
+flo.2 <- unite(flo,"SNP.T",SNP,Trait.name,sep="/")
+flo.2$SNP.T %in% FarmCPUCVNOim.1$SNP.T
+FarmCPUCVNOim.flo <- merge(flo.2,FarmCPUCVNOim.1,by="SNP.T")
+FarmCPUCVNOim.flo.S <- separate(FarmCPUCVNOim.flo, SNP.T, c("SNP","Trait.name"),sep="/")
+levels(as.factor(FarmCPUCVNOim.flo.S$Trait.name))
+
+###for flowering 106
+###for flowering 106
+###for flowering 106
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+myY <- read.csv("data/myYf.106.4185.csv")
+colnames(myY)[colnames(myY)=="HD_50."] <- "HD_50"
+names(myY)
+colnames(myY)[colnames(myY)=="FD_50."] <- "FD_50"
+colnames(myY)[colnames(myY)=="CmN."] <- "CmN"
+colnames(myY)[colnames(myY)=="TFN."] <- "TFN"
+names(myY)
+myGD <- read.csv("data/myGDf.106.4185.csv")
+flo.1 <- read.csv("Result.8.3/FarmCPU0.05.Adj.P.PSNO.csv")
+str(flo.1)
+flo <- flo.1[flo.1$Ind.SNP=="F106+4185" & flo.1$Method=="FarmCPU",]
+colnames(flo)[colnames(flo)=="Name"] <- "SNP"
+flo <- flo[!(flo$Trait.name=="Surv"),]
+str(flo)
+flo <- droplevels(flo)
+levels(flo$Trait.name)
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus/FarmCPU0.05.F106")
+for (i in levels(flo$Trait.name)){
+  Trait <- flo[which(flo$Trait.name== i),]
+  if(nrow(Trait) >0) {
+    write.csv(Trait,file= paste('Trait', i, 'csv', sep = '.'))
+  }
+}
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+extension <- "csv"
+fileNames <- Sys.glob(paste("FarmCPU0.05.F106/*.", extension, sep = ""))
+mzList = list()
+for(i in 1:length(fileNames)){
+  sample = read.csv(fileNames[i],row.names = 1)
+  sample.PVE <- PVE.fun(sample,myY,myGD)
+  mzList[[i]] = data.frame(sample.PVE, filename = rep(fileNames[i], length(nrow(sample))))
+}
+
+#resultPVE1 <- plyr::ldply(mzList, data.frame)
+FarmCPU0.05.F106 <- plyr::rbind.fill(mzList)
+#resultPVE = do.call("rbind", mzList)
+##combine all of the result with flo
+
+levels(FarmCPU0.05.F106$filename)
+
+FarmCPU0.05.F106$filename <- gsub('FarmCPU0.05.F106/Trait.', '', FarmCPU0.05.F106$filename)
+FarmCPU0.05.F106$filename <- gsub('.csv', '', FarmCPU0.05.F106$filename)
+
+levels(as.factor(FarmCPU0.05.F106$filename))
+
+FarmCPU0.05.F106.1<- unite(FarmCPU0.05.F106,"SNP.T",SNP,filename,sep="/")
+flo.2 <- unite(flo,"SNP.T",SNP,Trait.name,sep="/")
+
+FarmCPU0.05.F106.flo <- merge(flo.2,FarmCPU0.05.F106.1,by="SNP.T")
+FarmCPU0.05.F106.flo.S <- separate(FarmCPU0.05.F106.flo, SNP.T, c("SNP","Trait.name"),sep="/")
+
+###for flowering 116
+###for flowering 116
+###for flowering 116
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+myY <- read.csv("data/myYf.116.3077.csv")
+colnames(myY)[colnames(myY)=="HD_50."] <- "HD_50"
+names(myY)
+colnames(myY)[colnames(myY)=="FD_50."] <- "FD_50"
+colnames(myY)[colnames(myY)=="CmN."] <- "CmN"
+colnames(myY)[colnames(myY)=="TFN."] <- "TFN"
+names(myY)
+myGD <- read.csv("data/myGDf.116.3077.csv")
+flo.1 <- read.csv("Result.8.3/FarmCPU0.05.Adj.P.PSNO.csv")
+str(flo.1)
+flo <- flo.1[flo.1$Ind.SNP=="F116+3077" & flo.1$Method=="FarmCPU",]
+flo <- flo[!(flo$Trait.name=="Surv"),]
+colnames(flo)[colnames(flo)=="Name"] <- "SNP"
+flo <- droplevels(flo)
+levels(flo$Trait.name)
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus/FarmCPU0.05.F116")
+for (i in levels(flo$Trait.name)){
+  Trait <- flo[which(flo$Trait.name== i),]
+  if(nrow(Trait) >0) {
+    write.csv(Trait,file= paste('Trait', i, 'csv', sep = '.'))
+  }
+}
+
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+extension <- "csv"
+fileNames <- Sys.glob(paste("FarmCPU0.05.F116/*.", extension, sep = ""))
+mzList = list()
+for(i in 1:length(fileNames)){
+  sample = read.csv(fileNames[i],row.names = 1)
+  sample.PVE <- PVE.fun(sample,myY,myGD)
+  mzList[[i]] = data.frame(sample.PVE, filename = rep(fileNames[i], length(nrow(sample))))
+}
+
+#resultPVE1 <- plyr::ldply(mzList, data.frame)
+FarmCPU0.05.F116 <- plyr::rbind.fill(mzList)
+#resultPVE = do.call("rbind", mzList)
+##combine all of the result with flo
+
+levels(FarmCPU0.05.F116$filename)
+
+FarmCPU0.05.F116$filename <- gsub('FarmCPU0.05.F116/Trait.', '', FarmCPU0.05.F116$filename)
+FarmCPU0.05.F116$filename <- gsub('.csv', '', FarmCPU0.05.F116$filename)
+
+levels(as.factor(FarmCPU0.05.F116$filename))
+
+FarmCPU0.05.F116.1 <- unite(FarmCPU0.05.F116,"SNP.T",SNP,filename,sep="/")
+flo.2 <- unite(flo,"SNP.T",SNP,Trait.name,sep="/")
+
+FarmCPU0.05.F116.flo <- merge(flo.2,FarmCPU0.05.F116.1,by="SNP.T")
+FarmCPU0.05.F116.flo.S <- separate(FarmCPU0.05.F116.flo, SNP.T, c("SNP","Trait.name"),sep="/")
+
+
+
+
+###for flowering 122
+###for flowering 122
+###for flowering 122
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+myY <- read.csv("data/myYf.122.2272.csv")
+colnames(myY)[colnames(myY)=="HD_50."] <- "HD_50"
+names(myY)
+colnames(myY)[colnames(myY)=="FD_50."] <- "FD_50"
+colnames(myY)[colnames(myY)=="CmN."] <- "CmN"
+colnames(myY)[colnames(myY)=="TFN."] <- "TFN"
+names(myY)
+myGD <- read.csv("data/myGDf.122.2272.csv")
+flo.1 <- read.csv("Result.8.3/FarmCPU0.05.Adj.P.PSNO.csv")
+str(flo.1)
+flo <- flo.1[flo.1$Ind.SNP=="F122+2272" & flo.1$Method=="FarmCPU",]
+flo <- flo[!(flo$Trait.name=="Surv"),]
+colnames(flo)[colnames(flo)=="Name"] <- "SNP"
+flo <- droplevels(flo)
+levels(flo$Trait.name)
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus/FarmCPU0.05.F122")
+for (i in levels(flo$Trait.name)){
+  Trait <- flo[which(flo$Trait.name== i),]
+  if(nrow(Trait) >0) {
+    write.csv(Trait,file= paste('Trait', i, 'csv', sep = '.'))
+  }
+}
+
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+extension <- "csv"
+fileNames <- Sys.glob(paste("FarmCPU0.05.F122/*.", extension, sep = ""))
+mzList = list()
+for(i in 1:length(fileNames)){
+  sample = read.csv(fileNames[i],row.names = 1)
+  sample.PVE <- PVE.fun(sample,myY,myGD)
+  mzList[[i]] = data.frame(sample.PVE, filename = rep(fileNames[i], length(nrow(sample))))
+}
+
+#resultPVE1 <- plyr::ldply(mzList, data.frame)
+FarmCPU0.05.F122 <- plyr::rbind.fill(mzList)
+#resultPVE = do.call("rbind", mzList)
+##combine all of the result with flo
+
+levels(FarmCPU0.05.F122$filename)
+
+FarmCPU0.05.F122$filename <- gsub('FarmCPU0.05.F122/Trait.', '', FarmCPU0.05.F122$filename)
+FarmCPU0.05.F122$filename <- gsub('.csv', '', FarmCPU0.05.F122$filename)
+
+levels(as.factor(FarmCPU0.05.F122$filename))
+
+FarmCPU0.05.F122.1 <- unite(FarmCPU0.05.F122,"SNP.T",SNP,filename,sep="/")
+flo.2 <- unite(flo,"SNP.T",SNP,Trait.name,sep="/")
+
+FarmCPU0.05.F122.flo <- merge(flo.2,FarmCPU0.05.F122.1,by="SNP.T")
+FarmCPU0.05.F122.flo.S <- separate(FarmCPU0.05.F122.flo, SNP.T, c("SNP","Trait.name"),sep="/")
+
+
+###for Culm 106
+###for Culm 106
+###for Culm 106
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+myY <- read.csv("data/myYC.106.4202.csv")
+colnames(myY)[colnames(myY)=="HD_50."] <- "HD_50"
+names(myY)
+colnames(myY)[colnames(myY)=="FD_50."] <- "FD_50"
+colnames(myY)[colnames(myY)=="CmN."] <- "CmN"
+colnames(myY)[colnames(myY)=="TFN."] <- "TFN"
+names(myY)
+myGD <- read.csv("data/myGDC.106.4202.csv")
+flo.1 <- read.csv("Result.8.3/FarmCPU0.05.Adj.P.PSNO.csv")
+flo <- flo.1[flo.1$Ind.SNP=="C106+4202" & flo.1$Method=="FarmCPU",]
+flo <- flo[!(flo$Trait.name=="Surv"),]
+colnames(flo)[colnames(flo)=="Name"] <- "SNP"
+flo <- droplevels(flo)
+levels(flo$Trait.name)
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus/FarmCPU0.05.C106")
+for (i in levels(flo$Trait.name)){
+  Trait <- flo[which(flo$Trait.name== i),]
+  if(nrow(Trait) >0) {
+    write.csv(Trait,file= paste('Trait', i, 'csv', sep = '.'))
+  }
+}
+
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+extension <- "csv"
+fileNames <- Sys.glob(paste("FarmCPU0.05.C106/*.", extension, sep = ""))
+mzList = list()
+for(i in 1:length(fileNames)){
+  sample = read.csv(fileNames[i],row.names = 1)
+  sample.PVE <- PVE.fun(sample,myY,myGD)
+  mzList[[i]] = data.frame(sample.PVE, filename = rep(fileNames[i], length(nrow(sample))))
+}
+
+#resultPVE1 <- plyr::ldply(mzList, data.frame)
+FarmCPU0.05.C106 <- plyr::rbind.fill(mzList)
+#resultPVE = do.call("rbind", mzList)
+##combine all of the result with flo
+
+levels(FarmCPU0.05.C106$filename)
+
+FarmCPU0.05.C106$filename <- gsub('FarmCPU0.05.C106/Trait.', '', FarmCPU0.05.C106$filename)
+FarmCPU0.05.C106$filename <- gsub('.csv', '', FarmCPU0.05.C106$filename)
+
+levels(as.factor(FarmCPU0.05.C106$filename))
+
+FarmCPU0.05.C106.1 <- unite(FarmCPU0.05.C106,"SNP.T",SNP,filename,sep="/")
+flo.2 <- unite(flo,"SNP.T",SNP,Trait.name,sep="/")
+
+FarmCPU0.05.C106.flo <- merge(flo.2,FarmCPU0.05.C106.1,by="SNP.T")
+FarmCPU0.05.C106.flo.S <- separate(FarmCPU0.05.C106.flo, SNP.T, c("SNP","Trait.name"),sep="/")
+
+
+###for Culm 116
+###for Culm 116
+###for Culm 116
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+myY <- read.csv("data/myYC.116.3293.csv")
+colnames(myY)[colnames(myY)=="HD_50."] <- "HD_50"
+names(myY)
+colnames(myY)[colnames(myY)=="FD_50."] <- "FD_50"
+colnames(myY)[colnames(myY)=="CmN."] <- "CmN"
+colnames(myY)[colnames(myY)=="TFN."] <- "TFN"
+names(myY)
+myGD <- read.csv("data/myGDC.116.3293.csv")
+flo.1 <- read.csv("Result.8.3/FarmCPU0.05.Adj.P.PSNO.csv")
+flo <- flo.1[flo.1$Ind.SNP=="C116+3293" & flo.1$Method=="FarmCPU",]
+flo <- flo[!(flo$Trait.name=="Surv"),]
+colnames(flo)[colnames(flo)=="Name"] <- "SNP"
+flo <- droplevels(flo)
+levels(flo$Trait.name)
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus/FarmCPU0.05.C116")
+for (i in levels(flo$Trait.name)){
+  Trait <- flo[which(flo$Trait.name== i),]
+  if(nrow(Trait) >0) {
+    write.csv(Trait,file= paste('Trait', i, 'csv', sep = '.'))
+  }
+}
+
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+extension <- "csv"
+fileNames <- Sys.glob(paste("FarmCPU0.05.C116/*.", extension, sep = ""))
+source("Function/PVE.fun.R")
+mzList = list()
+for(i in 1:length(fileNames)){
+  sample = read.csv(fileNames[i],row.names = 1)
+  sample.PVE <- PVE.fun(sample,myY,myGD)
+  mzList[[i]] = data.frame(sample.PVE, filename = rep(fileNames[i], length(nrow(sample))))
+}
+
+#resultPVE1 <- plyr::ldply(mzList, data.frame)
+FarmCPU0.05.C116 <- plyr::rbind.fill(mzList)
+#resultPVE = do.call("rbind", mzList)
+##combine all of the result with flo
+
+levels(FarmCPU0.05.C116$filename)
+
+FarmCPU0.05.C116$filename <- gsub('FarmCPU0.05.C116/Trait.', '', FarmCPU0.05.C116$filename)
+FarmCPU0.05.C116$filename <- gsub('.csv', '', FarmCPU0.05.C116$filename)
+
+levels(as.factor(FarmCPU0.05.C116$filename))
+
+FarmCPU0.05.C116.1 <- unite(FarmCPU0.05.C116,"SNP.T",SNP,filename,sep="/")
+flo.2 <- unite(flo,"SNP.T",SNP,Trait.name,sep="/")
+
+FarmCPU0.05.C116.flo <- merge(flo.2,FarmCPU0.05.C116.1,by="SNP.T")
+FarmCPU0.05.C116.flo.S <- separate(FarmCPU0.05.C116.flo, SNP.T, c("SNP","Trait.name"),sep="/")
+
+###for Culm 125
+###for Culm 125
+###for Culm 125
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+myY <- read.csv("data/myYC.125.2562.csv")
+colnames(myY)[colnames(myY)=="HD_50."] <- "HD_50"
+names(myY)
+colnames(myY)[colnames(myY)=="FD_50."] <- "FD_50"
+colnames(myY)[colnames(myY)=="CmN."] <- "CmN"
+colnames(myY)[colnames(myY)=="TFN."] <- "TFN"
+names(myY)
+myGD <- read.csv("data/myGDC.125.2562.csv")
+flo.1 <- read.csv("Result.8.3/FarmCPU0.05.Adj.P.PSNO.csv")
+flo <- flo.1[flo.1$Ind.SNP=="C125+2562" & flo.1$Method=="FarmCPU",]
+flo <- flo[!(flo$Trait.name=="Surv"),]
+colnames(flo)[colnames(flo)=="Name"] <- "SNP"
+flo <- droplevels(flo)
+levels(flo$Trait.name)
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus/FarmCPU0.05.C125")
+for (i in levels(flo$Trait.name)){
+  Trait <- flo[which(flo$Trait.name== i),]
+  if(nrow(Trait) >0) {
+    write.csv(Trait,file= paste('Trait', i, 'csv', sep = '.'))
+  }
+}
+
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+extension <- "csv"
+fileNames <- Sys.glob(paste("FarmCPU0.05.C125/*.", extension, sep = ""))
+source("Function/PVE.fun.R")
+mzList = list()
+for(i in 1:length(fileNames)){
+  sample = read.csv(fileNames[i],row.names = 1)
+  sample.PVE <- PVE.fun(sample,myY,myGD)
+  mzList[[i]] = data.frame(sample.PVE, filename = rep(fileNames[i], length(nrow(sample))))
+}
+
+#resultPVE1 <- plyr::ldply(mzList, data.frame)
+FarmCPU0.05.C125 <- plyr::rbind.fill(mzList)
+#resultPVE = do.call("rbind", mzList)
+##combine all of the result with flo
+
+levels(FarmCPU0.05.C125$filename)
+
+FarmCPU0.05.C125$filename <- gsub('FarmCPU0.05.C125/Trait.', '', FarmCPU0.05.C125$filename)
+FarmCPU0.05.C125$filename <- gsub('.csv', '', FarmCPU0.05.C125$filename)
+
+levels(as.factor(FarmCPU0.05.C125$filename))
+
+FarmCPU0.05.C125.1 <- unite(FarmCPU0.05.C125,"SNP.T",SNP,filename,sep="/")
+flo.2 <- unite(flo,"SNP.T",SNP,Trait.name,sep="/")
+
+FarmCPU0.05.C125.flo <- merge(flo.2,FarmCPU0.05.C125.1,by="SNP.T")
+FarmCPU0.05.C125.flo.S <- separate(FarmCPU0.05.C125.flo, SNP.T, c("SNP","Trait.name"),sep="/")
+
+
+##for OWA 135
+###for OWA 135
+###for OWA 135
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+myY <- read.csv("data/myYO.135.2855.csv")
+colnames(myY)[colnames(myY)=="HD_50."] <- "HD_50"
+names(myY)
+colnames(myY)[colnames(myY)=="FD_50."] <- "FD_50"
+colnames(myY)[colnames(myY)=="CmN."] <- "CmN"
+colnames(myY)[colnames(myY)=="TFN."] <- "TFN"
+names(myY)
+myGD <- read.csv("data/myGDO.135.2855.csv")
+flo.1 <- read.csv("Result.8.3/FarmCPU0.05.Adj.P.PSNO.csv")
+
+flo <- flo.1[flo.1$Ind.SNP=="O135+2855" & flo.1$Method=="FarmCPU",]
+flo <- flo[!(flo$Trait.name=="Surv"),]
+colnames(flo)[colnames(flo)=="Name"] <- "SNP"
+flo <- droplevels(flo)
+levels(flo$Trait.name)
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus/FarmCPU0.05.O135")
+for (i in levels(flo$Trait.name)){
+  Trait <- flo[which(flo$Trait.name== i),]
+  if(nrow(Trait) >0) {
+    write.csv(Trait,file= paste('Trait', i, 'csv', sep = '.'))
+  }
+}
+
+setwd("/Users/yonglizhao/Documents/R-corde for miscanthus project/Miscanthus")
+extension <- "csv"
+fileNames <- Sys.glob(paste("FarmCPU0.05.O135/*.", extension, sep = ""))
+source("Function/PVE.fun.R")
+mzList = list()
+for(i in 1:length(fileNames)){
+  sample = read.csv(fileNames[i],row.names = 1)
+  sample.PVE <- PVE.fun(sample,myY,myGD)
+  mzList[[i]] = data.frame(sample.PVE, filename = rep(fileNames[i], length(nrow(sample))))
+}
+
+#resultPVE1 <- plyr::ldply(mzList, data.frame)
+FarmCPU0.05.O135 <- plyr::rbind.fill(mzList)
+#resultPVE = do.call("rbind", mzList)
+##combine all of the result with flo
+
+levels(FarmCPU0.05.O135$filename)
+
+FarmCPU0.05.O135$filename <- gsub('FarmCPU0.05.O135/Trait.', '', FarmCPU0.05.O135$filename)
+FarmCPU0.05.O135$filename <- gsub('.csv', '', FarmCPU0.05.O135$filename)
+
+levels(as.factor(FarmCPU0.05.O135$filename))
+
+FarmCPU0.05.O135.1 <- unite(FarmCPU0.05.O135,"SNP.T",SNP,filename, sep="/")
+flo.2 <- unite(flo,"SNP.T",SNP,Trait.name,sep="/")
+
+FarmCPU0.05.O135.flo <- merge(flo.2,FarmCPU0.05.O135.1,by="SNP.T")
+FarmCPU0.05.O135.flo.S <- separate(FarmCPU0.05.O135.flo, SNP.T, c("SNP","Trait.name"),sep="/")
+
+
+
+###combine all of the result
+FarmCPU0.05.PVE.a <- do.call("rbind",list(FarmCPUCVNOim.flo.S,FarmCPU0.05.C106.flo.S,FarmCPU0.05.C116.flo.S,FarmCPU0.05.C125.flo.S,
+                                        FarmCPU0.05.F106.flo.S,FarmCPU0.05.F116.flo.S,FarmCPU0.05.F122.flo.S,FarmCPU0.05.O135.flo.S))
+
+write.csv(FarmCPU0.05.PVE.a,file="Result.8.3/FarmCPU0.05.PVE.a.1.csv")
+
+
+
