@@ -1,0 +1,2 @@
+"","X","SNP","Chromosome","Position","P.value","maf","nobs","Rsquare.of.Model.without.SNP","Rsquare.of.Model.with.SNP","FDR_Adjusted_P.values","effect","Adj.P.P.value","Ind.SNP","Method","PS","Software","Method2","Trait.name"
+"259",259,"PstI.TP771300",8,5124822,1.32639176997691e-06,0.185987527078504,114,NA,NA,0.0347965616935743,NA,0.0347965616935743,"+36088im","CMLM+SUPER","PS_Y","GAPIT","SUPER","CmD_BI_mm"
