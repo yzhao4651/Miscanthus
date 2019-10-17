@@ -1,5 +1,5 @@
 ##import the data file with total SNPs detected 
-filename <- read.csv("Result.8.3/flo.8.3.csv")
+filename <- read.csv("Result.8.3/flo.8.3.1.csv")
 str(filename)
 ###change all of traits to the four temporal scales 
 levels(filename$Trait.name)[levels(filename$Trait.name)=="HD_1"] <- "D"
@@ -64,7 +64,7 @@ t.16 <- t.15[t.15$Ind.SNP=="F116+36088im",]
 t.16$variable<- factor(t.16$variable, levels= c("SNPs.hit.with.flowering.genes", "SNPs.Total.detected"))
 t.16$Ind.SNP <- factor(t.16$Ind.SNP,levels = c("F116+36088im", "F106+4185", "F116+3077", "F122+2272"))
 t.16$Trait.name<- factor(t.16$Trait.name,levels = c("D", "W", "GW", "M"))
-MLMSUPER36088im <- ggplot(data=t.16, aes(x=Trait.name, y=value, fill=variable)) +
+total.1 <- ggplot(data=t.16, aes(x=Trait.name, y=value, fill=variable)) +
   geom_bar(stat="identity",width=0.5)+
   scale_fill_discrete(name="D:Day  W:Week  GW:Group Week  M:Month",labels=c("SNPs.Hit.With.Flowering.Genes","SNPs.Total.Detected"))+   
   geom_text(aes(label=t.16$value),size=4, position = position_stack(vjust = 0.5)) + facet_grid(~Method+Ind.SNP)+
